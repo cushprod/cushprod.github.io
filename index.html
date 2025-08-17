@@ -12,6 +12,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Genel Stiller */
         * {
             margin: 0;
             padding: 0;
@@ -31,7 +32,8 @@
             background-attachment: fixed;
             transition: background 0.5s ease, color 0.5s ease;
         }
-        
+
+        /* Light theme */
         body.light-theme {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             color: #333;
@@ -96,6 +98,7 @@
             position: relative;
         }
 
+        /* Tema geçiş butonu */
         .theme-toggle {
             position: absolute;
             top: 20px;
@@ -131,6 +134,7 @@
             background: rgba(0, 0, 0, 0.1);
         }
 
+        /* Üst Kısım Stilleri */
         .profile-section {
             display: flex;
             flex-direction: column;
@@ -147,7 +151,7 @@
             object-fit: cover;
             border: 4px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 0 25px rgba(80, 200, 255, 0.3);
-            background: linear-gradient(45deg, #ff00cc, #3333ff);
+            background: linear-gradient(45deg, #ff1a1a, #800000);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -164,7 +168,7 @@
             font-size: 28px;
             font-weight: 700;
             margin-top: 10px;
-            background: linear-gradient(90deg, #ff00cc, #3333ff);
+            background: linear-gradient(90deg, #ff1a1a, #800000);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -179,6 +183,7 @@
             line-height: 1.5;
         }
 
+        /* Sosyal Medya Butonları */
         .social-icons {
             display: flex;
             justify-content: center;
@@ -231,6 +236,7 @@
             background: linear-gradient(135deg, #00f2ea, #ff0050);
         }
 
+        /* Link Grupları */
         .link-groups-container {
             display: flex;
             flex-direction: column;
@@ -285,6 +291,7 @@
             text-align: center;
         }
 
+        /* Link Butonları */
         .link-item {
             display: flex;
             align-items: center;
@@ -336,6 +343,7 @@
             opacity: 0.7;
         }
 
+        /* Footer */
         .footer {
             margin-top: 30px;
             text-align: center;
@@ -347,6 +355,7 @@
             transition: all 0.5s ease;
         }
 
+        /* Animasyonlar */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -373,6 +382,7 @@
             animation-delay: 0.4s;
         }
 
+        /* Responsive Tasarım */
         @media (max-width: 600px) {
             .container {
                 padding: 15px;
@@ -437,35 +447,47 @@
 </head>
 
 <body>
+    <!-- Tema geçiş butonu -->
     <button id="theme-toggle" class="theme-toggle">
         <i class="fas fa-moon"></i>
     </button>
     <div class="container">
+        <!-- Üst Kısım - Profil -->
         <section class="profile-section">
             <div class="profile-image">
+                <!-- Profil fotoğrafı img klasöründen -->
                 <img src="img/profile-picture.webp" alt="@cushprod Profil Fotoğrafı">
             </div>
             <h1 class="profile-name">@cushprod</h1>
             <p class="profile-bio">Music • Production</p>
         </section>
 
+        <!-- Sosyal Medya Butonları -->
         <div class="social-icons">
             <a href="https://youtube.com/@CUSHPROD" target="_blank" class="social-icon youtube">
+                <!-- YouTube ikonu icons klasöründen -->
                 <img src="icons/youtube.webp" alt="YouTube">
             </a>
             <a href="https://soundcloud.com/cushprod" target="_blank" class="social-icon soundcloud">
+                <!-- Instagram ikonu icons klasöründen -->
                 <img src="icons/soundcloud.webp" alt="SoundCloud">
             </a>
             <a href="https://instagram.com/beratt808" target="_blank" class="social-icon instagram">
+                <!-- Instagram ikonu icons klasöründen -->
                 <img src="icons/instagram.webp" alt="Instagram">
             </a>
             <a href="https://tiktok.com/@beratt808" target="_blank" class="social-icon tiktok">
+                <!-- TikTok ikonu icons klasöründen -->
                 <img src="icons/tiktok.webp" alt="TikTok">
             </a>
         </div>
 
+        <!-- Link Grupları -->
         <div class="link-groups-container">
+
+            <!-- New Drop -->
             <div class="link-group">
+
                 <a href="https://bsta.rs/4Fh48" target="_blank" class="link-item">
                     <div class="link-icon">
                         <img src="img/insanity.webp" alt="ISANITY">
@@ -475,12 +497,21 @@
                         <i class="fas fa-chevron-right"></i>
                     </div>
                 </a>
+
             </div>
-            <div class="group-divider"></div>
+
+            <!-- Grup Ayırıcı -->
+            <div class="group-divider">
+                <!-- <span>Diğer Bağlantılar</span>  -->
+            </div>
+
+            <!-- Beat Marketleri -->
             <div class="link-group">
                 <div class="group-title">Purchase My Beats</div>
+
                 <a href="https://beatstars.com/cushprod/tracks" target="_blank" class="link-item">
                     <div class="link-icon">
+                        <!-- Beatstars ikonu icons klasöründen -->
                         <img src="icons/beatstars.webp" alt="Beatstars">
                     </div>
                     <div class="link-text">Beatstars</div>
@@ -488,8 +519,10 @@
                         <i class="fas fa-chevron-right"></i>
                     </div>
                 </a>
+
                 <a href="https://airbit.com/cushprod" target="_blank" class="link-item">
                     <div class="link-icon">
+                        <!-- AirBit ikonu icons klasöründen -->
                         <img src="icons/airbit.webp" alt="AirBit">
                     </div>
                     <div class="link-text">AirBit</div>
@@ -497,8 +530,10 @@
                         <i class="fas fa-chevron-right"></i>
                     </div>
                 </a>
+
                 <a href="https://traktrain.com/cushprod" target="_blank" class="link-item">
                     <div class="link-icon">
+                        <!-- TrakTrain ikonu icons klasöründen -->
                         <img src="icons/traktrain.webp" alt="TrakTrain">
                     </div>
                     <div class="link-text">TrakTrain</div>
@@ -507,8 +542,15 @@
                     </div>
                 </a>
             </div>
-            <div class="group-divider"></div>
+
+            <!-- Grup Ayırıcı -->
+            <div class="group-divider">
+                <!-- <span>Diğer Bağlantılar</span>  -->
+            </div>
+
+            <!-- İkinci Grup: Diğer Bağlantılar -->
             <div class="link-group">
+
                 <a href="https://bsta.rs/aOTCW" target="_blank" class="link-item">
                     <div class="link-icon">
                         <img src="img/crashout.webp" alt="crashout">
@@ -518,6 +560,7 @@
                         <i class="fas fa-chevron-right"></i>
                     </div>
                 </a>
+
                 <a href="https://bsta.rs/3mHAWE" target="_blank" class="link-item">
                     <div class="link-icon">
                         <img src="img/blink.webp" alt="BLINK">
@@ -527,6 +570,7 @@
                         <i class="fas fa-chevron-right"></i>
                     </div>
                 </a>
+
                 <a href="https://bsta.rs/L9w65r" target="_blank" class="link-item">
                     <div class="link-icon">
                         <img src="img/grind.webp" alt="grind">
@@ -536,6 +580,7 @@
                         <i class="fas fa-chevron-right"></i>
                     </div>
                 </a>
+
                 <a href="https://bsta.rs/JlIL4N" target="_blank" class="link-item">
                     <div class="link-icon">
                         <img src="img/fear.webp" alt="FEAR">
@@ -545,6 +590,7 @@
                         <i class="fas fa-chevron-right"></i>
                     </div>
                 </a>
+
                 <a href="https://bsta.rs/NXAcXA" target="_blank" class="link-item">
                     <div class="link-icon">
                         <img src="img/beyond.webp" alt="BEYOND">
@@ -554,19 +600,23 @@
                         <i class="fas fa-chevron-right"></i>
                     </div>
                 </a>
+
             </div>
         </div>
 
+        <!-- Footer -->
         <div class="footer">
-            <p>© 2025 All Rights Reserved</p>
+            <p>© 2025 Tüm Hakları Saklıdır</p>
         </div>
     </div>
 
     <script>
+        // Tema geçiş işlevselliği
         document.addEventListener('DOMContentLoaded', function () {
             const themeToggle = document.getElementById('theme-toggle');
             const themeIcon = themeToggle.querySelector('i');
 
+            // Kullanıcının tercihini kontrol et
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'light') {
                 document.body.classList.add('light-theme');
@@ -582,6 +632,7 @@
                     themeIcon.classList.add('fa-sun');
                     localStorage.setItem('theme', 'light');
 
+                    // ikonları light versiyonlarına çevir
                     document.querySelector('.youtube img').src = "icons/youtube2.webp";
                     document.querySelector('.soundcloud img').src = "icons/soundcloud2.webp";
                     document.querySelector('.instagram img').src = "icons/instagram2.webp";
@@ -591,6 +642,7 @@
                     themeIcon.classList.add('fa-moon');
                     localStorage.setItem('theme', 'dark');
 
+                    // ikonları dark versiyonlarına çevir
                     document.querySelector('.youtube img').src = "icons/youtube.webp";
                     document.querySelector('.soundcloud img').src = "icons/soundcloud.webp";
                     document.querySelector('.instagram img').src = "icons/instagram.webp";
@@ -598,6 +650,7 @@
                 }
             });
 
+            // Butonlara hover efekti için
             const linkItems = document.querySelectorAll('.link-item');
             linkItems.forEach(item => {
                 item.addEventListener('mouseenter', function () {
@@ -608,6 +661,7 @@
                 });
             });
 
+            // Sosyal medya butonlarına hover efekti
             const socialIcons = document.querySelectorAll('.social-icon');
             socialIcons.forEach(icon => {
                 icon.addEventListener('mouseenter', function () {
@@ -622,5 +676,3 @@
 </body>
 
 </html>
-
-
