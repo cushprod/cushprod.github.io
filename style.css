@@ -1,0 +1,431 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+    color: #f5f5f5;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-attachment: fixed;
+    transition: background 0.5s ease, color 0.5s ease;
+}
+
+/* açık tema */
+body.light-theme {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    color: #333;
+}
+
+.light-theme .profile-name {
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(90deg, #ff1a1a, #800000);
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-shadow: 0 0 10px rgba(80, 150, 255, 0.2);
+}
+
+.light-theme .profile-bio {
+    color: #555;
+}
+
+.light-theme .social-icon {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    color: #333;
+}
+
+.light-theme .link-item {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    color: #333;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.light-theme .link-item:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(128, 0, 0, 0.5);
+}
+
+.light-theme .group-divider::before {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.light-theme .group-divider span {
+    background: #f5f7fa;
+}
+
+.light-theme .group-title {
+    color: #666;
+}
+
+.light-theme .footer {
+    color: #666;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.container {
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    position: relative;
+}
+
+/* Tema Değiştirmöe */
+
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+.theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.light-theme .theme-toggle {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    color: #333;
+}
+
+.light-theme .theme-toggle:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* Üst Kısım */
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    text-align: center;
+    width: 100%;
+}
+
+.profile-image {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 25px rgba(128, 0, 0, 0.3);
+    background: linear-gradient(45deg, #ff1a1a, #800000);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.profile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-name {
+    font-size: 28px;
+    font-weight: 700;
+    margin-top: 10px;
+    background: linear-gradient(90deg, #ff1a1a, #800000);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 10px #800000;
+}
+
+.profile-bio {
+    font-size: 16px;
+    font-weight: 300;
+    color: #bbb;
+    max-width: 80%;
+    line-height: 1.5;
+}
+
+/* Sosyal Medya Butonları */
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.social-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.social-icon img {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+}
+
+.social-icon:hover {
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.social-icon.youtube:hover {
+    background: linear-gradient(135deg, #ff0000, #ff5e5e);
+}
+
+.social-icon.soundcloud:hover {
+    background: linear-gradient(45deg, #ff6a22, #ff6a22);
+}
+
+.social-icon.instagram:hover {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+}
+
+.social-icon.tiktok:hover {
+    background: linear-gradient(135deg, #00f2ea, #ff0050);
+}
+
+/* Linkler */
+.link-groups-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.link-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.group-divider {
+    position: relative;
+    height: 1px;
+    margin: 5px 0;
+    text-align: center;
+}
+
+.group-divider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    transition: background 0.5s ease;
+}
+
+.group-divider span {
+    position: relative;
+    display: inline-block;
+    padding: 0 10px;
+    background: #1a1a1a;
+    color: #888;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.5s ease;
+}
+
+.group-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #888;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+/* Link Butonları */
+.link-item {
+    display: flex;
+    align-items: center;
+    background: #202020;
+    border-radius: 16px;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+}
+
+.link-item:hover {
+    transform: scale(1.03);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(128, 0, 0, 0.3);
+    box-shadow: 0 8px 25px rgba(128, 0, 0, 0.3);
+}
+
+.link-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-right: 15px;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.link-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.link-text {
+    flex-grow: 1;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.link-arrow {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+/* Footer */
+.footer {
+    margin-top: 30px;
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+    padding: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    width: 100%;
+    transition: all 0.5s ease;
+}
+
+/* Animasyonlar */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.profile-section,
+.social-icons,
+.link-groups-container {
+    animation: fadeIn 0.8s ease forwards;
+}
+
+.social-icons {
+    animation-delay: 0.2s;
+}
+
+.link-groups-container {
+    animation-delay: 0.4s;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+
+    .profile-image {
+        width: 120px;
+        height: 120px;
+    }
+
+    .profile-name {
+        font-size: 24px;
+    }
+
+    .profile-bio {
+        font-size: 14px;
+        max-width: 90%;
+    }
+
+    .social-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 22px;
+    }
+
+    .link-item {
+        padding: 12px 15px;
+    }
+
+    .link-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+    }
+
+    .link-text {
+        font-size: 15px;
+    }
+
+    .theme-toggle {
+        top: 15px;
+        right: 15px;
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 400px) {
+    .social-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+    }
+
+    .theme-toggle {
+        width: 32px;
+        height: 32px;
+    }
+}
