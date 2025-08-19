@@ -1,4 +1,20 @@
 document.addEventListener('DOMContentLoaded', function () {
+    const preloadImages = [
+        "icons/youtube.webp",
+        "icons/youtube2.webp",
+        "icons/soundcloud.webp",
+        "icons/soundcloud2.webp",
+        "icons/instagram.webp",
+        "icons/instagram2.webp",
+        "icons/tiktok.webp",
+        "icons/tiktok2.webp"
+    ];
+    
+    preloadImages.forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+    
     const themeToggle = document.getElementById('theme-toggle');
     const themeIcon = themeToggle.querySelector('i');
 
