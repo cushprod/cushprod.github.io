@@ -343,3 +343,197 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+// SHA-256 hash fonksiyonu
+async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+}
+
+// Admin şifresinin hash değeri (32232652003)
+const ADMIN_PASSWORD_HASH = "fd6ed2d9d5e9b7a0f38b3c5a8a84c0b2b2e2c2e2c2e2c2e2c2e2c2e2c2e2c2e2c2e2c2e2c2e2c2e2c2e2c2e2c2e2c2e2";
+
+// Tıklama takip fonksiyonları
+function initClickTracking() {
+    // Tüm linkleri seç
+    const allLinks = document.querySelectorAll('a[href], .link-item, .social-icon, .platform-option');
+
+    allLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            // Admin paneli linkleri hariç tut
+            if (this.id === 'admin-logout' || this.closest('#admin-panel')) return;
+
+            let url = this.href;
+            let linkText = '';
+
+            // Özel beat linkleri için
+            if (this.classList.contains('link-item') && this.getAttribute('data-beat')) {
+                linkText = this.querySelector('.link-text').textContent;
+            } else if (this.classList.contains('social-icon')) {
+                linkText = this.classList[1]; // youtube, instagram, vs.
+            } else if (this.classList.contains('platform-option')) {
+                linkText = this.querySelector('span').textContent;
+                url = this.href;
+            } else {
+                linkText = this.textContent.trim() || url;
+            }
+
+            // Tıklama verisini kaydet
+            saveClickData(url, linkText);
+        });
+    });
+}
+
+function saveClickData(url, linkText) {
+    // Mevcut verileri al
+    let clickData = JSON.parse(localStorage.getItem('clickData')) || [];
+
+    // Aynı URL için kayıt var mı kontrol et
+    const existingIndex = clickData.findIndex(item => item.url === url);
+
+    if (existingIndex !== -1) {
+        // Kayıt varsa sayacı artır
+        clickData[existingIndex].count++;
+    } else {
+        // Yeni kayıt oluştur
+        clickData.push({
+            url: url,
+            text: linkText,
+            count: 1
+        });
+    }
+
+    // Veriyi localStorage'a kaydet
+    localStorage.setItem('clickData', JSON.stringify(clickData));
+}
+
+function loadClickData() {
+    const clickData = JSON.parse(localStorage.getItem('clickData')) || [];
+    const tableBody = document.getElementById('stats-table-body');
+
+    // Tabloyu temizle
+    tableBody.innerHTML = '';
+
+    // Verileri tabloya ekle
+    clickData.forEach(item => {
+        const row = document.createElement('tr');
+
+        const textCell = document.createElement('td');
+        textCell.textContent = item.text;
+
+        const urlCell = document.createElement('td');
+        urlCell.textContent = item.url;
+
+        const countCell = document.createElement('td');
+        countCell.textContent = item.count;
+
+        row.appendChild(textCell);
+        row.appendChild(urlCell);
+        row.appendChild(countCell);
+
+        tableBody.appendChild(row);
+    });
+}
+
+// Admin paneli yönetim fonksiyonları
+function checkAdminPath() {
+    if (window.location.pathname === '/administrator') {
+        // Ana içeriği gizle
+        document.querySelector('.container').style.display = 'none';
+        document.querySelector('.footer').style.display = 'none';
+
+        // Admin giriş ekranını göster
+        document.getElementById('admin-login-container').style.display = 'block';
+
+        // Eğer zaten giriş yapılmışsa admin panelini göster
+        if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+            showAdminPanel();
+        }
+    }
+}
+
+function showAdminPanel() {
+    document.getElementById('admin-login-container').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+
+    // Tıklama verilerini yükle
+    loadClickData();
+}
+
+function hideAdminPanel() {
+    document.getElementById('admin-panel').style.display = 'none';
+    document.querySelector('.container').style.display = 'flex';
+    document.querySelector('.footer').style.display = 'block';
+    window.history.replaceState({}, document.title, window.location.pathname.replace('/administrator', ''));
+}
+
+// DOM yüklendikten sonra çalışacak kod
+document.addEventListener('DOMContentLoaded', function () {
+    // Tıklama takibini başlat
+    initClickTracking();
+
+    // Admin yolunu kontrol et
+    checkAdminPath();
+
+    // Admin giriş formu
+    const adminLoginForm = document.getElementById('admin-login-form');
+    if (adminLoginForm) {
+        adminLoginForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('admin-login-error');
+
+            // Kullanıcı adı kontrolü
+            if (username !== 'administrator') {
+                errorDiv.textContent = 'Geçersiz kullanıcı adı!';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            // Şifreyi hashle ve karşılaştır
+            const hashedPassword = await sha256(password);
+
+            if (hashedPassword === ADMIN_PASSWORD_HASH) {
+                // Giriş başarılı
+                errorDiv.style.display = 'none';
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                showAdminPanel();
+            } else {
+                // Giriş başarısız
+                errorDiv.textContent = 'Geçersiz şifre!';
+                errorDiv.style.display = 'block';
+            }
+        });
+    }
+
+    // Admin çıkış butonu
+    const adminLogoutBtn = document.getElementById('admin-logout');
+    if (adminLogoutBtn) {
+        adminLogoutBtn.addEventListener('click', function () {
+            sessionStorage.removeItem('adminLoggedIn');
+            hideAdminPanel();
+        });
+    }
+});
+
+// script.js dosyasına ekleyin
+let adminClickCount = 0;
+document.querySelector('.profile-image').addEventListener('click', function () {
+    adminClickCount++;
+
+    if (adminClickCount >= 5) {
+        window.location.href = '/administrator';
+        adminClickCount = 0;
+    }
+
+    // 3 saniye içinde tekrar tıklanmazsa sayacı sıfırla
+    clearTimeout(adminClickTimeout);
+    adminClickTimeout = setTimeout(() => {
+        adminClickCount = 0;
+    }, 3000);
+});
