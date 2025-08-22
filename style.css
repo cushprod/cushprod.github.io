@@ -222,6 +222,10 @@ body.light-theme {
     background: linear-gradient(135deg, #00f2ea, #ff0050);
 }
 
+.social-icon.email:hover {
+    background: linear-gradient(135deg, #a9deff, #1DA1F2);
+}
+
 /* Linkler */
 .link-groups-container {
     display: flex;
@@ -641,7 +645,8 @@ body.light-theme {
     transition: width 0.1s ease;
 }
 
-.audio-time {
+.audio-time,
+.audio-time2 {
     font-size: 12px;
     min-width: 40px;
     text-align: center;
