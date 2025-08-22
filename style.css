@@ -549,7 +549,7 @@ body.light-theme {
         height: 36px;
         font-size: 14px;
     }
-    
+
     .platform-options {
         grid-template-columns: 1fr;
     }
@@ -566,4 +566,84 @@ body.light-theme {
         width: 32px;
         height: 32px;
     }
+}
+
+/* Ses Önizleme Stilleri */
+.audio-preview-container {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.light-theme .audio-preview-container {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.audio-player {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.audio-control {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.light-theme .audio-control {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+.audio-control:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.light-theme .audio-control:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.audio-progress,
+.audio-progress-bar2 {
+    flex-grow: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+}
+
+.light-theme .audio-progress {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.audio-progress-bar,
+.audio-progress-bar2 {
+    position: absolute;
+    height: 100%;
+    background: linear-gradient(90deg, #ff1a1a, #800000);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.1s ease;
+}
+
+.audio-time {
+    font-size: 12px;
+    min-width: 40px;
+    text-align: center;
+    opacity: 0.8;
 }
