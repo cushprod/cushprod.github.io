@@ -9,12 +9,12 @@ document.addEventListener('DOMContentLoaded', function () {
         "icons/tiktok.webp",
         "icons/tiktok2.webp"
     ];
-    
+
     preloadImages.forEach(src => {
         const img = new Image();
         img.src = src;
     });
-    
+
     const themeToggle = document.getElementById('theme-toggle');
     const themeIcon = themeToggle.querySelector('i');
 
@@ -71,6 +71,57 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         icon.addEventListener('mouseleave', function () {
             this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+
+    // Platform Modal İşlevselliği
+    const platformModal = document.getElementById('platform-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalClose = document.querySelector('.modal-close');
+    const platformOptions = document.querySelectorAll('.platform-option');
+    
+    // Tüm link-item'ları seç ve modalı aç
+    document.querySelectorAll('.link-item[data-beat]').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const beatName = this.getAttribute('data-beat');
+            modalTitle.textContent = `${beatName}`;
+            
+            // Platform linklerini al
+            const youtubeLink = this.getAttribute('data-youtube');
+            const beatstarsLink = this.getAttribute('data-beatstars');
+            const airbitLink = this.getAttribute('data-airbit');
+            const traktrainLink = this.getAttribute('data-traktrain');
+            
+            // Platform seçeneklerine linkleri ata
+            document.querySelector('.platform-option[data-platform="youtube"]').href = youtubeLink;
+            document.querySelector('.platform-option[data-platform="beatstars"]').href = beatstarsLink;
+            document.querySelector('.platform-option[data-platform="airbit"]').href = airbitLink;
+            document.querySelector('.platform-option[data-platform="traktrain"]').href = traktrainLink;
+            
+            // Modalı göster
+            platformModal.classList.add('active');
+        });
+    });
+    
+    // Modalı kapat
+    modalClose.addEventListener('click', function() {
+        platformModal.classList.remove('active');
+    });
+    
+    // Modal dışına tıklanırsa kapat
+    platformModal.addEventListener('click', function(e) {
+        if (e.target === platformModal) {
+            platformModal.classList.remove('active');
+        }
+    });
+    
+    // Platform seçeneklerine tıklandığında yeni sekmede aç
+    platformOptions.forEach(option => {
+        option.addEventListener('click', function(e) {
+            // Yönlendirme işlemi href üzerinden yapılacak
+            // Burada ekstra bir şey yapmaya gerek yok
         });
     });
 });
