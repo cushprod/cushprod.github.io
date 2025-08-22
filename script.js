@@ -7,7 +7,9 @@ document.addEventListener('DOMContentLoaded', function () {
         "icons/instagram.webp",
         "icons/instagram2.webp",
         "icons/tiktok.webp",
-        "icons/tiktok2.webp"
+        "icons/tiktok2.webp",
+        "icons/email.webp",
+        "icons/email2.webp"
     ];
 
     preloadImages.forEach(src => {
@@ -28,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelector('.soundcloud img').src = "icons/soundcloud2.webp";
         document.querySelector('.instagram img').src = "icons/instagram2.webp";
         document.querySelector('.tiktok img').src = "icons/tiktok2.webp";
+        document.querySelector('.email img').src = "icons/mail2.webp";
     }
 
     themeToggle.addEventListener('click', function () {
@@ -42,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.querySelector('.soundcloud img').src = "icons/soundcloud2.webp";
             document.querySelector('.instagram img').src = "icons/instagram2.webp";
             document.querySelector('.tiktok img').src = "icons/tiktok2.webp";
+            document.querySelector('.email img').src = "icons/mail2.webp";
         } else {
             themeIcon.classList.remove('fa-sun');
             themeIcon.classList.add('fa-moon');
@@ -51,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.querySelector('.soundcloud img').src = "icons/soundcloud.webp";
             document.querySelector('.instagram img').src = "icons/instagram.webp";
             document.querySelector('.tiktok img').src = "icons/tiktok.webp";
+            document.querySelector('.email img').src = "icons/mail.webp";
         }
     });
 
