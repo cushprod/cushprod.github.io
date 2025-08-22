@@ -168,6 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
+
         // Ses bitince
         currentAudio.addEventListener('ended', function () {
             isPlaying = false;
@@ -186,15 +187,18 @@ document.addEventListener('DOMContentLoaded', function () {
             resetAudioUI2();
         });
 
-        // İkinci ses oynatıcı için timeupdate olay dinleyicisi - DÜZELTİLDİ
+        // Ses oynatma ilerlemesi
         currentAudio2.addEventListener('timeupdate', function () {
             if (currentAudio2.duration) {
                 const percent = (currentAudio2.currentTime / currentAudio2.duration) * 100;
                 progressBar2.style.width = `${percent}%`;
 
-                const currentMinutes = Math.floor(currentAudio2.currentTime / 60);
-                const currentSeconds = Math.floor(currentAudio2.currentTime % 60);
-                audioTime2.textContent = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
+                // Kalan süreyi hesapla
+                const remainingTime = currentAudio2.duration - currentAudio2.currentTime;
+                const minutes = Math.floor(remainingTime / 60);
+                const seconds = Math.floor(remainingTime % 60);
+
+                audioTime2.textContent = `-${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
             }
         });
 
