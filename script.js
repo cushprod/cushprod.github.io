@@ -159,10 +159,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 const percent = (currentAudio.currentTime / currentAudio.duration) * 100;
                 progressBar.style.width = `${percent}%`;
 
-                // Zaman göstergesini güncelle
-                const currentMinutes = Math.floor(currentAudio.currentTime / 60);
-                const currentSeconds = Math.floor(currentAudio.currentTime % 60);
-                audioTime.textContent = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
+                // Kalan süreyi hesapla
+                const remainingTime = currentAudio.duration - currentAudio.currentTime;
+                const minutes = Math.floor(remainingTime / 60);
+                const seconds = Math.floor(remainingTime % 60);
+
+                audioTime.textContent = `-${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
             }
         });
 
