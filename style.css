@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+html {
+    background-color: #000;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #0f0f0f 0%, #100000 100%);
@@ -83,6 +87,27 @@ body.light-theme {
 .light-theme .footer {
     color: #666;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Açık tema + hover → 1. ikonlara geri dön */
+.light-theme .social-icon.youtube:hover img {
+    content: url("icons/youtube.webp");
+}
+
+.light-theme .social-icon.soundcloud:hover img {
+    content: url("icons/soundcloud.webp");
+}
+
+.light-theme .social-icon.instagram:hover img {
+    content: url("icons/instagram.webp");
+}
+
+.light-theme .social-icon.tiktok:hover img {
+    content: url("icons/tiktok.webp");
+}
+
+.light-theme .social-icon.email:hover img {
+    content: url("icons/mail.webp");
 }
 
 .container {
