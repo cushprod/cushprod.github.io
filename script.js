@@ -33,7 +33,31 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelector('.email img').src = "icons/mail2.webp";
     }
 
-    
+    themeToggle.addEventListener('click', function () {
+        document.body.classList.toggle('light-theme');
+
+        if (document.body.classList.contains('light-theme')) {
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+            localStorage.setItem('theme', 'light');
+
+            document.querySelector('.youtube img').src = "icons/youtube2.webp";
+            document.querySelector('.soundcloud img').src = "icons/soundcloud2.webp";
+            document.querySelector('.instagram img').src = "icons/instagram2.webp";
+            document.querySelector('.tiktok img').src = "icons/tiktok2.webp";
+            document.querySelector('.email img').src = "icons/mail2.webp";
+        } else {
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+            localStorage.setItem('theme', 'dark');
+
+            document.querySelector('.youtube img').src = "icons/youtube.webp";
+            document.querySelector('.soundcloud img').src = "icons/soundcloud.webp";
+            document.querySelector('.instagram img').src = "icons/instagram.webp";
+            document.querySelector('.tiktok img').src = "icons/tiktok.webp";
+            document.querySelector('.email img').src = "icons/mail.webp";
+        }
+    });
 
     const linkItems = document.querySelectorAll('.link-item');
     linkItems.forEach(item => {
