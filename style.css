@@ -18,6 +18,21 @@ body {
     transition: background 0.5s ease, color 0.5s ease;
 }
 
+/* Hoş geldiniz ekranı */
+#welcome-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity 1s ease;
+}
+
 /* açık tema */
 body.light-theme {
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -38,7 +53,6 @@ body.light-theme {
 
 .light-theme .social-icon {
     background: rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(0, 0, 0, 0.05);
     color: #333;
 }
 
@@ -189,7 +203,6 @@ body.light-theme {
     color: white;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
