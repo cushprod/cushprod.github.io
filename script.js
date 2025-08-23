@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', function () {
         "icons/instagram2.webp",
         "icons/tiktok.webp",
         "icons/tiktok2.webp",
-        "icons/email.webp",
-        "icons/email2.webp"
+        "icons/mail.webp",
+        "icons/mail2.webp"
     ];
 
     preloadImages.forEach(src => {
@@ -353,4 +353,23 @@ document.addEventListener('DOMContentLoaded', function () {
             // Burada ekstra bir şey yapmaya gerek yok
         });
     });
+});
+
+// Sayfa yüklendikten sonra çalışacak kod
+window.addEventListener('load', function () {
+    setTimeout(function () {
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const mainContent = document.getElementById('main-content');
+
+        // Welcome ekranını fade out yap
+        welcomeScreen.style.opacity = '0';
+
+        // Ana içeriği fade in yap
+        mainContent.classList.add('show');
+
+        // Welcome ekranını tamamen kaldır
+        setTimeout(function () {
+            welcomeScreen.style.display = 'none';
+        }, 1000); // Geçiş süresi kadar bekle (1.5 saniye)
+    }, 100); // Logo gösterim süresi (2 saniye)
 });
