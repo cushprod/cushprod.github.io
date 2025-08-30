@@ -1,0 +1,24 @@
+name: Update Config File
+
+on:
+  workflow_dispatch: # Manuel tetikleme
+  # Veya schedule:
+  #   - cron: '0 */6 * * *' # 6 saatte bir
+
+jobs:
+  update-config:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Update Config
+      run: |
+        # Bu kısım server-side'da çalışacak
+        echo "Config güncelleme işlemi"
+        # Burada verileri işleyebilirsiniz
