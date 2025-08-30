@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       country:
-        description: "Ülke adı"
+        description: "Country name"
         required: true
 
 jobs:
