@@ -489,10 +489,10 @@ document.addEventListener('DOMContentLoaded', function () {
         element.target = '_blank';
         element.className = 'link-item';
         element.setAttribute('data-beat', beat.title);
-        element.setAttribute('data-youtube', beat.platforms.youtube);
-        element.setAttribute('data-beatstars', beat.platforms.beatstars);
-        element.setAttribute('data-airbit', beat.platforms.airbit);
-        element.setAttribute('data-traktrain', beat.platforms.traktrain);
+        element.setAttribute('data-youtube', beat.platforms.youtube || '');
+        element.setAttribute('data-beatstars', beat.platforms.beatstars || '');
+        element.setAttribute('data-airbit', beat.platforms.airbit || '');
+        element.setAttribute('data-traktrain', beat.platforms.traktrain || '');
 
         element.innerHTML = `
             <div class="link-icon">
@@ -512,6 +512,11 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             const response = await fetch('beats.json');
             const data = await response.json();
+            
+            if (!data.beats) {
+                console.error('No beats found in JSON data');
+                return;
+            }
 
             // Find and process new beat
             const newBeat = data.beats.find(beat => beat.isNew);
@@ -527,21 +532,86 @@ document.addEventListener('DOMContentLoaded', function () {
             // Process other beats
             const otherBeats = data.beats.filter(beat => !beat.isNew);
             const beatList = document.getElementById('beat-list');
-            beatList.innerHTML = ''; // Clear existing beats
-
+            
+            // Clear existing beats but preserve the group title
+            const groupTitle = beatList.querySelector('.group-title');
+            beatList.innerHTML = '';
+            if (groupTitle) {
+                beatList.appendChild(groupTitle);
+            }
+            
             otherBeats.forEach(beat => {
                 beatList.appendChild(createBeatElement(beat));
             });
+
+            // Reattach event listeners to the new beat elements
+            reattachBeatEventListeners();
 
         } catch (error) {
             console.error('Error loading beats:', error);
         }
     }
 
+    // Function to reattach event listeners to beat elements
+    function reattachBeatEventListeners() {
+        const beatItems = document.querySelectorAll('.link-item[data-beat]');
+        beatItems.forEach(item => {
+            // Remove any existing listeners to prevent duplicates
+            const newItem = item.cloneNode(true);
+            item.parentNode.replaceChild(newItem, item);
+            
+            // Add the click event listener
+            newItem.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const beatName = this.getAttribute('data-beat');
+                currentBeatName = beatName;
+                modalTitle.textContent = `${beatName}`;
+
+                // Platform linklerini al
+                const youtubeLink = this.getAttribute('data-youtube');
+                const beatstarsLink = this.getAttribute('data-beatstars');
+                const airbitLink = this.getAttribute('data-airbit');
+                const traktrainLink = this.getAttribute('data-traktrain');
+
+                // Platform seçeneklerine linkleri ata
+                document.querySelector('.platform-option[data-platform="youtube"]').href = youtubeLink;
+                document.querySelector('.platform-option[data-platform="beatstars"]').href = beatstarsLink;
+                document.querySelector('.platform-option[data-platform="airbit"]').href = airbitLink;
+                document.querySelector('.platform-option[data-platform="traktrain"]').href = traktrainLink;
+
+                // Ses dosyasını yükle
+                loadAudioPreview(beatName);
+
+                // Eğer beat "YOU" ise ikinci ses oynatıcıyı göster, değilse gizle
+                if (beatName === 'YOU') {
+                    secondAudioContainer.style.display = 'block';
+                    loadSecondAudioPreview(beatName);
+                } else {
+                    secondAudioContainer.style.display = 'none';
+                    // İkinci sesi durdur ve sıfırla
+                    currentAudio2.pause();
+                    resetAudioUI2();
+                }
+
+                // Modalı göster
+                platformModal.classList.add('active');
+            });
+
+            // Add hover effects
+            newItem.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.03)';
+            });
+            newItem.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    }
+
     // Call the function to load beats
     loadBeats();
 
-    // ... rest of the existing code ...
+// ... rest of the existing code ...
 });
 
 // Sayfa yüklendikten sonra çalışacak kod
@@ -596,3 +666,4 @@ appleMusicModal.addEventListener('click', function (e) {
         appleMusicModal.classList.remove('active');
     }
 });
+
