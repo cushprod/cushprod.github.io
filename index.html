@@ -29,7 +29,7 @@
             <section class="profile-section">
                 <div class="profile-image">
                     <!-- Profil fotoğrafı img klasöründen -->
-                    <img src="img/profile-picture.webp" alt="@cushprod Profil Fotoğrafı">
+                    <img id="profile-picture" src="img/profile-picture.webp" alt="@cushprod Profil Fotoğrafı">
                 </div>
                 <h1 class="profile-name">@cushprod</h1>
                 <p class="profile-bio">Music • Production</p>
@@ -38,108 +38,30 @@
             <!-- Sosyal Medya Butonları -->
             <div class="social-icons">
                 <a href="https://youtube.com/@CUSHPROD" target="_blank" class="social-icon youtube">
-                    <!-- YouTube ikonu icons klasöründen -->
                     <img src="icons/youtube.webp" alt="YouTube">
                 </a>
                 <a href="https://soundcloud.com/cushprod" target="_blank" class="social-icon soundcloud">
-                    <!-- Instagram ikonu icons klasöründen -->
                     <img src="icons/soundcloud.webp" alt="SoundCloud">
                 </a>
                 <a href="https://instagram.com/beratt808" target="_blank" class="social-icon instagram">
-                    <!-- Instagram ikonu icons klasöründen -->
                     <img src="icons/instagram.webp" alt="Instagram">
                 </a>
                 <a href="https://tiktok.com/@beratt808" target="_blank" class="social-icon tiktok">
-                    <!-- TikTok ikonu icons klasöründen -->
                     <img src="icons/tiktok.webp" alt="TikTok">
                 </a>
                 <a href="mailto:cushprod@gmail.com" class="social-icon email">
-                    <!-- TikTok ikonu icons klasöründen -->
-                    <img src="icons/mail.webp" alt="TikTok">
+                    <img src="icons/mail.webp" alt="Email">
                 </a>
             </div>
 
             <!-- Link Grupları -->
             <div class="link-groups-container">
-
-                <!-- New Drop -->
-                <div class="link-group">
-                    <div class="group-title">NEW DROP 🔥</div>
-
-                    <a target="_blank" target="_blank" class="link-item" data-beat="aurex"
-                        data-youtube="https://youtu.be/Lmi91j7ecD4?si=m52F57p3WRPqadtH"
-                        data-beatstars="https://bsta.rs/8cFkE" data-airbit="https://air.bi/Jc67E"
-                        data-traktrain="https://traktrain.com/t/1427828">
-                        <div class="link-icon">
-                            <img src="img/aurex.webp" alt="aurex">
-                        </div>
-                        <div class="link-text">Future Type Beat "aurex"</div>
-                        <div class="link-arrow">
-                            <i class="fas fa-chevron-right"></i>
-                        </div>
-                    </a>
-
-                </div>
-
-                <!-- Grup Ayırıcı -->
-                <div class="group-divider">
-                    <!-- <span>Diğer Bağlantılar</span>  -->
-                </div>
-
-                <!-- Beat Marketleri -->
-                <div class="link-group">
-                    <div class="group-title">Purchase My Beats</div>
-
-                    <a href="https://beatstars.com/cushprod/tracks" target="_blank" class="link-item">
-                        <div class="link-icon">
-                            <!-- Beatstars ikonu icons klasöründen -->
-                            <img src="icons/beatstars.webp" alt="Beatstars">
-                        </div>
-                        <div class="link-text">Beatstars</div>
-                        <div class="link-arrow">
-                            <i class="fas fa-chevron-right"></i>
-                        </div>
-                    </a>
-
-                    <a href="https://airbit.com/cushprod" target="_blank" class="link-item">
-                        <div class="link-icon">
-                            <!-- AirBit ikonu icons klasöründen -->
-                            <img src="icons/airbit.webp" alt="AirBit">
-                        </div>
-                        <div class="link-text">AirBit</div>
-                        <div class="link-arrow">
-                            <i class="fas fa-chevron-right"></i>
-                        </div>
-                    </a>
-
-                    <a href="https://traktrain.com/cushprod" target="_blank" class="link-item">
-                        <div class="link-icon">
-                            <!-- TrakTrain ikonu icons klasöründen -->
-                            <img src="icons/traktrain.webp" alt="TrakTrain">
-                        </div>
-                        <div class="link-text">TrakTrain</div>
-                        <div class="link-arrow">
-                            <i class="fas fa-chevron-right"></i>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Grup Ayırıcı -->
-                <div class="group-divider">
-                    <!-- <span>Diğer Bağlantılar</span>  -->
-                </div>
-
-                <!-- İkinci Grup: Diğer Bağlantılar -->
-                <div id="beat-list" class="link-group">
-
-                    
-
-                </div>
+                <!-- Beat listesi buraya JavaScript ile dinamik olarak eklenecek -->
             </div>
 
             <!-- Footer -->
             <div class="footer">
-                <p>© 2025 All Rights Reserved</p>
+                <p>© 2025 cush</p>
             </div>
         </div>
 
@@ -184,25 +106,25 @@
                     </div>
 
                     <div class="platform-options">
-                        <a target="_blank" target="_blank" class="platform-option" data-platform="youtube">
+                        <a target="_blank" class="platform-option" data-platform="youtube">
                             <div class="platform-icon">
                                 <img src="icons/youtube3.webp" alt="YouTube">
                             </div>
                             <span>YouTube</span>
                         </a>
-                        <a target="_blank" target="_blank" class="platform-option" data-platform="beatstars">
+                        <a target="_blank" class="platform-option" data-platform="beatstars">
                             <div class="platform-icon">
                                 <img src="icons/beatstars.webp" alt="BeatStars">
                             </div>
                             <span>BeatStars</span>
                         </a>
-                        <a target="_blank" target="_blank" class="platform-option" data-platform="airbit">
+                        <a target="_blank" class="platform-option" data-platform="airbit">
                             <div class="platform-icon">
                                 <img src="icons/airbit.webp" alt="AirBit">
                             </div>
                             <span>AirBit</span>
                         </a>
-                        <a target="_blank" target="_blank" class="platform-option" data-platform="traktrain">
+                        <a target="_blank" class="platform-option" data-platform="traktrain">
                             <div class="platform-icon">
                                 <img src="icons/traktrain.webp" alt="TrakTrain">
                             </div>
@@ -212,10 +134,35 @@
                 </div>
             </div>
         </div>
+
+        <!-- Apple Music Modalı -->
+        <div id="apple-music-modal" class="platform-modal">
+            <div class="modal-content apple-music-modal">
+                <div class="modal-header">
+                    <h3>Apple Music Playlist</h3>
+                    <span class="modal-close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="apple-music-embed">
+                        <iframe allow="autoplay *; encrypted-media;" frameborder="0" height="450"
+                            style="width:100%;max-width:660px;overflow:hidden;background:transparent;"
+                            sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-modals"
+                            src="https://embed.music.apple.com/tr/playlist/bi-bira-bi-soju/pl.u-qxylEYDT3ByJYdV?l=tr">
+                        </iframe>
+                    </div>
+                    <div class="apple-music-link-container">
+                        <a href="https://music.apple.com/tr/playlist/bi-bira-bi-soju/pl.u-qxylEYDT3ByJYdV?l=tr"
+                            target="_blank" class="link-to-apple-music">
+                            <i class="fas fa-external-link-alt"></i>
+                            Apple Music
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="script.js" defer></script>
 </body>
-
 
 </html>
