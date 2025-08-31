@@ -1,7 +1,8 @@
 {
     "beats": [
         {
-            "title": "Playboi Carti - Vamp Anthem Type Beat x Ken Carson x Destroy Lonely \"Astro Vamp\"",
+            "title": "Astro Vamp",
+            "description": "Playboi Carti - Vamp Anthem Type Beat x Ken Carson x Destroy Lonely \"Astro Vamp\"",
             "image": "img/Astro Vamp.webp",
             "audio": "sounds/Astro Vamp.mp3",
             "platforms": {
@@ -13,7 +14,8 @@
             "isNew": true
         },
         {
-            "title": "Future Type Beat \"aurex\"",
+            "title": "aurex",
+            "description": "Future Type Beat \"aurex\"",
             "image": "img/aurex.webp",
             "audio": "sounds/aurex.mp3",
             "platforms": {
@@ -25,7 +27,8 @@
             "isNew": false
         },
         {
-            "title": "*GUITAR* X Playboi Carti Type Beat \"INSANITY\"",
+            "title": "INSANITY",
+            "description": "*GUITAR* X Playboi Carti Type Beat \"INSANITY\"",
             "image": "img/insanity.webp",
             "audio": "sounds/INSANITY.mp3",
             "platforms": {
@@ -37,7 +40,8 @@
             "isNew": false
         },
         {
-            "title": "playboi carti pop out type beat \"crashout\"",
+            "title": "crashout",
+            "description": "playboi carti pop out type beat \"crashout\"",
             "image": "img/crashout.webp",
             "audio": "sounds/crashout.mp3",
             "platforms": {
@@ -49,7 +53,8 @@
             "isNew": false
         },
         {
-            "title": "Future Type Beat \"BEYOND\"",
+            "title": "BEYOND",
+            "description": "Future Type Beat \"BEYOND\"",
             "image": "img/beyond.webp",
             "audio": "sounds/BEYOND.mp3",
             "platforms": {
@@ -61,7 +66,8 @@
             "isNew": false
         },
         {
-            "title": "playboi carti type beat \"grind\" | pop out x c0caine nose",
+            "title": "grind",
+            "description": "playboi carti type beat \"grind\" | pop out x c0caine nose",
             "image": "img/grind.webp",
             "audio": "sounds/grind.mp3",
             "platforms": {
@@ -73,7 +79,8 @@
             "isNew": false
         },
         {
-            "title": "F1LTHY x Sheck Wes - BEAST Type Beat \"FEAR\"",
+            "title": "FEAR",
+            "description": "F1LTHY x Sheck Wes - BEAST Type Beat \"FEAR\"",
             "image": "img/fear.webp",
             "audio": "sounds/FEAR.mp3",
             "platforms": {
@@ -85,7 +92,8 @@
             "isNew": false
         },
         {
-            "title": "Playboi Carti, Cash Carti Type Beat \"CASHBACK\"",
+            "title": "CASHBACK",
+            "description": "Playboi Carti, Cash Carti Type Beat \"CASHBACK\"",
             "image": "img/CASHBACK.webp",
             "audio": "sounds/CASHBACK.mp3",
             "platforms": {
@@ -97,7 +105,8 @@
             "isNew": false
         },
         {
-            "title": "Playboi Carti x Lil Uzi Vert Type Beat \"BLINK\"",
+            "title": "BLINK",
+            "description": "Playboi Carti x Lil Uzi Vert Type Beat \"BLINK\"",
             "image": "img/blink.webp",
             "audio": "sounds/BLINK.mp3",
             "platforms": {
@@ -109,7 +118,8 @@
             "isNew": false
         },
         {
-            "title": "OsamaSon x Playboi Carti Type Rage Beat \"apocalypse\"",
+            "title": "apocalypse",
+            "description": "OsamaSon x Playboi Carti Type Rage Beat \"apocalypse\"",
             "image": "img/apocalypse.webp",
             "audio": "sounds/apocalypse.mp3",
             "platforms": {
@@ -121,7 +131,8 @@
             "isNew": false
         },
         {
-            "title": "21 Savage x Travis Scott Type Beat \"YOU\"",
+            "title": "YOU",
+            "description": "21 Savage x Travis Scott Type Beat \"YOU\"",
             "image": "img/you.webp",
             "audio": "sounds/YOU.mp3",
             "platforms": {
@@ -133,7 +144,8 @@
             "isNew": false
         },
         {
-            "title": "Playboi Carti x Future Type Beat \"PURE EVIL\"",
+            "title": "PURE EVIL",
+            "description": "Playboi Carti x Future Type Beat \"PURE EVIL\"",
             "image": "img/PURE_EVIL.webp",
             "audio": "sounds/PURE EVIL.mp3",
             "platforms": {
@@ -145,7 +157,8 @@
             "isNew": false
         },
         {
-            "title": "Playboi Carti x Pluggnb Type Rage Beat \"808 PROBLEM\"",
+            "title": "808 PROBLEM",
+            "description": "Playboi Carti x Pluggnb Type Rage Beat \"808 PROBLEM\"",
             "image": "img/808 PROBLEM.webp",
             "audio": "sounds/808 PROBLEM.mp3",
             "platforms": {
