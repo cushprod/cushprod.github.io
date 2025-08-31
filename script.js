@@ -1,418 +1,584 @@
-async function loadBeats() {
-    try {
-        const response = await fetch("beats.json"); // JSON dosyanın yolu
-        const data = await response.json();
+// App modülü - tüm fonksiyonları kapsar
+const App = (() => {
+    // DOM elementleri
+    const DOM = {
+        profilePicture: document.getElementById('profile-picture'),
+        themeToggle: document.getElementById('theme-toggle'),
+        themeIcon: document.querySelector('#theme-toggle i'),
+        welcomeScreen: document.getElementById('welcome-screen'),
+        mainContent: document.getElementById('main-content'),
+        linkGroupsContainer: document.querySelector('.link-groups-container'),
+        platformModal: document.getElementById('platform-modal'),
+        modalTitle: document.getElementById('modal-title'),
+        modalClose: document.querySelector('.modal-close'),
+        appleMusicModal: document.getElementById('apple-music-modal'),
+        appleMusicModalClose: document.querySelector('#apple-music-modal .modal-close'),
+        appleMusicLink: document.querySelector('.apple-music-link')
+    };
 
-        const container = document.getElementById("beat-list");
+    // Uygulama durumu
+    const state = {
+        currentProfileIndex: 1,
+        totalProfilePictures: 3,
+        currentAudio: new Audio(),
+        currentAudio2: new Audio(),
+        isPlaying: false,
+        isPlaying2: false,
+        currentBeatName: '',
+        theme: localStorage.getItem('theme') || 'dark'
+    };
 
-        data.beats.forEach(beat => {
-            const a = document.createElement("a");
-            a.className = "link-item";
-            a.target = "_blank";
-            a.setAttribute("data-beat", beat.title);
-            a.setAttribute("data-youtube", beat.youtube);
-            a.setAttribute("data-beatstars", beat.beatstars);
-            a.setAttribute("data-airbit", beat.airbit);
-            a.setAttribute("data-traktrain", beat.traktrain);
+    // Yardımcı fonksiyonlar
+    const helpers = {
+        // CSS sınıfı ekle/kaldır
+        toggleClass: (element, className) => {
+            element.classList.toggle(className);
+        },
 
-            a.innerHTML = `
-          <div class="link-icon">
-              <img src="${beat.image}" alt="${beat.title}">
-          </div>
-          <div class="link-text">${beat.description}</div>
-          <div class="link-arrow">
-              <i class="fas fa-chevron-right"></i>
-          </div>
-        `;
+        // Element göster/gizle
+        toggleElement: (element, show) => {
+            element.style.display = show ? 'block' : 'none';
+        },
 
-            // opsiyonel: yeni beatleri işaretle
-            if (beat.isNew) {
-                a.classList.add("new-beat");
+        // LocalStorage'dan veri al
+        getFromStorage: (key) => {
+            try {
+                return JSON.parse(localStorage.getItem(key));
+            } catch (error) {
+                console.error('Storage okuma hatası:', error);
+                return null;
             }
+        },
 
-            container.appendChild(a);
-        });
-    } catch (err) {
-        console.error("JSON yüklenirken hata:", err);
-    }
-}
-
-loadBeats();
-
-document.addEventListener('DOMContentLoaded', function () {
-    const preloadImages = [
-        "icons/youtube.webp",
-        "icons/youtube2.webp",
-        "icons/soundcloud.webp",
-        "icons/soundcloud2.webp",
-        "icons/instagram.webp",
-        "icons/instagram2.webp",
-        "icons/tiktok.webp",
-        "icons/tiktok2.webp",
-        "icons/mail.webp",
-        "icons/mail2.webp"
-    ];
-
-    preloadImages.forEach(src => {
-        const img = new Image();
-        img.src = src;
-    });
-
-    const themeToggle = document.getElementById('theme-toggle');
-    const themeIcon = themeToggle.querySelector('i');
-
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
-        document.body.classList.add('light-theme');
-        themeIcon.classList.remove('fa-moon');
-        themeIcon.classList.add('fa-sun');
-
-        document.querySelector('.youtube img').src = "icons/youtube2.webp";
-        document.querySelector('.soundcloud img').src = "icons/soundcloud2.webp";
-        document.querySelector('.instagram img').src = "icons/instagram2.webp";
-        document.querySelector('.tiktok img').src = "icons/tiktok2.webp";
-        document.querySelector('.email img').src = "icons/mail2.webp";
-    }
-
-    themeToggle.addEventListener('click', function () {
-        document.body.classList.toggle('light-theme');
-
-        if (document.body.classList.contains('light-theme')) {
-            themeIcon.classList.remove('fa-moon');
-            themeIcon.classList.add('fa-sun');
-            localStorage.setItem('theme', 'light');
-
-            document.querySelector('.youtube img').src = "icons/youtube2.webp";
-            document.querySelector('.soundcloud img').src = "icons/soundcloud2.webp";
-            document.querySelector('.instagram img').src = "icons/instagram2.webp";
-            document.querySelector('.tiktok img').src = "icons/tiktok2.webp";
-            document.querySelector('.email img').src = "icons/mail2.webp";
-        } else {
-            themeIcon.classList.remove('fa-sun');
-            themeIcon.classList.add('fa-moon');
-            localStorage.setItem('theme', 'dark');
-
-            document.querySelector('.youtube img').src = "icons/youtube.webp";
-            document.querySelector('.soundcloud img').src = "icons/soundcloud.webp";
-            document.querySelector('.instagram img').src = "icons/instagram.webp";
-            document.querySelector('.tiktok img').src = "icons/tiktok.webp";
-            document.querySelector('.email img').src = "icons/mail.webp";
+        // LocalStorage'a veri kaydet
+        saveToStorage: (key, data) => {
+            try {
+                localStorage.setItem(key, JSON.stringify(data));
+            } catch (error) {
+                console.error('Storage yazma hatası:', error);
+            }
         }
-    });
+    };
 
-    const linkItems = document.querySelectorAll('.link-item');
-    linkItems.forEach(item => {
-        item.addEventListener('mouseenter', function () {
-            this.style.transform = 'scale(1.03)';
-        });
-        item.addEventListener('mouseleave', function () {
-            this.style.transform = 'scale(1)';
-        });
-    });
+    // Profil resmi işlemleri
+    const profilePicture = {
+        // Rastgele profil resmi ayarla
+        setRandom: () => {
+            const randomIndex = Math.floor(Math.random() * state.totalProfilePictures) + 1;
+            const imgPath = randomIndex === 1 ?
+                'img/profile-picture.webp' :
+                `img/profile-picture${randomIndex}.webp`;
 
-    const socialIcons = document.querySelectorAll('.social-icon');
-    socialIcons.forEach(icon => {
-        icon.addEventListener('mouseenter', function () {
-            this.style.transform = 'translateY(-5px) scale(1.1)';
-        });
-        icon.addEventListener('mouseleave', function () {
-            this.style.transform = 'translateY(0) scale(1)';
-        });
-    });
+            profilePicture.fadeChange(imgPath);
+            state.currentProfileIndex = randomIndex;
+            profilePicture.preloadNext(randomIndex);
+        },
 
-    // Platform Modal İşlevselliği - Güncellenmiş versiyon
-    const platformModal = document.getElementById('platform-modal');
-    const modalTitle = document.getElementById('modal-title');
-    const modalClose = document.querySelector('.modal-close');
-    const platformOptions = document.querySelectorAll('.platform-option');
+        // Sonraki profil resmi
+        next: () => {
+            let nextIndex = state.currentProfileIndex % state.totalProfilePictures + 1;
+            const imgPath = nextIndex === 1 ?
+                'img/profile-picture.webp' :
+                `img/profile-picture${nextIndex}.webp`;
 
-    // Ses oynatıcı elementleri - İlk oynatıcı
-    const audioPlayer = document.querySelector('.audio-player');
-    const playPauseBtn = document.querySelector('.play-pause');
-    const muteBtn = document.querySelector('.mute');
-    const progressBar = document.querySelector('.audio-progress-bar');
-    const progressContainer = document.querySelector('.audio-progress');
-    const audioTime = document.querySelector('.audio-time');
+            profilePicture.fadeChange(imgPath);
+            state.currentProfileIndex = nextIndex;
+            profilePicture.preloadNext(nextIndex);
+        },
 
-    // İkinci oynatıcı elementleri
-    const secondAudioContainer = document.querySelector('.second-audio');
-    const playPauseBtn2 = document.querySelector('.play-pause2');
-    const muteBtn2 = document.querySelector('.mute2');
-    const progressBar2 = document.querySelector('.audio-progress-bar2');
-    const progressContainer2 = document.querySelectorAll('.audio-progress')[1];
-    const audioTime2 = document.querySelector('.audio-time2');
+        // Fade efekti ile profil resmi değiştir
+        fadeChange: (newImagePath) => {
+            const profileImg = DOM.profilePicture;
+            const profileContainer = document.querySelector('.profile-image');
 
-    let currentAudio = new Audio();
-    let currentAudio2 = new Audio(); // İkinci ses için
-    let isPlaying = false;
-    let isPlaying2 = false;
-    let currentBeatName = '';
+            if (!profileImg) return;
 
-    // Tüm link-item'ları seç ve modalı aç
-    document.querySelectorAll('.link-item[data-beat]').forEach(item => {
-        item.addEventListener('click', function (e) {
-            e.preventDefault();
+            const newImg = document.createElement('img');
+            newImg.src = newImagePath;
+            newImg.alt = "@cushprod Profil Fotoğrafı";
+            newImg.id = "profile-picture";
+            newImg.style.position = "absolute";
+            newImg.style.top = "0";
+            newImg.style.left = "0";
+            newImg.style.width = "100%";
+            newImg.style.height = "100%";
+            newImg.style.opacity = "0";
+            newImg.style.transition = "opacity 0.8s ease";
+            newImg.style.objectFit = "cover";
 
-            const beatName = this.getAttribute('data-beat');
-            currentBeatName = beatName;
-            modalTitle.textContent = `${beatName}`;
+            profileContainer.style.position = "relative";
+            profileContainer.appendChild(newImg);
 
-            // Platform linklerini al
-            const youtubeLink = this.getAttribute('data-youtube');
-            const beatstarsLink = this.getAttribute('data-beatstars');
-            const airbitLink = this.getAttribute('data-airbit');
-            const traktrainLink = this.getAttribute('data-traktrain');
+            setTimeout(() => {
+                newImg.style.opacity = "1";
+            }, 50);
 
-            // Platform seçeneklerine linkleri ata
-            document.querySelector('.platform-option[data-platform="youtube"]').href = youtubeLink;
-            document.querySelector('.platform-option[data-platform="beatstars"]').href = beatstarsLink;
-            document.querySelector('.platform-option[data-platform="airbit"]').href = airbitLink;
-            document.querySelector('.platform-option[data-platform="traktrain"]').href = traktrainLink;
+            profileImg.style.transition = "opacity 0.8s ease";
+            profileImg.style.opacity = "0";
 
-            // Ses dosyasını yükle
-            loadAudioPreview(beatName);
+            setTimeout(() => {
+                if (profileImg.parentNode === profileContainer) {
+                    profileContainer.removeChild(profileImg);
+                }
+                newImg.style.position = "";
+            }, 800);
+        },
 
-            // Eğer beat "YOU" ise ikinci ses oynatıcıyı göster, değilse gizle
-            if (beatName === 'YOU') {
-                secondAudioContainer.style.display = 'block';
-                loadSecondAudioPreview(beatName);
+        // Sonraki resmi önceden yükle
+        preloadNext: (currentIndex) => {
+            const totalPictures = state.totalProfilePictures;
+            let nextIndex = currentIndex % totalPictures + 1;
+            const nextImgPath = nextIndex === 1 ?
+                'img/profile-picture.webp' :
+                `img/profile-picture${nextIndex}.webp`;
+
+            const img = new Image();
+            img.src = nextImgPath;
+        }
+    };
+
+    // Tema işlemleri
+    const themeManager = {
+        // Temayı başlat
+        init: () => {
+            if (state.theme === 'light') {
+                themeManager.setLightTheme();
             } else {
-                secondAudioContainer.style.display = 'none';
-                // İkinci sesi durdur ve sıfırla
-                currentAudio2.pause();
-                resetAudioUI2();
+                themeManager.setDarkTheme();
+            }
+        },
+
+        // Açık tema ayarla
+        setLightTheme: () => {
+            document.body.classList.add('light-theme');
+            DOM.themeIcon.classList.replace('fa-moon', 'fa-sun');
+            
+            const socialIcons = {
+                youtube: "icons/youtube2.webp",
+                soundcloud: "icons/soundcloud2.webp",
+                instagram: "icons/instagram2.webp",
+                tiktok: "icons/tiktok2.webp",
+                email: "icons/mail2.webp"
+            };
+            
+            Object.keys(socialIcons).forEach(platform => {
+                const img = document.querySelector(`.${platform} img`);
+                if (img) img.src = socialIcons[platform];
+            });
+            
+            localStorage.setItem('theme', 'light');
+            state.theme = 'light';
+        },
+
+        // Koyu tema ayarla
+        setDarkTheme: () => {
+            document.body.classList.remove('light-theme');
+            DOM.themeIcon.classList.replace('fa-sun', 'fa-moon');
+            
+            const socialIcons = {
+                youtube: "icons/youtube.webp",
+                soundcloud: "icons/soundcloud.webp",
+                instagram: "icons/instagram.webp",
+                tiktok: "icons/tiktok.webp",
+                email: "icons/mail.webp"
+            };
+            
+            Object.keys(socialIcons).forEach(platform => {
+                const img = document.querySelector(`.${platform} img`);
+                if (img) img.src = socialIcons[platform];
+            });
+            
+            localStorage.setItem('theme', 'dark');
+            state.theme = 'dark';
+        },
+
+        // Temayı değiştir
+        toggle: () => {
+            if (state.theme === 'dark') {
+                themeManager.setLightTheme();
+            } else {
+                themeManager.setDarkTheme();
+            }
+        }
+    };
+
+    // Modal işlemleri
+    const modalManager = {
+        // Platform modalını aç
+        openPlatformModal: (beatData) => {
+            state.currentBeatName = beatData.name;
+            DOM.modalTitle.textContent = beatData.name;
+
+            // Platform linklerini ayarla
+            document.querySelector('[data-platform="youtube"]').href = beatData.youtube;
+            document.querySelector('[data-platform="beatstars"]').href = beatData.beatstars;
+            document.querySelector('[data-platform="airbit"]').href = beatData.airbit;
+            document.querySelector('[data-platform="traktrain"]').href = beatData.traktrain;
+
+            // Ses önizlemesini yükle
+            audioPlayer.loadAudioPreview(beatData.name);
+
+            // İkinci ses oynatıcıyı kontrol et
+            const secondAudioContainer = document.querySelector('.second-audio');
+            if (beatData.name === 'YOU') {
+                helpers.toggleElement(secondAudioContainer, true);
+                audioPlayer.loadSecondAudioPreview(beatData.name);
+            } else {
+                helpers.toggleElement(secondAudioContainer, false);
+                state.currentAudio2.pause();
+                audioPlayer.resetAudioUI2();
             }
 
-            // Modalı göster
-            platformModal.classList.add('active');
-        });
-    });
+            DOM.platformModal.classList.add('active');
+        },
 
-    // İlk ses önizlemesini yükle
-    function loadAudioPreview(beatName) {
-        // Önceki sesi durdur ve sıfırla
-        currentAudio.pause();
-        currentAudio = new Audio(`sounds/${beatName}.mp3`);
+        // Platform modalını kapat
+        closePlatformModal: () => {
+            DOM.platformModal.classList.remove('active');
+            state.currentAudio.pause();
+            state.currentAudio2.pause();
+            audioPlayer.resetAudioUI();
+            audioPlayer.resetAudioUI2();
+        },
 
-        // Ses yüklendiğinde
-        currentAudio.addEventListener('loadedmetadata', function () {
-            resetAudioUI();
-        });
+        // Apple Music modalını aç
+        openAppleMusicModal: () => {
+            DOM.appleMusicModal.classList.add('active');
+        },
 
-        // Ses oynatma ilerlemesi
-        currentAudio.addEventListener('timeupdate', function () {
-            if (currentAudio.duration) {
-                const percent = (currentAudio.currentTime / currentAudio.duration) * 100;
-                progressBar.style.width = `${percent}%`;
+        // Apple Music modalını kapat
+        closeAppleMusicModal: () => {
+            DOM.appleMusicModal.classList.remove('active');
+        }
+    };
 
-                // Kalan süreyi hesapla
-                const remainingTime = currentAudio.duration - currentAudio.currentTime;
-                const minutes = Math.floor(remainingTime / 60);
-                const seconds = Math.floor(remainingTime % 60);
+    // Ses oynatıcı işlemleri
+    const audioPlayer = {
+        // Ses önizlemesini yükle
+        loadAudioPreview: (beatName) => {
+            state.currentAudio.pause();
+            state.currentAudio = new Audio(`sounds/${beatName}.mp3`);
 
-                audioTime.textContent = `-${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            state.currentAudio.addEventListener('loadedmetadata', () => {
+                audioPlayer.resetAudioUI();
+            });
+
+            state.currentAudio.addEventListener('timeupdate', () => {
+                if (state.currentAudio.duration) {
+                    const percent = (state.currentAudio.currentTime / state.currentAudio.duration) * 100;
+                    document.querySelector('.audio-progress-bar').style.width = `${percent}%`;
+
+                    const remainingTime = state.currentAudio.duration - state.currentAudio.currentTime;
+                    const minutes = Math.floor(remainingTime / 60);
+                    const seconds = Math.floor(remainingTime % 60);
+
+                    document.querySelector('.audio-time').textContent = 
+                        `-${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                }
+            });
+
+            state.currentAudio.addEventListener('ended', () => {
+                state.isPlaying = false;
+                audioPlayer.updatePlayPauseIcon(document.querySelector('.play-pause'), state.isPlaying);
+                document.querySelector('.audio-progress-bar').style.width = '0%';
+                document.querySelector('.audio-time').textContent = '0:00';
+            });
+        },
+
+        // İkinci ses önizlemesini yükle
+        loadSecondAudioPreview: (beatName) => {
+            state.currentAudio2.pause();
+            state.currentAudio2 = new Audio(`sounds/${beatName}_part2.mp3`);
+
+            state.currentAudio2.addEventListener('loadedmetadata', () => {
+                audioPlayer.resetAudioUI2();
+            });
+
+            state.currentAudio2.addEventListener('timeupdate', () => {
+                if (state.currentAudio2.duration) {
+                    const percent = (state.currentAudio2.currentTime / state.currentAudio2.duration) * 100;
+                    document.querySelector('.audio-progress-bar2').style.width = `${percent}%`;
+
+                    const remainingTime = state.currentAudio2.duration - state.currentAudio2.currentTime;
+                    const minutes = Math.floor(remainingTime / 60);
+                    const seconds = Math.floor(remainingTime % 60);
+
+                    document.querySelector('.audio-time2').textContent = 
+                        `-${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                }
+            });
+
+            state.currentAudio2.addEventListener('ended', () => {
+                state.isPlaying2 = false;
+                audioPlayer.updatePlayPauseIcon(document.querySelector('.play-pause2'), state.isPlaying2);
+                document.querySelector('.audio-progress-bar2').style.width = '0%';
+                document.querySelector('.audio-time2').textContent = '0:00';
+            });
+        },
+
+        // Ses arayüzünü sıfırla
+        resetAudioUI: () => {
+            state.isPlaying = false;
+            audioPlayer.updatePlayPauseIcon(document.querySelector('.play-pause'), state.isPlaying);
+            document.querySelector('.audio-progress-bar').style.width = '0%';
+            document.querySelector('.audio-time').textContent = '0:00';
+        },
+
+        // İkinci ses arayüzünü sıfırla
+        resetAudioUI2: () => {
+            state.isPlaying2 = false;
+            audioPlayer.updatePlayPauseIcon(document.querySelector('.play-pause2'), state.isPlaying2);
+            document.querySelector('.audio-progress-bar2').style.width = '0%';
+            document.querySelector('.audio-time2').textContent = '0:00';
+        },
+
+        // Oynat/Duraklat ikonunu güncelle
+        updatePlayPauseIcon: (button, isPlaying) => {
+            const icon = button.querySelector('i');
+            icon.classList.toggle('fa-play', !isPlaying);
+            icon.classList.toggle('fa-pause', isPlaying);
+        },
+
+        // Ses düzeyi ikonunu güncelle
+        updateMuteIcon: (button, isMuted) => {
+            const icon = button.querySelector('i');
+            icon.classList.toggle('fa-volume-up', !isMuted);
+            icon.classList.toggle('fa-volume-mute', isMuted);
+        }
+    };
+
+    // Beat listesi işlemleri
+    const beatManager = {
+        // Beat listesini yükle
+        loadBeats: async () => {
+            try {
+                const response = await fetch('beats.json');
+                const beatsData = await response.json();
+                beatManager.renderBeats(beatsData);
+            } catch (error) {
+                console.error('Beat listesi yüklenirken hata oluştu:', error);
             }
-        });
+        },
 
+        // Beat listesini render et
+        renderBeats: (beatsData) => {
+            let html = '';
 
-        // Ses bitince
-        currentAudio.addEventListener('ended', function () {
-            isPlaying = false;
-            updatePlayPauseIcon(playPauseBtn, isPlaying);
-            progressBar.style.width = '0%';
-            audioTime.textContent = '0:00';
-        });
-    }
+            // New Drop bölümü
+            html += `
+                <div class="link-group">
+                    <div class="group-title">NEW DROP 🔥</div>
+                    ${beatManager.createBeatLink(beatsData.newDrop)}
+                </div>
+                <div class="group-divider"></div>
+            `;
 
-    // İkinci ses önizlemesini yükle (sadece YOU için)
-    function loadSecondAudioPreview(beatName) {
-        currentAudio2.pause();
-        currentAudio2 = new Audio(`sounds/${beatName}_part2.mp3`);
+            // Marketler bölümü
+            html += `
+                <div class="link-group">
+                    <div class="group-title">Purchase My Beats</div>
+                    ${beatsData.markets.map(market => `
+                        <a href="${market.url}" target="_blank" class="link-item">
+                            <div class="link-icon">
+                                <img src="${market.icon}" alt="${market.name}">
+                            </div>
+                            <div class="link-text">${market.name}</div>
+                            <div class="link-arrow">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </a>
+                    `).join('')}
+                </div>
+                <div class="group-divider"></div>
+            `;
 
-        currentAudio2.addEventListener('loadedmetadata', function () {
-            resetAudioUI2();
-        });
+            // Diğer beatler bölümü
+            html += `
+                <div class="link-group">
+                    ${beatsData.beats.map(beat => beatManager.createBeatLink(beat)).join('')}
+                </div>
+                <div class="group-divider"></div>
+            `;
 
-        // Ses oynatma ilerlemesi
-        currentAudio2.addEventListener('timeupdate', function () {
-            if (currentAudio2.duration) {
-                const percent = (currentAudio2.currentTime / currentAudio2.duration) * 100;
-                progressBar2.style.width = `${percent}%`;
+            // Apple Music bölümü
+            html += `
+                <div class="link-group">
+                    <a class="link-item apple-music-link" data-apple-music-url="${beatsData.appleMusic.url}">
+                        <div class="link-icon">
+                            <img src="${beatsData.appleMusic.icon}" alt="Apple Music">
+                        </div>
+                        <div class="link-text">${beatsData.appleMusic.text}</div>
+                        <div class="link-arrow">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </a>
+                </div>
+            `;
 
-                // Kalan süreyi hesapla
-                const remainingTime = currentAudio2.duration - currentAudio2.currentTime;
-                const minutes = Math.floor(remainingTime / 60);
-                const seconds = Math.floor(remainingTime % 60);
+            DOM.linkGroupsContainer.innerHTML = html;
+            
+            // Beat linklerine tıklama olaylarını ekle
+            document.querySelectorAll('.link-item[data-beat]').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const beatName = item.getAttribute('data-beat');
+                    const beatData = beatsData.beats.find(b => b.name === beatName) || beatsData.newDrop;
+                    modalManager.openPlatformModal(beatData);
+                });
+            });
 
-                audioTime2.textContent = `-${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-            }
-        });
+            // Apple Music linkine tıklama olayını ekle
+            document.querySelector('.apple-music-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                modalManager.openAppleMusicModal();
+            });
+        },
 
-        // İkinci ses oynatıcı için ended olay dinleyicisi - DÜZELTİLDİ
-        currentAudio2.addEventListener('ended', function () {
-            isPlaying2 = false;
-            updatePlayPauseIcon(playPauseBtn2, isPlaying2);
-            progressBar2.style.width = '0%';
-            audioTime2.textContent = '0:00';
-        });
-    }
-
-    // İlk ses oynatma arayüzünü sıfırla
-    function resetAudioUI() {
-        isPlaying = false;
-        updatePlayPauseIcon(playPauseBtn, isPlaying);
-        progressBar.style.width = '0%';
-        audioTime.textContent = '0:00';
-    }
-
-    // İkinci ses oynatma arayüzünü sıfırla
-    function resetAudioUI2() {
-        isPlaying2 = false;
-        updatePlayPauseIcon(playPauseBtn2, isPlaying2);
-        progressBar2.style.width = '0%';
-        audioTime2.textContent = '0:00';
-    }
-
-    // Oynat/Duraklat butonunu güncelle (genel fonksiyon)
-    function updatePlayPauseIcon(button, isPlaying) {
-        const icon = button.querySelector('i');
-        if (isPlaying) {
-            icon.classList.remove('fa-play');
-            icon.classList.add('fa-pause');
-        } else {
-            icon.classList.remove('fa-pause');
-            icon.classList.add('fa-play');
+        // Beat linki oluştur
+        createBeatLink: (beat) => {
+            return `
+                <a class="link-item" data-beat="${beat.name}">
+                    <div class="link-icon">
+                        <img src="${beat.image}" alt="${beat.name}">
+                    </div>
+                    <div class="link-text">${beat.description}</div>
+                    <div class="link-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+            `;
         }
-    }
+    };
 
-    // Ses düzeyi butonunu güncelle (genel fonksiyon)
-    function updateMuteIcon(button, isMuted) {
-        const icon = button.querySelector('i');
-        if (isMuted) {
-            icon.classList.remove('fa-volume-up');
-            icon.classList.add('fa-volume-mute');
-        } else {
-            icon.classList.remove('fa-volume-mute');
-            icon.classList.add('fa-volume-up');
+    // Olay dinleyicileri
+    const eventListeners = {
+        // Tema değiştirme butonu
+        setupThemeToggle: () => {
+            DOM.themeToggle.addEventListener('click', themeManager.toggle);
+        },
+
+        // Modal kapatma butonları
+        setupModalClose: () => {
+            DOM.modalClose.addEventListener('click', modalManager.closePlatformModal);
+            DOM.appleMusicModalClose.addEventListener('click', modalManager.closeAppleMusicModal);
+
+            // Modal dışına tıklama
+            DOM.platformModal.addEventListener('click', (e) => {
+                if (e.target === DOM.platformModal) modalManager.closePlatformModal();
+            });
+
+            DOM.appleMusicModal.addEventListener('click', (e) => {
+                if (e.target === DOM.appleMusicModal) modalManager.closeAppleMusicModal();
+            });
+        },
+
+        // Ses oynatıcı kontrolleri
+        setupAudioControls: () => {
+            // İlk oynatıcı
+            document.querySelector('.play-pause')?.addEventListener('click', () => {
+                if (state.isPlaying) {
+                    state.currentAudio.pause();
+                } else {
+                    state.currentAudio.play();
+                }
+                state.isPlaying = !state.isPlaying;
+                audioPlayer.updatePlayPauseIcon(document.querySelector('.play-pause'), state.isPlaying);
+            });
+
+            document.querySelector('.mute')?.addEventListener('click', () => {
+                state.currentAudio.muted = !state.currentAudio.muted;
+                audioPlayer.updateMuteIcon(document.querySelector('.mute'), state.currentAudio.muted);
+            });
+
+            document.querySelector('.audio-progress')?.addEventListener('click', (e) => {
+                const width = e.currentTarget.clientWidth;
+                const clickX = e.offsetX;
+                const duration = state.currentAudio.duration;
+                state.currentAudio.currentTime = (clickX / width) * duration;
+            });
+
+            // İkinci oynatıcı
+            document.querySelector('.play-pause2')?.addEventListener('click', () => {
+                if (state.isPlaying2) {
+                    state.currentAudio2.pause();
+                } else {
+                    state.currentAudio2.play();
+                }
+                state.isPlaying2 = !state.isPlaying2;
+                audioPlayer.updatePlayPauseIcon(document.querySelector('.play-pause2'), state.isPlaying2);
+            });
+
+            document.querySelector('.mute2')?.addEventListener('click', () => {
+                state.currentAudio2.muted = !state.currentAudio2.muted;
+                audioPlayer.updateMuteIcon(document.querySelector('.mute2'), state.currentAudio2.muted);
+            });
+
+            document.querySelectorAll('.audio-progress')[1]?.addEventListener('click', (e) => {
+                const width = e.currentTarget.clientWidth;
+                const clickX = e.offsetX;
+                const duration = state.currentAudio2.duration;
+                state.currentAudio2.currentTime = (clickX / width) * duration;
+            });
+        },
+
+        // Hover efektleri
+        setupHoverEffects: () => {
+            // Link item hover
+            document.querySelectorAll('.link-item').forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    item.style.transform = 'scale(1.03)';
+                });
+                item.addEventListener('mouseleave', () => {
+                    item.style.transform = 'scale(1)';
+                });
+            });
+
+            // Sosyal ikon hover
+            document.querySelectorAll('.social-icon').forEach(icon => {
+                icon.addEventListener('mouseenter', () => {
+                    icon.style.transform = 'translateY(-5px) scale(1.1)';
+                });
+                icon.addEventListener('mouseleave', () => {
+                    icon.style.transform = 'translateY(0) scale(1)';
+                });
+            });
         }
-    }
+    };
 
-    // İlk oynatıcı için olay dinleyicileri
-    playPauseBtn.addEventListener('click', function () {
-        if (isPlaying) {
-            currentAudio.pause();
-        } else {
-            currentAudio.play();
-        }
-        isPlaying = !isPlaying;
-        updatePlayPauseIcon(playPauseBtn, isPlaying);
-    });
+    // Uygulamayı başlat
+    const init = () => {
+        // Hoş geldin ekranını kaldır
+        setTimeout(() => {
+            DOM.welcomeScreen.style.opacity = '0';
+            setTimeout(() => {
+                DOM.welcomeScreen.style.display = 'none';
+            }, 1000);
+        }, 100);
 
-    muteBtn.addEventListener('click', function () {
-        currentAudio.muted = !currentAudio.muted;
-        updateMuteIcon(muteBtn, currentAudio.muted);
-    });
+        // Profil resmini ayarla ve döngüyü başlat
+        profilePicture.setRandom();
+        setInterval(profilePicture.next, 5000);
 
-    progressContainer.addEventListener('click', function (e) {
-        const width = this.clientWidth;
-        const clickX = e.offsetX;
-        const duration = currentAudio.duration;
-        currentAudio.currentTime = (clickX / width) * duration;
-    });
+        // Temayı ayarla
+        themeManager.init();
 
-    // İkinci oynatıcı için olay dinleyicileri
-    playPauseBtn2.addEventListener('click', function () {
-        if (isPlaying2) {
-            currentAudio2.pause();
-        } else {
-            currentAudio2.play();
-        }
-        isPlaying2 = !isPlaying2;
-        updatePlayPauseIcon(playPauseBtn2, isPlaying2);
-    });
+        // Beat listesini yükle
+        beatManager.loadBeats();
 
-    muteBtn2.addEventListener('click', function () {
-        currentAudio2.muted = !currentAudio2.muted;
-        updateMuteIcon(muteBtn2, currentAudio2.muted);
-    });
+        // Olay dinleyicilerini kur
+        eventListeners.setupThemeToggle();
+        eventListeners.setupModalClose();
+        eventListeners.setupHoverEffects();
 
-    progressContainer2.addEventListener('click', function (e) {
-        const width = this.clientWidth;
-        const clickX = e.offsetX;
-        const duration = currentAudio2.duration;
-        currentAudio2.currentTime = (clickX / width) * duration;
-    });
+        // Sayfa yüklendikten sonra ses kontrollerini kur
+        window.addEventListener('load', eventListeners.setupAudioControls);
+    };
 
-    // Modalı kapat
-    modalClose.addEventListener('click', function () {
-        platformModal.classList.remove('active');
-        currentAudio.pause();
-        currentAudio2.pause();
-        resetAudioUI();
-        resetAudioUI2();
-    });
+    // Dışa aktarılacak metodlar
+    return {
+        init
+    };
+})();
 
-    // Modal dışına tıklanırsa kapat
-    platformModal.addEventListener('click', function (e) {
-        if (e.target === platformModal) {
-            platformModal.classList.remove('active');
-            currentAudio.pause();
-            currentAudio2.pause();
-            resetAudioUI();
-            resetAudioUI2();
-        }
-    });
-
-    // Platform seçeneklerine tıklandığında yeni sekmede aç
-    platformOptions.forEach(option => {
-        option.addEventListener('click', function (e) {
-            // Yönlendirme işlemi href üzerinden yapılacak
-            // Ses oynatmayı durdur
-            currentAudio.pause();
-            currentAudio2.pause();
-            resetAudioUI();
-            resetAudioUI2();
-        });
-    });
-
-    // Modalı kapat
-    modalClose.addEventListener('click', function () {
-        platformModal.classList.remove('active');
-    });
-
-    // Modal dışına tıklanırsa kapat
-    platformModal.addEventListener('click', function (e) {
-        if (e.target === platformModal) {
-            platformModal.classList.remove('active');
-        }
-    });
-
-    // Platform seçeneklerine tıklandığında yeni sekmede aç
-    platformOptions.forEach(option => {
-        option.addEventListener('click', function (e) {
-            // Yönlendirme işlemi href üzerinden yapılacak
-            // Burada ekstra bir şey yapmaya gerek yok
-        });
-    });
-});
-
-// Sayfa yüklendikten sonra çalışacak kod
-window.addEventListener('load', function () {
-    setTimeout(function () {
-        const welcomeScreen = document.getElementById('welcome-screen');
-        const mainContent = document.getElementById('main-content');
-
-        // Welcome ekranını fade out yap
-        welcomeScreen.style.opacity = '0';
-
-        // Ana içeriği fade in yap
-        mainContent.classList.add('show');
-
-        // Welcome ekranını tamamen kaldır
-        setTimeout(function () {
-            welcomeScreen.style.display = 'none';
-        }, 1000); // Geçiş süresi kadar bekle (1.5 saniye)
-    }, 100); // Logo gösterim süresi (2 saniye)
-
-});
-
+// Uygulamayı başlat
+document.addEventListener('DOMContentLoaded', App.init);
