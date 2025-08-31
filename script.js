@@ -20,12 +20,131 @@ const audioPlayers = {
     currentAudio2: new Audio(),
     isPlaying: false,
     isPlaying2: false,
-    currentBeatName: ''
+    currentBeatName: '',
+    currentBeatData: null
 };
 
 // Önceden yüklenmiş profil resimleri
 let preloadedProfilePictures = [];
 let currentProfileIndex = 1;
+
+// JSON'dan beat verilerini çekme ve sayfayı doldurma
+async function loadBeatsData() {
+    try {
+        const response = await fetch('./beats.json');
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // 'beats' alanının varlığını ve array olduğunu kontrol et
+        if (!data.beats || !Array.isArray(data.beats)) {
+            throw new Error('Invalid JSON structure: beats array not found');
+        }
+
+        // Beat'leri isNew durumuna göre filtrele
+        const newBeats = data.beats.filter(beat => beat.isNew === true);
+        const otherBeats = data.beats.filter(beat => beat.isNew !== true);
+
+        // NEW DROP bölümünü doldur
+        populateNewDropSection(newBeats);
+
+        // BEAT LIST bölümünü doldur
+        populateBeatListSection(otherBeats);
+
+    } catch (error) {
+        console.error('Error loading beats data:', error);
+        showErrorMessage('Beat verileri yüklenirken bir hata oluştu. Lütfen sayfayı yenileyin.');
+    }
+}
+
+// NEW DROP bölümünü doldurma
+function populateNewDropSection(beats) {
+    // Önce mevcut içeriği temizle (örnek beat hariç)
+    const groupTitle = domElements.newDropSection.querySelector('.group-title');
+    domElements.newDropSection.innerHTML = '';
+    domElements.newDropSection.appendChild(groupTitle);
+
+    // Yeni beat'leri ekle
+    beats.forEach(beat => {
+        const beatElement = createBeatElement(beat);
+        domElements.newDropSection.appendChild(beatElement);
+    });
+}
+
+// BEAT LIST bölümünü doldurma
+function populateBeatListSection(beats) {
+    // Önce mevcut içeriği temizle
+    domElements.beatListSection.innerHTML = '';
+
+    // Beat'leri ekle
+    beats.forEach(beat => {
+        const beatElement = createBeatElement(beat);
+        domElements.beatListSection.appendChild(beatElement);
+    });
+}
+
+// Tek bir beat elementi oluşturma
+function createBeatElement(beat) {
+    const linkItem = document.createElement('a');
+    linkItem.className = 'link-item';
+    linkItem.setAttribute('data-beat', beat.title);
+    linkItem.setAttribute('data-youtube', beat.platforms.youtube || '');
+    linkItem.setAttribute('data-beatstars', beat.platforms.beatstars || '');
+    linkItem.setAttribute('data-airbit', beat.platforms.airbit || '');
+    linkItem.setAttribute('data-traktrain', beat.platforms.traktrain || '');
+    linkItem.setAttribute('data-audio', beat.audio || '');
+
+    // İkon bölümü
+    const linkIcon = document.createElement('div');
+    linkIcon.className = 'link-icon';
+    const iconImg = document.createElement('img');
+    iconImg.src = beat.image;
+    iconImg.alt = beat.title;
+    iconImg.loading = 'lazy';
+    linkIcon.appendChild(iconImg);
+
+    // Metin bölümü - description kullanılıyor
+    const linkText = document.createElement('div');
+    linkText.className = 'link-text';
+    linkText.textContent = beat.description;
+
+    // Ok bölümü
+    const linkArrow = document.createElement('div');
+    linkArrow.className = 'link-arrow';
+    const arrowIcon = document.createElement('i');
+    arrowIcon.className = 'fas fa-chevron-right';
+    linkArrow.appendChild(arrowIcon);
+
+    // Tüm elemanları birleştir
+    linkItem.appendChild(linkIcon);
+    linkItem.appendChild(linkText);
+    linkItem.appendChild(linkArrow);
+
+    return linkItem;
+}
+
+// Hata mesajı gösterme
+function showErrorMessage(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message';
+    errorDiv.style.cssText = `
+        background: rgba(255, 0, 0, 0.1);
+        border: 1px solid rgba(255, 0, 0, 0.3);
+        color: #ff6b6b;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 20px 0;
+        text-align: center;
+    `;
+    errorDiv.textContent = message;
+
+    // Hata mesajını sayfanın üst kısmına ekle
+    const container = document.querySelector('.container');
+    container.insertBefore(errorDiv, container.firstChild);
+}
 
 // Rastgele profil fotoğrafı ayarlama
 function setRandomProfilePicture() {
@@ -189,14 +308,24 @@ function setupHoverAnimation(selector, hoverStyle, normalStyle) {
     });
 }
 
-// Ses önizlemesi yükleme
-function loadAudioPreview(beatName, audioElement, isSecond = false) {
+// Ses önizlemesi yükleme - JSON'daki audio alanını kullanacak şekilde güncellendi
+function loadAudioPreview(audioPath, audioElement, isSecond = false) {
+    // Önce mevcut sesi durdur ve sıfırla
     audioElement.pause();
-    const audioPath = isSecond ? `sounds/${beatName}_part2.mp3` : `sounds/${beatName}.mp3`;
+    audioElement.currentTime = 0;
+
+    // Yeni ses yolunu ayarla
     audioElement.src = audioPath;
 
+    // Ses yüklendikten sonra UI'yı sıfırla
     audioElement.addEventListener('loadedmetadata', () => {
         resetAudioUI(isSecond);
+    });
+
+    // Hata durumunda konsola bilgi ver
+    audioElement.addEventListener('error', (e) => {
+        console.error('Audio loading error:', e);
+        console.error('Failed to load audio from:', audioPath);
     });
 }
 
@@ -225,10 +354,12 @@ function updateMuteIcon(button, isMuted) {
     icon.classList.toggle('fa-volume-mute', isMuted);
 }
 
-// Modal açma işlevi
+// Modal açma işlevi - Güncellendi: title ve audio path doğru şekilde kullanılıyor
 function openPlatformModal(beatName, beatData) {
-    audioPlayers.currentBeatName = beatName;
+    // Modal başlığını ayarla (title kullanılıyor)
     domElements.modalTitle.textContent = beatName;
+    audioPlayers.currentBeatName = beatName;
+    audioPlayers.currentBeatData = beatData;
 
     // Platform linklerini ayarla
     const platforms = ['youtube', 'beatstars', 'airbit', 'traktrain'];
@@ -239,14 +370,21 @@ function openPlatformModal(beatName, beatData) {
         }
     });
 
-    // Ses önizlemesini yükle
-    loadAudioPreview(beatName, audioPlayers.currentAudio);
+    // Ses önizlemesini yükle - JSON'daki audio yolunu kullan
+    const audioPath = beatData['data-audio'];
+    if (audioPath) {
+        loadAudioPreview(audioPath, audioPlayers.currentAudio);
+    } else {
+        console.error('Audio path not found for beat:', beatName);
+    }
 
     // Eğer beat "YOU" ise ikinci ses oynatıcıyı göster
     const secondAudioContainer = document.querySelector('.second-audio');
     if (beatName === 'YOU') {
         secondAudioContainer.style.display = 'block';
-        loadAudioPreview(beatName, audioPlayers.currentAudio2, true);
+        // İkinci ses dosyası için özel bir yol (örn: _part2 eklenmiş)
+        const secondAudioPath = audioPath.replace('.mp3', '_part2.mp3');
+        loadAudioPreview(secondAudioPath, audioPlayers.currentAudio2, true);
     } else {
         secondAudioContainer.style.display = 'none';
         audioPlayers.currentAudio2.pause();
@@ -270,121 +408,21 @@ function closeModal(modalElement) {
     resetAudioUI(true);
 }
 
-// JSON'dan beat verilerini çekme ve sayfayı doldurma
-async function loadBeatsData() {
-    try {
-        const response = await fetch('./beats.json');
+// Ses ilerlemesini güncelle
+function updateAudioProgress(audioElement, isSecond) {
+    const suffix = isSecond ? '2' : '';
+    if (audioElement.duration) {
+        const percent = (audioElement.currentTime / audioElement.duration) * 100;
+        document.querySelector(`.audio-progress-bar${suffix}`).style.width = `${percent}%`;
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        // Kalan süreyi hesapla
+        const remainingTime = audioElement.duration - audioElement.currentTime;
+        const minutes = Math.floor(remainingTime / 60);
+        const seconds = Math.floor(remainingTime % 60);
 
-        const data = await response.json();
-
-        // 'beats' alanının varlığını ve array olduğunu kontrol et
-        if (!data.beats || !Array.isArray(data.beats)) {
-            throw new Error('Invalid JSON structure: beats array not found');
-        }
-
-        // Beat'leri isNew durumuna göre filtrele
-        const newBeats = data.beats.filter(beat => beat.isNew === true);
-        const otherBeats = data.beats.filter(beat => beat.isNew !== true);
-
-        // NEW DROP bölümünü doldur
-        populateNewDropSection(newBeats);
-
-        // BEAT LIST bölümünü doldur
-        populateBeatListSection(otherBeats);
-
-    } catch (error) {
-        console.error('Error loading beats data:', error);
-        showErrorMessage('Beat verileri yüklenirken bir hata oluştu. Lütfen sayfayı yenileyin.');
+        document.querySelector(`.audio-time${suffix}`).textContent =
+            `-${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     }
-}
-
-// NEW DROP bölümünü doldurma
-function populateNewDropSection(beats) {
-    // Önce mevcut içeriği temizle (örnek beat hariç)
-    const groupTitle = domElements.newDropSection.querySelector('.group-title');
-    domElements.newDropSection.innerHTML = '';
-    domElements.newDropSection.appendChild(groupTitle);
-
-    // Yeni beat'leri ekle
-    beats.forEach(beat => {
-        const beatElement = createBeatElement(beat);
-        domElements.newDropSection.appendChild(beatElement);
-    });
-}
-
-// BEAT LIST bölümünü doldurma
-function populateBeatListSection(beats) {
-    // Önce mevcut içeriği temizle
-    domElements.beatListSection.innerHTML = '';
-
-    // Beat'leri ekle
-    beats.forEach(beat => {
-        const beatElement = createBeatElement(beat);
-        domElements.beatListSection.appendChild(beatElement);
-    });
-}
-
-// Tek bir beat elementi oluşturma
-function createBeatElement(beat) {
-    const linkItem = document.createElement('a');
-    linkItem.className = 'link-item';
-    linkItem.setAttribute('data-beat', beat.title.replace(/[^a-zA-Z0-9]/g, '_'));
-    linkItem.setAttribute('data-youtube', beat.platforms.youtube || '');
-    linkItem.setAttribute('data-beatstars', beat.platforms.beatstars || '');
-    linkItem.setAttribute('data-airbit', beat.platforms.airbit || '');
-    linkItem.setAttribute('data-traktrain', beat.platforms.traktrain || '');
-
-    // İkon bölümü
-    const linkIcon = document.createElement('div');
-    linkIcon.className = 'link-icon';
-    const iconImg = document.createElement('img');
-    iconImg.src = beat.image;
-    iconImg.alt = beat.title;
-    iconImg.loading = 'lazy';
-    linkIcon.appendChild(iconImg);
-
-    // Metin bölümü
-    const linkText = document.createElement('div');
-    linkText.className = 'link-text';
-    linkText.textContent = beat.title;
-
-    // Ok bölümü
-    const linkArrow = document.createElement('div');
-    linkArrow.className = 'link-arrow';
-    const arrowIcon = document.createElement('i');
-    arrowIcon.className = 'fas fa-chevron-right';
-    linkArrow.appendChild(arrowIcon);
-
-    // Tüm elemanları birleştir
-    linkItem.appendChild(linkIcon);
-    linkItem.appendChild(linkText);
-    linkItem.appendChild(linkArrow);
-
-    return linkItem;
-}
-
-// Hata mesajı gösterme
-function showErrorMessage(message) {
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-message';
-    errorDiv.style.cssText = `
-        background: rgba(255, 0, 0, 0.1);
-        border: 1px solid rgba(255, 0, 0, 0.3);
-        color: #ff6b6b;
-        padding: 15px;
-        border-radius: 8px;
-        margin: 20px 0;
-        text-align: center;
-    `;
-    errorDiv.textContent = message;
-
-    // Hata mesajını sayfanın üst kısmına ekle
-    const container = document.querySelector('.container');
-    container.insertBefore(errorDiv, container.firstChild);
 }
 
 // Sayfa yüklendikten sonra çalışacak kod
