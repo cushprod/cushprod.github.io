@@ -4,25 +4,14 @@
     box-sizing: border-box;
 }
 
-:root {
-    --primary-gradient: linear-gradient(135deg, #0f0f0f 0%, #100000 100%);
-    --light-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    --accent-gradient: linear-gradient(90deg, #ff1a1a, #800000);
-    --text-primary: #f5f5f5;
-    --text-secondary: #bbb;
-    --text-dark: #333;
-    --bg-dark: #202020;
-    --bg-light: rgba(255, 255, 255, 0.95);
-    --border-dark: rgba(255, 255, 255, 0.1);
-    --border-light: rgba(0, 0, 0, 0.05);
-    --shadow-dark: 0 5px 15px rgba(0, 0, 0, 0.2);
-    --shadow-light: 0 5px 15px rgba(0, 0, 0, 0.1);
+html {
+    background: linear-gradient(135deg, #0f0f0f 0%, #100000 100%);
 }
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: var(--primary-gradient);
-    color: var(--text-primary);
+    background: linear-gradient(135deg, #0f0f0f 0%, #100000 100%);
+    color: #f5f5f5;
     min-height: 100vh;
     padding: 20px;
     display: flex;
@@ -48,15 +37,15 @@ body {
     transition: opacity 1s ease;
 }
 
-/* Açık tema */
+/* açık tema */
 body.light-theme {
-    background: var(--light-gradient);
-    color: var(--text-dark);
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    color: #333;
 }
 
 .light-theme .profile-name {
     text-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background: var(--accent-gradient);
+    background: linear-gradient(90deg, #ff1a1a, #800000);
     -webkit-background-clip: text;
     background-clip: text;
     text-shadow: 0 0 10px rgba(80, 150, 255, 0.2);
@@ -68,23 +57,23 @@ body.light-theme {
 
 .light-theme .social-icon {
     background: rgba(255, 255, 255, 0.9);
-    color: var(--text-dark);
+    color: #333;
 }
 
 .light-theme .link-item {
     background: rgba(255, 255, 255, 0.8);
-    border: 1px solid var(--border-light);
-    color: var(--text-dark);
-    box-shadow: var(--shadow-light);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    color: #333;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .light-theme .link-item:hover {
-    background: var(--bg-light);
+    background: rgba(255, 255, 255, 0.95);
     border: 1px solid rgba(128, 0, 0, 0.5);
 }
 
 .light-theme .group-divider::before {
-    background: var(--border-light);
+    background: rgba(0, 0, 0, 0.05);
 }
 
 .light-theme .group-divider span {
@@ -97,10 +86,10 @@ body.light-theme {
 
 .light-theme .footer {
     color: #666;
-    border-top: 1px solid var(--border-light);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-/* Açık tema + hover → ikonlara geri dön */
+/* Açık tema + hover → 1. ikonlara geri dön */
 .light-theme .social-icon.youtube:hover img {
     content: url("icons/youtube.webp");
 }
@@ -133,7 +122,8 @@ body.light-theme {
     position: relative;
 }
 
-/* Tema Değiştirme */
+/* Tema Değiştirmöe */
+
 .theme-toggle {
     position: absolute;
     top: 20px;
@@ -142,15 +132,15 @@ body.light-theme {
     height: 40px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.1);
-    border: 1px solid var(--border-dark);
-    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #f5f5f5;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     backdrop-filter: blur(5px);
     transition: all 0.3s ease;
-    box-shadow: var(--shadow-dark);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     z-index: 10;
 }
 
@@ -161,8 +151,8 @@ body.light-theme {
 
 .light-theme .theme-toggle {
     background: rgba(0, 0, 0, 0.05);
-    border: 1px solid var(--border-light);
-    color: var(--text-dark);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    color: #333;
 }
 
 .light-theme .theme-toggle:hover {
@@ -212,7 +202,7 @@ body.light-theme {
     font-size: 28px;
     font-weight: 700;
     margin-top: 10px;
-    background: var(--accent-gradient);
+    background: linear-gradient(90deg, #ff1a1a, #800000);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -222,7 +212,7 @@ body.light-theme {
 .profile-bio {
     font-size: 16px;
     font-weight: 300;
-    color: var(--text-secondary);
+    color: #bbb;
     max-width: 80%;
     line-height: 1.5;
 }
@@ -249,7 +239,7 @@ body.light-theme {
     backdrop-filter: blur(10px);
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: var(--shadow-dark);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .social-icon img {
@@ -312,7 +302,7 @@ body.light-theme {
     left: 0;
     right: 0;
     height: 1px;
-    background: var(--border-dark);
+    background: rgba(255, 255, 255, 0.1);
     transition: background 0.5s ease;
 }
 
@@ -342,14 +332,14 @@ body.light-theme {
 .link-item {
     display: flex;
     align-items: center;
-    background: var(--bg-dark);
+    background: #202020;
     border-radius: 16px;
     padding: 15px 20px;
     text-decoration: none;
     color: white;
-    border: 1px solid var(--border-dark);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
-    box-shadow: var(--shadow-dark);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(5px);
     cursor: pointer;
 }
@@ -398,7 +388,7 @@ body.light-theme {
     color: #888;
     font-size: 14px;
     padding: 20px;
-    border-top: 1px solid var(--border-dark);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
     width: 100%;
     transition: all 0.5s ease;
 }
@@ -423,19 +413,19 @@ body.light-theme {
 }
 
 .modal-content {
-    background: var(--bg-dark);
+    background: #202020;
     border-radius: 20px;
     width: 90%;
     max-width: 400px;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    border: 1px solid var(--border-dark);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     animation: modalFadeIn 0.3s ease;
 }
 
 .light-theme .modal-content {
-    background: var(--bg-light);
-    border: 1px solid var(--border-light);
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .modal-header {
@@ -443,11 +433,11 @@ body.light-theme {
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    border-bottom: 1px solid var(--border-dark);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .light-theme .modal-header {
-    border-bottom: 1px solid var(--border-light);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .modal-header h3 {
@@ -483,13 +473,13 @@ body.light-theme {
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.02);
     text-decoration: none;
-    color: var(--text-primary);
+    color: #f5f5f5;
     transition: all 0.3s ease;
-    border: 1px solid var(--border-dark);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .light-theme .platform-option {
-    color: var(--text-dark);
+    color: #333;
     border: 1px solid rgba(0, 255, 0, 0.05);
     background: rgba(0, 0, 0, 0.02);
 }
@@ -497,7 +487,7 @@ body.light-theme {
 .platform-option:hover {
     background: rgba(255, 0, 0, 0.1);
     transform: translateY(-3px);
-    box-shadow: var(--shadow-dark);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .light-theme .platform-option:hover {
@@ -564,18 +554,84 @@ body.light-theme {
     animation-delay: 0.4s;
 }
 
+/* Responsive */
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+
+    .profile-image {
+        width: 120px;
+        height: 120px;
+    }
+
+    .profile-name {
+        font-size: 24px;
+    }
+
+    .profile-bio {
+        font-size: 14px;
+        max-width: 90%;
+    }
+
+    .social-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 22px;
+    }
+
+    .link-item {
+        padding: 12px 15px;
+    }
+
+    .link-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+    }
+
+    .link-text {
+        font-size: 15px;
+    }
+
+    .theme-toggle {
+        top: 15px;
+        right: 15px;
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+
+    .platform-options {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 400px) {
+    .social-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+    }
+
+    .theme-toggle {
+        width: 32px;
+        height: 32px;
+    }
+}
+
 /* Ses Önizleme Stilleri */
 .audio-preview-container {
     margin-bottom: 20px;
     padding: 15px;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 12px;
-    border: 1px solid var(--border-dark);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .light-theme .audio-preview-container {
     background: rgba(0, 0, 0, 0.05);
-    border: 1px solid var(--border-light);
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .audio-player {
@@ -589,8 +645,8 @@ body.light-theme {
     height: 36px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.1);
-    border: 1px solid var(--border-dark);
-    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #f5f5f5;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -600,8 +656,8 @@ body.light-theme {
 
 .light-theme .audio-control {
     background: rgba(0, 0, 0, 0.05);
-    border: 1px solid var(--border-light);
-    color: var(--text-dark);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #333;
 }
 
 .audio-control:hover {
@@ -631,7 +687,7 @@ body.light-theme {
 .audio-progress-bar2 {
     position: absolute;
     height: 100%;
-    background: var(--accent-gradient);
+    background: linear-gradient(90deg, #ff1a1a, #800000);
     border-radius: 2px;
     width: 0%;
     transition: width 0.1s ease;
@@ -696,58 +752,6 @@ body.light-theme {
     }
 }
 
-@media (max-width: 600px) {
-    .container {
-        padding: 15px;
-    }
-
-    .profile-image {
-        width: 120px;
-        height: 120px;
-    }
-
-    .profile-name {
-        font-size: 24px;
-    }
-
-    .profile-bio {
-        font-size: 14px;
-        max-width: 90%;
-    }
-
-    .social-icon {
-        width: 50px;
-        height: 50px;
-        font-size: 22px;
-    }
-
-    .link-item {
-        padding: 12px 15px;
-    }
-
-    .link-icon {
-        width: 35px;
-        height: 35px;
-        font-size: 16px;
-    }
-
-    .link-text {
-        font-size: 15px;
-    }
-
-    .theme-toggle {
-        top: 15px;
-        right: 15px;
-        width: 36px;
-        height: 36px;
-        font-size: 14px;
-    }
-
-    .platform-options {
-        grid-template-columns: 1fr;
-    }
-}
-
 @media (max-width: 480px) {
     .apple-music-embed iframe {
         height: 350px;
@@ -756,16 +760,5 @@ body.light-theme {
     .link-to-apple-music {
         padding: 10px 20px;
         font-size: 14px;
-    }
-
-    .social-icon {
-        width: 45px;
-        height: 45px;
-        font-size: 20px;
-    }
-
-    .theme-toggle {
-        width: 32px;
-        height: 32px;
     }
 }
