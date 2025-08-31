@@ -1,3 +1,44 @@
+async function loadBeats() {
+    try {
+        const response = await fetch("beats.json"); // JSON dosyanın yolu
+        const data = await response.json();
+
+        const container = document.getElementById("beat-list");
+
+        data.beats.forEach(beat => {
+            const a = document.createElement("a");
+            a.className = "link-item";
+            a.target = "_blank";
+            a.setAttribute("data-beat", beat.title);
+            a.setAttribute("data-youtube", beat.youtube);
+            a.setAttribute("data-beatstars", beat.beatstars);
+            a.setAttribute("data-airbit", beat.airbit);
+            a.setAttribute("data-traktrain", beat.traktrain);
+
+            a.innerHTML = `
+          <div class="link-icon">
+              <img src="${beat.image}" alt="${beat.title}">
+          </div>
+          <div class="link-text">${beat.description}</div>
+          <div class="link-arrow">
+              <i class="fas fa-chevron-right"></i>
+          </div>
+        `;
+
+            // opsiyonel: yeni beatleri işaretle
+            if (beat.isNew) {
+                a.classList.add("new-beat");
+            }
+
+            container.appendChild(a);
+        });
+    } catch (err) {
+        console.error("JSON yüklenirken hata:", err);
+    }
+}
+
+loadBeats();
+
 document.addEventListener('DOMContentLoaded', function () {
     const preloadImages = [
         "icons/youtube.webp",
@@ -374,3 +415,4 @@ window.addEventListener('load', function () {
     }, 100); // Logo gösterim süresi (2 saniye)
 
 });
+
