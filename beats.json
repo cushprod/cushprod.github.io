@@ -1,19 +1,6 @@
 {
     "beats": [
         {
-            "title": "Astro Vamp",
-            "description": "Playboi Carti - Vamp Anthem Type Beat x Ken Carson x Destroy Lonely \"Astro Vamp\"",
-            "image": "img/Astro Vamp.webp",
-            "audio": "sounds/Astro Vamp.mp3",
-            "platforms": {
-                "youtube": "https://youtu.be/Lmi91j7ecD4?si=m52F57p3WRPqadtH",
-                "beatstars": "https://bsta.rs/8cFkE",
-                "airbit": "https://air.bi/Jc67E",
-                "traktrain": "https://traktrain.com/t/1427828"
-            },
-            "isNew": true
-        },
-        {
             "title": "aurex",
             "description": "Future Type Beat \"aurex\"",
             "image": "img/aurex.webp",
@@ -24,7 +11,7 @@
                 "airbit": "https://air.bi/Jc67E",
                 "traktrain": "https://traktrain.com/t/1427828"
             },
-            "isNew": false
+            "isNew": true
         },
         {
             "title": "INSANITY",
