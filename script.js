@@ -480,6 +480,68 @@ document.addEventListener('DOMContentLoaded', function () {
             // Burada ekstra bir şey yapmaya gerek yok
         });
     });
+
+    // ... existing code until the end of DOMContentLoaded event listener ...
+
+    // Add this function to create beat elements
+    function createBeatElement(beat) {
+        const element = document.createElement('a');
+        element.target = '_blank';
+        element.className = 'link-item';
+        element.setAttribute('data-beat', beat.title);
+        element.setAttribute('data-youtube', beat.platforms.youtube);
+        element.setAttribute('data-beatstars', beat.platforms.beatstars);
+        element.setAttribute('data-airbit', beat.platforms.airbit);
+        element.setAttribute('data-traktrain', beat.platforms.traktrain);
+
+        element.innerHTML = `
+            <div class="link-icon">
+                <img src="${beat.image}" alt="${beat.title}">
+            </div>
+            <div class="link-text">${beat.title}</div>
+            <div class="link-arrow">
+                <i class="fas fa-chevron-right"></i>
+            </div>
+        `;
+
+        return element;
+    }
+
+    // Add this function to load and process beats
+    async function loadBeats() {
+        try {
+            const response = await fetch('beats.json');
+            const data = await response.json();
+
+            // Find and process new beat
+            const newBeat = data.beats.find(beat => beat.isNew);
+            if (newBeat) {
+                const newDropSection = document.querySelector('.link-group');
+                const existingBeat = newDropSection.querySelector('.link-item');
+                if (existingBeat) {
+                    newDropSection.removeChild(existingBeat);
+                }
+                newDropSection.appendChild(createBeatElement(newBeat));
+            }
+
+            // Process other beats
+            const otherBeats = data.beats.filter(beat => !beat.isNew);
+            const beatList = document.getElementById('beat-list');
+            beatList.innerHTML = ''; // Clear existing beats
+
+            otherBeats.forEach(beat => {
+                beatList.appendChild(createBeatElement(beat));
+            });
+
+        } catch (error) {
+            console.error('Error loading beats:', error);
+        }
+    }
+
+    // Call the function to load beats
+    loadBeats();
+
+    // ... rest of the existing code ...
 });
 
 // Sayfa yüklendikten sonra çalışacak kod
