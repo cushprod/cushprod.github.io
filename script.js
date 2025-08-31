@@ -480,138 +480,6 @@ document.addEventListener('DOMContentLoaded', function () {
             // Burada ekstra bir şey yapmaya gerek yok
         });
     });
-
-    // ... existing code until the end of DOMContentLoaded event listener ...
-
-    // Add this function to create beat elements
-    function createBeatElement(beat) {
-        const element = document.createElement('a');
-        element.target = '_blank';
-        element.className = 'link-item';
-        element.setAttribute('data-beat', beat.title);
-        element.setAttribute('data-youtube', beat.platforms.youtube || '');
-        element.setAttribute('data-beatstars', beat.platforms.beatstars || '');
-        element.setAttribute('data-airbit', beat.platforms.airbit || '');
-        element.setAttribute('data-traktrain', beat.platforms.traktrain || '');
-
-        element.innerHTML = `
-            <div class="link-icon">
-                <img src="${beat.image}" alt="${beat.title}">
-            </div>
-            <div class="link-text">${beat.title}</div>
-            <div class="link-arrow">
-                <i class="fas fa-chevron-right"></i>
-            </div>
-        `;
-
-        return element;
-    }
-
-    // Add this function to load and process beats
-    async function loadBeats() {
-        try {
-            const response = await fetch('beats.json');
-            const data = await response.json();
-            
-            if (!data.beats) {
-                console.error('No beats found in JSON data');
-                return;
-            }
-
-            // Find and process new beat
-            const newBeat = data.beats.find(beat => beat.isNew);
-            if (newBeat) {
-                const newDropSection = document.querySelector('.link-group');
-                const existingBeat = newDropSection.querySelector('.link-item');
-                if (existingBeat) {
-                    newDropSection.removeChild(existingBeat);
-                }
-                newDropSection.appendChild(createBeatElement(newBeat));
-            }
-
-            // Process other beats
-            const otherBeats = data.beats.filter(beat => !beat.isNew);
-            const beatList = document.getElementById('beat-list');
-            
-            // Clear existing beats but preserve the group title
-            const groupTitle = beatList.querySelector('.group-title');
-            beatList.innerHTML = '';
-            if (groupTitle) {
-                beatList.appendChild(groupTitle);
-            }
-            
-            otherBeats.forEach(beat => {
-                beatList.appendChild(createBeatElement(beat));
-            });
-
-            // Reattach event listeners to the new beat elements
-            reattachBeatEventListeners();
-
-        } catch (error) {
-            console.error('Error loading beats:', error);
-        }
-    }
-
-    // Function to reattach event listeners to beat elements
-    function reattachBeatEventListeners() {
-        const beatItems = document.querySelectorAll('.link-item[data-beat]');
-        beatItems.forEach(item => {
-            // Remove any existing listeners to prevent duplicates
-            const newItem = item.cloneNode(true);
-            item.parentNode.replaceChild(newItem, item);
-            
-            // Add the click event listener
-            newItem.addEventListener('click', function(e) {
-                e.preventDefault();
-
-                const beatName = this.getAttribute('data-beat');
-                currentBeatName = beatName;
-                modalTitle.textContent = `${beatName}`;
-
-                // Platform linklerini al
-                const youtubeLink = this.getAttribute('data-youtube');
-                const beatstarsLink = this.getAttribute('data-beatstars');
-                const airbitLink = this.getAttribute('data-airbit');
-                const traktrainLink = this.getAttribute('data-traktrain');
-
-                // Platform seçeneklerine linkleri ata
-                document.querySelector('.platform-option[data-platform="youtube"]').href = youtubeLink;
-                document.querySelector('.platform-option[data-platform="beatstars"]').href = beatstarsLink;
-                document.querySelector('.platform-option[data-platform="airbit"]').href = airbitLink;
-                document.querySelector('.platform-option[data-platform="traktrain"]').href = traktrainLink;
-
-                // Ses dosyasını yükle
-                loadAudioPreview(beatName);
-
-                // Eğer beat "YOU" ise ikinci ses oynatıcıyı göster, değilse gizle
-                if (beatName === 'YOU') {
-                    secondAudioContainer.style.display = 'block';
-                    loadSecondAudioPreview(beatName);
-                } else {
-                    secondAudioContainer.style.display = 'none';
-                    // İkinci sesi durdur ve sıfırla
-                    currentAudio2.pause();
-                    resetAudioUI2();
-                }
-
-                // Modalı göster
-                platformModal.classList.add('active');
-            });
-
-            // Add hover effects
-            newItem.addEventListener('mouseenter', function() {
-                this.style.transform = 'scale(1.03)';
-            });
-            newItem.addEventListener('mouseleave', function() {
-                this.style.transform = 'scale(1)';
-            });
-        });
-    }
-
-    // Call the function to load beats
-    loadBeats();
-
-// ... rest of the existing code ...
 });
 
 // Sayfa yüklendikten sonra çalışacak kod
@@ -667,3 +535,185 @@ appleMusicModal.addEventListener('click', function (e) {
     }
 });
 
+async function getUserCountry() {
+    try {
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        return data.country_code;
+    } catch (error) {
+        console.error('Ülke bilgisi alınamadı:', error);
+        return null;
+    }
+}
+
+// Ülke bilgisini al
+async function getUserCountry() {
+    try {
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        return data.country_code || null;
+    } catch (error) {
+        console.log('Ülke bilgisi alınamadı');
+        return null;
+    }
+}
+
+// optimized-tracker.js
+class CountryTracker {
+    constructor() {
+        this.config = {
+            userCountry: null,
+            trackedClicks: [],
+            lastUpdated: null
+        };
+        this.workingAPIs = [
+            'https://api.ip.sb/geoip',
+            'https://api.country.is/',
+            'https://ipapi.co/json/'
+        ];
+        this.init();
+    }
+
+    async init() {
+        this.loadConfig();
+
+        if (!this.config.userCountry) {
+            this.config.userCountry = await this.fetchCountry();
+            this.saveConfig();
+        }
+
+        this.setupTracking();
+        console.log('CountryTracker başlatıldı. Ülke:', this.config.userCountry);
+    }
+
+    async fetchCountry() {
+        // Çalışan API'leri sırayla dene
+        for (const api of this.workingAPIs) {
+            try {
+                console.log('Trying API:', api);
+                const response = await fetch(api, {
+                    signal: AbortSignal.timeout(3000)
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const country = data.countryCode || data.country_code || data.country;
+
+                    if (country && country !== 'undefined') {
+                        console.log('✓ Ülke bulundu:', country, 'API:', api);
+                        return country.toUpperCase();
+                    }
+                }
+            } catch (error) {
+                console.log('✗ API hatası:', api, error.message);
+                continue;
+            }
+        }
+
+        console.log('⚠ Tüm API denemeleri başarısız, UNKNOWN olarak ayarlandı');
+        return 'UNKNOWN';
+    }
+
+    setupTracking() {
+        document.addEventListener('click', (e) => {
+            this.handleClick(e);
+        }, true);
+    }
+
+    handleClick(event) {
+        const link = event.target.closest('a');
+        if (!link || !link.href || link.href.startsWith('javascript:')) return;
+
+        const clickData = {
+            url: link.href,
+            timestamp: new Date().toISOString(),
+            country: this.config.userCountry,
+            linkText: link.textContent.trim().substring(0, 30),
+            domain: this.extractDomain(link.href),
+            isExternal: this.isExternalLink(link.href)
+        };
+
+        this.config.trackedClicks.push(clickData);
+        this.config.lastUpdated = new Date().toISOString();
+        this.saveConfig();
+
+        console.log('📊 Link tıklandı:', clickData);
+    }
+
+    isExternalLink(url) {
+        try {
+            return new URL(url).hostname !== window.location.hostname;
+        } catch {
+            return false;
+        }
+    }
+
+    extractDomain(url) {
+        try {
+            return new URL(url).hostname;
+        } catch {
+            return url;
+        }
+    }
+
+    saveConfig() {
+        try {
+            localStorage.setItem('countryTracker', JSON.stringify(this.config));
+        } catch (error) {
+            console.log('💾 LocalStorage hatası:', error);
+        }
+    }
+
+    loadConfig() {
+        try {
+            const saved = localStorage.getItem('countryTracker');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                this.config = {
+                    ...this.config,
+                    ...parsed,
+                    trackedClicks: parsed.trackedClicks || []
+                };
+            }
+        } catch (error) {
+            console.log('📂 Config yükleme hatası:', error);
+        }
+    }
+
+    // Verileri görüntüleme
+    showData() {
+        console.log('📋 Toplam tıklama:', this.config.trackedClicks.length);
+        console.table(this.config.trackedClicks);
+        return this.config.trackedClicks;
+    }
+
+    // Verileri indirme
+    exportData() {
+        const data = {
+            generated: new Date().toISOString(),
+            totalClicks: this.config.trackedClicks.length,
+            userCountry: this.config.userCountry,
+            clicks: this.config.trackedClicks
+        };
+
+        const blob = new Blob([JSON.stringify(data, null, 2)], {
+            type: 'application/json'
+        });
+
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `click-data-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+
+        URL.revokeObjectURL(url);
+        return data;
+    }
+}
+
+
+
+// Sayfa yüklendiğinde başlat
+document.addEventListener('DOMContentLoaded', () => {
+    window.countryTracker = new CountryTracker();
+});
