@@ -1,143 +1,160 @@
 {
-  "newDrop": {
-    "name": "Astro Vamp",
-    "description": "Playboi Carti - Vamp Anthem Type Beat x Ken Carson x Destroy Lonely \"Astro Vamp\"",
-    "image": "img/Astro Vamp.webp",
-    "youtube": "https://youtu.be/Lmi91j7ecD4?si=m52F57p3WRPqadtH",
-    "beatstars": "https://bsta.rs/8cFkE",
-    "airbit": "https://air.bi/Jc67E",
-    "traktrain": "https://traktrain.com/t/1427828"
-  },
-  "markets": [
-    {
-      "name": "Beatstars",
-      "url": "https://beatstars.com/cushprod/tracks",
-      "icon": "icons/beatstars.webp"
-    },
-    {
-      "name": "AirBit",
-      "url": "https://airbit.com/cushprod",
-      "icon": "icons/airbit.webp"
-    },
-    {
-      "name": "TrakTrain",
-      "url": "https://traktrain.com/cushprod",
-      "icon": "icons/traktrain.webp"
-    }
-  ],
-  "beats": [
-    {
-      "name": "aurex",
-      "description": "Future Type Beat \"aurex\"",
-      "image": "img/aurex.webp",
-      "youtube": "https://youtu.be/Lmi91j7ecD4?si=m52F57p3WRPqadtH",
-      "beatstars": "https://bsta.rs/8cFkE",
-      "airbit": "https://air.bi/Jc67E",
-      "traktrain": "https://traktrain.com/t/1427828"
-    },
-    {
-      "name": "INSANITY",
-      "description": "*GUITAR* X Playboi Carti Type Beat \"INSANITY\"",
-      "image": "img/insanity.webp",
-      "youtube": "https://youtu.be/0neqNUmtsTM?si=WjAxrjO7dnPO4ujg",
-      "beatstars": "https://bsta.rs/pbONfm",
-      "airbit": "https://air.bi/AZGXN",
-      "traktrain": "https://traktrain.com/t/1413047"
-    },
-    {
-      "name": "crashout",
-      "description": "playboi carti pop out type beat \"crashout\"",
-      "image": "img/crashout.webp",
-      "youtube": "https://youtu.be/l493PiWep_s?si=jFLbebf4T-LuUYnI",
-      "beatstars": "https://bsta.rs/59Yy9w",
-      "airbit": "https://air.bi/UnKBi",
-      "traktrain": "https://traktrain.com/t/1405019"
-    },
-    {
-      "name": "BEYOND",
-      "description": "Future Type Beat \"BEYOND\"",
-      "image": "img/beyond.webp",
-      "youtube": "https://youtu.be/cQZALPvcn_k?si=iYFzViMJM8XuEoPT",
-      "beatstars": "https://bsta.rs/NXAcXA",
-      "airbit": "https://air.bi/y4DPu",
-      "traktrain": "https://traktrain.com/t/1398757"
-    },
-    {
-      "name": "grind",
-      "description": "playboi carti type beat \"grind\" | pop out x c0caine nose",
-      "image": "img/grind.webp",
-      "youtube": "https://youtu.be/8XWNBt4uZ3k?si=-obTH3xIF5_cXT3d",
-      "beatstars": "https://bsta.rs/L9w65r",
-      "airbit": "https://air.bi/LkUbr",
-      "traktrain": "https://traktrain.com/t/1376323"
-    },
-    {
-      "name": "FEAR",
-      "description": "F1LTHY x Sheck Wes - BEAST Type Beat \"FEAR\"",
-      "image": "img/fear.webp",
-      "youtube": "https://youtu.be/lCMkpyNe_vk?si=3_6-ziojCcf964gH",
-      "beatstars": "https://bsta.rs/JlIL4N",
-      "airbit": "https://air.bi/Chf20",
-      "traktrain": "https://traktrain.com/t/1376322"
-    },
-    {
-      "name": "CASHBACK",
-      "description": "Playboi Carti, Cash Carti Type Beat \"CASHBACK\"",
-      "image": "img/CASHBACK.webp",
-      "youtube": "https://youtu.be/PzqxiNpizXE?si=pFHO-VDaKhQUFCYw",
-      "beatstars": "https://bsta.rs/FMVYN5",
-      "airbit": "https://air.bi/C5jBW",
-      "traktrain": "https://traktrain.com/t/1376320"
-    },
-    {
-      "name": "BLINK",
-      "description": "Playboi Carti x Lil Uzi Vert Type Beat \"BLINK\"",
-      "image": "img/blink.webp",
-      "youtube": "https://youtu.be/UR5nwqx0HTQ?si=DzHgrfMBre793ZH-",
-      "beatstars": "https://bsta.rs/3mHAWE",
-      "airbit": "https://air.bi/VJtea",
-      "traktrain": "https://traktrain.com/t/1376321"
-    },
-    {
-      "name": "apocalypse",
-      "description": "OsamaSon x Playboi Carti Type Rage Beat \"apocalypse\"",
-      "image": "img/apocalypse.webp",
-      "youtube": "https://youtu.be/4tldf0vUxuc?si=024z2axqai881Fay",
-      "beatstars": "https://bsta.rs/sTWbE",
-      "airbit": "https://air.bi/Jc67E",
-      "traktrain": "https://traktrain.com/t/1376319"
-    },
-    {
-      "name": "YOU",
-      "description": "21 Savage x Travis Scott Type Beat \"YOU\"",
-      "image": "img/you.webp",
-      "youtube": "https://youtu.be/wR1mI-Zbh94?si=naCrCMv9QegephgB",
-      "beatstars": "https://bsta.rs/zN2zop",
-      "airbit": "https://air.bi/HT2fr",
-      "traktrain": "https://traktrain.com/t/1376318"
-    },
-    {
-      "name": "PURE EVIL",
-      "description": "Playboi Carti x Future Type Beat \"PURE EVIL\"",
-      "image": "img/PURE_EVIL.webp",
-      "youtube": "https://youtu.be/PzGSWg6OJ1k?si=g7Z71RGAJLTmia9R",
-      "beatstars": "https://bsta.rs/FNVIt",
-      "airbit": "https://air.bi/F0Rka",
-      "traktrain": "https://traktrain.com/t/1376314"
-    },
-    {
-      "name": "808 PROBLEM",
-      "description": "Playboi Carti x Pluggnb Type Rage Beat \"808 PROBLEM\"",
-      "image": "img/808 PROBLEM.webp",
-      "youtube": "https://youtu.be/ABL8-gMWwFg?si=PDn43BNaugAJ3KB4",
-      "beatstars": "https://bsta.rs/nlwXSZ",
-      "airbit": "",
-      "traktrain": "https://traktrain.com/t/1376317"
-    }
-  ],
-  "appleMusic": {
-    "url": "https://music.apple.com/tr/playlist/bi-bira-bi-soju/pl.u-qxylEYDT3ByJYdV?l=tr",
-    "text": "Apple Music Playlist",
-    "icon": "icons/apple_music.webp"
-  }
+    "beats": [
+        {
+            "title": "Playboi Carti - Vamp Anthem Type Beat x Ken Carson x Destroy Lonely \"Astro Vamp\"",
+            "image": "img/Astro Vamp.webp",
+            "audio": "sounds/Astro Vamp.mp3",
+            "platforms": {
+                "youtube": "https://youtu.be/Lmi91j7ecD4?si=m52F57p3WRPqadtH",
+                "beatstars": "https://bsta.rs/8cFkE",
+                "airbit": "https://air.bi/Jc67E",
+                "traktrain": "https://traktrain.com/t/1427828"
+            },
+            "isNew": true
+        },
+        {
+            "title": "Future Type Beat \"aurex\"",
+            "image": "img/aurex.webp",
+            "audio": "sounds/aurex.mp3",
+            "platforms": {
+                "youtube": "https://youtu.be/Lmi91j7ecD4?si=m52F57p3WRPqadtH",
+                "beatstars": "https://bsta.rs/8cFkE",
+                "airbit": "https://air.bi/Jc67E",
+                "traktrain": "https://traktrain.com/t/1427828"
+            },
+            "isNew": false
+        },
+        {
+            "title": "*GUITAR* X Playboi Carti Type Beat \"INSANITY\"",
+            "image": "img/insanity.webp",
+            "audio": "sounds/INSANITY.mp3",
+            "platforms": {
+                "youtube": "https://youtu.be/0neqNUmtsTM?si=WjAxrjO7dnPO4ujg",
+                "beatstars": "https://bsta.rs/pbONfm",
+                "airbit": "https://air.bi/AZGXN",
+                "traktrain": "https://traktrain.com/t/1413047"
+            },
+            "isNew": false
+        },
+        {
+            "title": "playboi carti pop out type beat \"crashout\"",
+            "image": "img/crashout.webp",
+            "audio": "sounds/crashout.mp3",
+            "platforms": {
+                "youtube": "https://youtu.be/l493PiWep_s?si=jFLbebf4T-LuUYnI",
+                "beatstars": "https://bsta.rs/59Yy9w",
+                "airbit": "https://air.bi/UnKBi",
+                "traktrain": "https://traktrain.com/t/1405019"
+            },
+            "isNew": false
+        },
+        {
+            "title": "Future Type Beat \"BEYOND\"",
+            "image": "img/beyond.webp",
+            "audio": "sounds/BEYOND.mp3",
+            "platforms": {
+                "youtube": "https://youtu.be/cQZALPvcn_k?si=iYFzViMJM8XuEoPT",
+                "beatstars": "https://bsta.rs/NXAcXA",
+                "airbit": "https://air.bi/y4DPu",
+                "traktrain": "https://traktrain.com/t/1398757"
+            },
+            "isNew": false
+        },
+        {
+            "title": "playboi carti type beat \"grind\" | pop out x c0caine nose",
+            "image": "img/grind.webp",
+            "audio": "sounds/grind.mp3",
+            "platforms": {
+                "youtube": "https://youtu.be/8XWNBt4uZ3k?si=-obTH3xIF5_cXT3d",
+                "beatstars": "https://bsta.rs/L9w65r",
+                "airbit": "https://air.bi/LkUbr",
+                "traktrain": "https://traktrain.com/t/1376323"
+            },
+            "isNew": false
+        },
+        {
+            "title": "F1LTHY x Sheck Wes - BEAST Type Beat \"FEAR\"",
+            "image": "img/fear.webp",
+            "audio": "sounds/FEAR.mp3",
+            "platforms": {
+                "youtube": "https://youtu.be/lCMkpyNe_vk?si=3_6-ziojCcf964gH",
+                "beatstars": "https://bsta.rs/JlIL4N",
+                "airbit": "https://air.bi/Chf20",
+                "traktrain": "https://traktrain.com/t/1376322"
+            },
+            "isNew": false
+        },
+        {
+            "title": "Playboi Carti, Cash Carti Type Beat \"CASHBACK\"",
+            "image": "img/CASHBACK.webp",
+            "audio": "sounds/CASHBACK.mp3",
+            "platforms": {
+                "youtube": "https://youtu.be/PzqxiNpizXE?si=pFHO-VDaKhQUFCYw",
+                "beatstars": "https://bsta.rs/FMVYN5",
+                "airbit": "https://air.bi/C5jBW",
+                "traktrain": "https://traktrain.com/t/1376320"
+            },
+            "isNew": false
+        },
+        {
+            "title": "Playboi Carti x Lil Uzi Vert Type Beat \"BLINK\"",
+            "image": "img/blink.webp",
+            "audio": "sounds/BLINK.mp3",
+            "platforms": {
+                "youtube": "https://youtu.be/UR5nwqx0HTQ?si=DzHgrfMBre793ZH-",
+                "beatstars": "https://bsta.rs/3mHAWE",
+                "airbit": "https://air.bi/VJtea",
+                "traktrain": "https://traktrain.com/t/1376321"
+            },
+            "isNew": false
+        },
+        {
+            "title": "OsamaSon x Playboi Carti Type Rage Beat \"apocalypse\"",
+            "image": "img/apocalypse.webp",
+            "audio": "sounds/apocalypse.mp3",
+            "platforms": {
+                "youtube": "https://youtu.be/4tldf0vUxuc?si=024z2axqai881Fay",
+                "beatstars": "https://bsta.rs/sTWbE",
+                "airbit": "https://air.bi/Jc67E",
+                "traktrain": "https://traktrain.com/t/1376319"
+            },
+            "isNew": false
+        },
+        {
+            "title": "21 Savage x Travis Scott Type Beat \"YOU\"",
+            "image": "img/you.webp",
+            "audio": "sounds/YOU.mp3",
+            "platforms": {
+                "youtube": "https://youtu.be/wR1mI-Zbh94?si=naCrCMv9QegephgB",
+                "beatstars": "https://bsta.rs/zN2zop",
+                "airbit": "https://air.bi/HT2fr",
+                "traktrain": "https://traktrain.com/t/1376318"
+            },
+            "isNew": false
+        },
+        {
+            "title": "Playboi Carti x Future Type Beat \"PURE EVIL\"",
+            "image": "img/PURE_EVIL.webp",
+            "audio": "sounds/PURE EVIL.mp3",
+            "platforms": {
+                "youtube": "https://youtu.be/PzGSWg6OJ1k?si=g7Z71RGAJLTmia9R",
+                "beatstars": "https://bsta.rs/FNVIt",
+                "airbit": "https://air.bi/F0Rka",
+                "traktrain": "https://traktrain.com/t/1376314"
+            },
+            "isNew": false
+        },
+        {
+            "title": "Playboi Carti x Pluggnb Type Rage Beat \"808 PROBLEM\"",
+            "image": "img/808 PROBLEM.webp",
+            "audio": "sounds/808 PROBLEM.mp3",
+            "platforms": {
+                "youtube": "https://youtu.be/ABL8-gMWwFg?si=PDn43BNaugAJ3KB4",
+                "beatstars": "https://bsta.rs/nlwXSZ",
+                "airbit": "",
+                "traktrain": "https://traktrain.com/t/1376317"
+            },
+            "isNew": false
+        }
+    ]
 }
