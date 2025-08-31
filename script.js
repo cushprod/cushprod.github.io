@@ -480,6 +480,79 @@ document.addEventListener('DOMContentLoaded', function () {
             // Burada ekstra bir şey yapmaya gerek yok
         });
     });
+
+    // Fetch the beats data
+    fetch('beats.json')
+        .then(response => response.json())
+        .then(data => {
+            const beats = data.beats;
+
+            // Find the new beat and other beats
+            const newBeat = beats.find(beat => beat.isNew);
+            const otherBeats = beats.filter(beat => !beat.isNew);
+
+            // Generate the new beat section
+            generateNewBeat(newBeat);
+
+            // Generate the other beats section
+            generateOtherBeats(otherBeats);
+        })
+        .catch(error => {
+            console.error('Error loading beats:', error);
+        });
+
+    function generateNewBeat(beat) {
+        if (!beat) return;
+
+        const newDropSection = document.getElementById('new-drop-section');
+
+        // Create the beat element
+        const beatElement = createBeatElement(beat);
+
+        // Add the beat to the new drop section
+        newDropSection.appendChild(beatElement);
+    }
+
+    function generateOtherBeats(beats) {
+        const beatListSection = document.getElementById('beat-list');
+
+        // Clear any existing content
+        beatListSection.innerHTML = '';
+
+        // Add each beat to the section
+        beats.forEach(beat => {
+            const beatElement = createBeatElement(beat);
+            beatListSection.appendChild(beatElement);
+        });
+    }
+
+    function createBeatElement(beat) {
+        // Extract the base name for the audio file (without path and extension)
+        const audioBaseName = beat.audio.replace('sounds/', '').replace('.mp3', '');
+
+        // Create the link element
+        const linkItem = document.createElement('a');
+        linkItem.target = '_blank';
+        linkItem.className = 'link-item';
+        linkItem.setAttribute('data-beat', audioBaseName);
+        linkItem.setAttribute('data-youtube', beat.platforms.youtube);
+        linkItem.setAttribute('data-beatstars', beat.platforms.beatstars);
+        linkItem.setAttribute('data-airbit', beat.platforms.airbit);
+        linkItem.setAttribute('data-traktrain', beat.platforms.traktrain);
+
+        // Create the inner HTML
+        linkItem.innerHTML = `
+                    <div class="link-icon">
+                        <img src="${beat.image}" alt="${audioBaseName}">
+                    </div>
+                    <div class="link-text">${beat.title}</div>
+                    <div class="link-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                `;
+
+        return linkItem;
+    }
 });
 
 // Sayfa yüklendikten sonra çalışacak kod
