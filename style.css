@@ -4,14 +4,25 @@
     box-sizing: border-box;
 }
 
-html {
-    background: linear-gradient(135deg, #0f0f0f 0%, #100000 100%);
+:root {
+    --primary-gradient: linear-gradient(135deg, #0f0f0f 0%, #100000 100%);
+    --light-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    --accent-gradient: linear-gradient(90deg, #ff1a1a, #800000);
+    --text-primary: #f5f5f5;
+    --text-secondary: #bbb;
+    --text-dark: #333;
+    --bg-dark: #202020;
+    --bg-light: rgba(255, 255, 255, 0.95);
+    --border-dark: rgba(255, 255, 255, 0.1);
+    --border-light: rgba(0, 0, 0, 0.05);
+    --shadow-dark: 0 5px 15px rgba(0, 0, 0, 0.2);
+    --shadow-light: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #0f0f0f 0%, #100000 100%);
-    color: #f5f5f5;
+    background: var(--primary-gradient);
+    color: var(--text-primary);
     min-height: 100vh;
     padding: 20px;
     display: flex;
@@ -37,15 +48,15 @@ body {
     transition: opacity 1s ease;
 }
 
-/* açık tema */
+/* Açık tema */
 body.light-theme {
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    color: #333;
+    background: var(--light-gradient);
+    color: var(--text-dark);
 }
 
 .light-theme .profile-name {
     text-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background: linear-gradient(90deg, #ff1a1a, #800000);
+    background: var(--accent-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     text-shadow: 0 0 10px rgba(80, 150, 255, 0.2);
@@ -57,23 +68,23 @@ body.light-theme {
 
 .light-theme .social-icon {
     background: rgba(255, 255, 255, 0.9);
-    color: #333;
+    color: var(--text-dark);
 }
 
 .light-theme .link-item {
     background: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    color: #333;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-light);
+    color: var(--text-dark);
+    box-shadow: var(--shadow-light);
 }
 
 .light-theme .link-item:hover {
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--bg-light);
     border: 1px solid rgba(128, 0, 0, 0.5);
 }
 
 .light-theme .group-divider::before {
-    background: rgba(0, 0, 0, 0.05);
+    background: var(--border-light);
 }
 
 .light-theme .group-divider span {
@@ -86,10 +97,10 @@ body.light-theme {
 
 .light-theme .footer {
     color: #666;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-top: 1px solid var(--border-light);
 }
 
-/* Açık tema + hover → 1. ikonlara geri dön */
+/* Açık tema + hover → ikonlara geri dön */
 .light-theme .social-icon.youtube:hover img {
     content: url("icons/youtube.webp");
 }
@@ -122,8 +133,7 @@ body.light-theme {
     position: relative;
 }
 
-/* Tema Değiştirmöe */
-
+/* Tema Değiştirme */
 .theme-toggle {
     position: absolute;
     top: 20px;
@@ -132,15 +142,15 @@ body.light-theme {
     height: 40px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #f5f5f5;
+    border: 1px solid var(--border-dark);
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     backdrop-filter: blur(5px);
     transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-dark);
     z-index: 10;
 }
 
@@ -151,8 +161,8 @@ body.light-theme {
 
 .light-theme .theme-toggle {
     background: rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    color: #333;
+    border: 1px solid var(--border-light);
+    color: var(--text-dark);
 }
 
 .light-theme .theme-toggle:hover {
@@ -174,26 +184,35 @@ body.light-theme {
     height: 140px;
     border-radius: 50%;
     object-fit: cover;
-    border: 4px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 0 25px rgba(128, 0, 0, 0.3);
-    background: linear-gradient(45deg, #ff1a1a, #800000);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    position: relative;
+    transition: all 0.5 ease;
 }
 
 .profile-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: opacity 0.5s ease;
+}
+
+.profile-image img.fade-out {
+    opacity: 0;
+}
+
+.profile-image img.fade-in {
+    opacity: 1;
 }
 
 .profile-name {
     font-size: 28px;
     font-weight: 700;
     margin-top: 10px;
-    background: linear-gradient(90deg, #ff1a1a, #800000);
+    background: var(--accent-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -203,7 +222,7 @@ body.light-theme {
 .profile-bio {
     font-size: 16px;
     font-weight: 300;
-    color: #bbb;
+    color: var(--text-secondary);
     max-width: 80%;
     line-height: 1.5;
 }
@@ -230,7 +249,7 @@ body.light-theme {
     backdrop-filter: blur(10px);
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-dark);
 }
 
 .social-icon img {
@@ -293,7 +312,7 @@ body.light-theme {
     left: 0;
     right: 0;
     height: 1px;
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--border-dark);
     transition: background 0.5s ease;
 }
 
@@ -323,14 +342,14 @@ body.light-theme {
 .link-item {
     display: flex;
     align-items: center;
-    background: #202020;
+    background: var(--bg-dark);
     border-radius: 16px;
     padding: 15px 20px;
     text-decoration: none;
     color: white;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-dark);
     transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-dark);
     backdrop-filter: blur(5px);
     cursor: pointer;
 }
@@ -379,7 +398,7 @@ body.light-theme {
     color: #888;
     font-size: 14px;
     padding: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid var(--border-dark);
     width: 100%;
     transition: all 0.5s ease;
 }
@@ -404,19 +423,19 @@ body.light-theme {
 }
 
 .modal-content {
-    background: #202020;
+    background: var(--bg-dark);
     border-radius: 20px;
     width: 90%;
     max-width: 400px;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-dark);
     animation: modalFadeIn 0.3s ease;
 }
 
 .light-theme .modal-content {
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: var(--bg-light);
+    border: 1px solid var(--border-light);
 }
 
 .modal-header {
@@ -424,11 +443,11 @@ body.light-theme {
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--border-dark);
 }
 
 .light-theme .modal-header {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid var(--border-light);
 }
 
 .modal-header h3 {
@@ -464,13 +483,13 @@ body.light-theme {
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.02);
     text-decoration: none;
-    color: #f5f5f5;
+    color: var(--text-primary);
     transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-dark);
 }
 
 .light-theme .platform-option {
-    color: #333;
+    color: var(--text-dark);
     border: 1px solid rgba(0, 255, 0, 0.05);
     background: rgba(0, 0, 0, 0.02);
 }
@@ -478,7 +497,7 @@ body.light-theme {
 .platform-option:hover {
     background: rgba(255, 0, 0, 0.1);
     transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-dark);
 }
 
 .light-theme .platform-option:hover {
@@ -545,7 +564,138 @@ body.light-theme {
     animation-delay: 0.4s;
 }
 
-/* Responsive */
+/* Ses Önizleme Stilleri */
+.audio-preview-container {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid var(--border-dark);
+}
+
+.light-theme .audio-preview-container {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-light);
+}
+
+.audio-player {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.audio-control {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-dark);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.light-theme .audio-control {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-light);
+    color: var(--text-dark);
+}
+
+.audio-control:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.light-theme .audio-control:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.audio-progress,
+.audio-progress-bar2 {
+    flex-grow: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+}
+
+.light-theme .audio-progress {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.audio-progress-bar,
+.audio-progress-bar2 {
+    position: absolute;
+    height: 100%;
+    background: var(--accent-gradient);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.1s ease;
+}
+
+.audio-time,
+.audio-time2 {
+    font-size: 12px;
+    min-width: 40px;
+    text-align: center;
+    opacity: 0.8;
+}
+
+/* Apple Music Modal Stilleri */
+.apple-music-modal {
+    max-width: 700px;
+}
+
+.apple-music-embed {
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.apple-music-link-container {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.link-to-apple-music {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #fa233b, #c70b2b);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.link-to-apple-music:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(250, 35, 59, 0.3);
+}
+
+.light-theme .link-to-apple-music {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive düzenlemeler */
+@media (max-width: 768px) {
+    .apple-music-modal {
+        width: 95%;
+        margin: 10px;
+    }
+
+    .apple-music-embed iframe {
+        height: 400px;
+    }
+}
+
 @media (max-width: 600px) {
     .container {
         padding: 15px;
@@ -598,7 +748,16 @@ body.light-theme {
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 480px) {
+    .apple-music-embed iframe {
+        height: 350px;
+    }
+
+    .link-to-apple-music {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+
     .social-icon {
         width: 45px;
         height: 45px;
@@ -609,85 +768,4 @@ body.light-theme {
         width: 32px;
         height: 32px;
     }
-}
-
-/* Ses Önizleme Stilleri */
-.audio-preview-container {
-    margin-bottom: 20px;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.light-theme .audio-preview-container {
-    background: rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.audio-player {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.audio-control {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #f5f5f5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.light-theme .audio-control {
-    background: rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    color: #333;
-}
-
-.audio-control:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: scale(1.05);
-}
-
-.light-theme .audio-control:hover {
-    background: rgba(0, 0, 0, 0.1);
-}
-
-.audio-progress,
-.audio-progress-bar2 {
-    flex-grow: 1;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
-    cursor: pointer;
-    position: relative;
-}
-
-.light-theme .audio-progress {
-    background: rgba(0, 0, 0, 0.1);
-}
-
-.audio-progress-bar,
-.audio-progress-bar2 {
-    position: absolute;
-    height: 100%;
-    background: linear-gradient(90deg, #ff1a1a, #800000);
-    border-radius: 2px;
-    width: 0%;
-    transition: width 0.1s ease;
-}
-
-.audio-time,
-.audio-time2 {
-    font-size: 12px;
-    min-width: 40px;
-    text-align: center;
-    opacity: 0.8;
 }
