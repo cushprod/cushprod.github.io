@@ -1,3 +1,18 @@
+:root {
+    --primary-gradient: linear-gradient(135deg, #0f0f0f 0%, #100000 100%);
+    --light-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    --accent-gradient: linear-gradient(90deg, #ff1a1a, #800000);
+    --text-primary: #f5f5f5;
+    --text-secondary: #bbb;
+    --text-dark: #333;
+    --bg-dark: #202020;
+    --bg-light: rgba(255, 255, 255, 0.9);
+    --border-light: rgba(255, 255, 255, 0.1);
+    --border-dark: rgba(0, 0, 0, 0.1);
+    --shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    --transition: all 0.3s ease;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -5,13 +20,13 @@
 }
 
 html {
-    background: linear-gradient(135deg, #0f0f0f 0%, #100000 100%);
+    background: var(--primary-gradient);
 }
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #0f0f0f 0%, #100000 100%);
-    color: #f5f5f5;
+    background: var(--primary-gradient);
+    color: var(--text-primary);
     min-height: 100vh;
     padding: 20px;
     display: flex;
@@ -22,7 +37,7 @@ body {
     transition: background 0.5s ease, color 0.5s ease;
 }
 
-/* Hoş geldiniz ekranı */
+/* cush */
 #welcome-screen {
     position: fixed;
     top: 0;
@@ -39,13 +54,13 @@ body {
 
 /* açık tema */
 body.light-theme {
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    color: #333;
+    background: var(--light-gradient);
+    color: var(--text-dark);
 }
 
 .light-theme .profile-name {
     text-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background: linear-gradient(90deg, #ff1a1a, #800000);
+    background: var(--accent-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     text-shadow: 0 0 10px rgba(80, 150, 255, 0.2);
@@ -56,15 +71,15 @@ body.light-theme {
 }
 
 .light-theme .social-icon {
-    background: rgba(255, 255, 255, 0.9);
-    color: #333;
+    background: var(--bg-light);
+    color: var(--text-dark);
 }
 
 .light-theme .link-item {
     background: rgba(255, 255, 255, 0.8);
     border: 1px solid rgba(0, 0, 0, 0.05);
-    color: #333;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    color: var(--text-dark);
+    box-shadow: var(--shadow);
 }
 
 .light-theme .link-item:hover {
@@ -122,8 +137,7 @@ body.light-theme {
     position: relative;
 }
 
-/* Tema Değiştirmöe */
-
+/* tema */
 .theme-toggle {
     position: absolute;
     top: 20px;
@@ -132,15 +146,15 @@ body.light-theme {
     height: 40px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #f5f5f5;
+    border: 1px solid var(--border-light);
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     backdrop-filter: blur(5px);
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: var(--transition);
+    box-shadow: var(--shadow);
     z-index: 10;
 }
 
@@ -151,15 +165,15 @@ body.light-theme {
 
 .light-theme .theme-toggle {
     background: rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    color: #333;
+    border: 1px solid var(--border-dark);
+    color: var(--text-dark);
 }
 
 .light-theme .theme-toggle:hover {
     background: rgba(0, 0, 0, 0.1);
 }
 
-/* Üst Kısım */
+/* top */
 .profile-section {
     display: flex;
     flex-direction: column;
@@ -180,7 +194,7 @@ body.light-theme {
     justify-content: center;
     overflow: hidden;
     position: relative;
-    transition: all 0.5 ease;
+    transition: var(--transition);
 }
 
 .profile-image img {
@@ -202,7 +216,7 @@ body.light-theme {
     font-size: 28px;
     font-weight: 700;
     margin-top: 10px;
-    background: linear-gradient(90deg, #ff1a1a, #800000);
+    background: var(--accent-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -212,12 +226,12 @@ body.light-theme {
 .profile-bio {
     font-size: 16px;
     font-weight: 300;
-    color: #bbb;
+    color: var(--text-secondary);
     max-width: 80%;
     line-height: 1.5;
 }
 
-/* Sosyal Medya Butonları */
+/* buttons */
 .social-icons {
     display: flex;
     justify-content: center;
@@ -238,8 +252,8 @@ body.light-theme {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: var(--transition);
+    box-shadow: var(--shadow);
 }
 
 .social-icon img {
@@ -273,7 +287,7 @@ body.light-theme {
     background: linear-gradient(135deg, #a9deff, #1DA1F2);
 }
 
-/* Linkler */
+/* links */
 .link-groups-container {
     display: flex;
     flex-direction: column;
@@ -302,7 +316,7 @@ body.light-theme {
     left: 0;
     right: 0;
     height: 1px;
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--border-light);
     transition: background 0.5s ease;
 }
 
@@ -315,7 +329,7 @@ body.light-theme {
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    transition: all 0.5s ease;
+    transition: var(--transition);
 }
 
 .group-title {
@@ -328,18 +342,17 @@ body.light-theme {
     text-align: center;
 }
 
-/* Link Butonları */
 .link-item {
     display: flex;
     align-items: center;
-    background: #202020;
+    background: var(--bg-dark);
     border-radius: 16px;
     padding: 15px 20px;
     text-decoration: none;
     color: white;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-light);
+    transition: var(--transition);
+    box-shadow: var(--shadow);
     backdrop-filter: blur(5px);
     cursor: pointer;
 }
@@ -381,19 +394,19 @@ body.light-theme {
     opacity: 0.7;
 }
 
-/* Footer */
+/* fotter */
 .footer {
     margin-top: 30px;
     text-align: center;
     color: #888;
     font-size: 14px;
     padding: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid var(--border-light);
     width: 100%;
-    transition: all 0.5s ease;
+    transition: var(--transition);
 }
 
-/* Platform Modal */
+/* platform modal */
 .platform-modal {
     display: none;
     position: fixed;
@@ -413,19 +426,19 @@ body.light-theme {
 }
 
 .modal-content {
-    background: #202020;
+    background: var(--bg-dark);
     border-radius: 20px;
     width: 90%;
     max-width: 400px;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-light);
     animation: modalFadeIn 0.3s ease;
 }
 
 .light-theme .modal-content {
     background: rgba(255, 255, 255, 0.95);
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-dark);
 }
 
 .modal-header {
@@ -433,11 +446,11 @@ body.light-theme {
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--border-light);
 }
 
 .light-theme .modal-header {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid var(--border-dark);
 }
 
 .modal-header h3 {
@@ -448,7 +461,10 @@ body.light-theme {
 .modal-close {
     font-size: 24px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--transition);
+    background: none;
+    border: none;
+    color: inherit;
 }
 
 .modal-close:hover {
@@ -473,21 +489,21 @@ body.light-theme {
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.02);
     text-decoration: none;
-    color: #f5f5f5;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    transition: var(--transition);
+    border: 1px solid var(--border-light);
 }
 
 .light-theme .platform-option {
-    color: #333;
-    border: 1px solid rgba(0, 255, 0, 0.05);
+    color: var(--text-dark);
+    border: 1px solid var(--border-dark);
     background: rgba(0, 0, 0, 0.02);
 }
 
 .platform-option:hover {
     background: rgba(255, 0, 0, 0.1);
     transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow);
 }
 
 .light-theme .platform-option:hover {
@@ -515,7 +531,6 @@ body.light-theme {
     font-size: 14px;
 }
 
-/* Animasyonlar */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -552,6 +567,126 @@ body.light-theme {
 
 .link-groups-container {
     animation-delay: 0.4s;
+}
+
+/* ses */
+.audio-preview-container {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+}
+
+.light-theme .audio-preview-container {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-dark);
+}
+
+.audio-player {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.audio-control {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-light);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.light-theme .audio-control {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-dark);
+    color: var(--text-dark);
+}
+
+.audio-control:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.light-theme .audio-control:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.audio-progress,
+.audio-progress-bar2 {
+    flex-grow: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+}
+
+.light-theme .audio-progress {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.audio-progress-bar,
+.audio-progress-bar2 {
+    position: absolute;
+    height: 100%;
+    background: var(--accent-gradient);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.1s ease;
+}
+
+.audio-time,
+.audio-time2 {
+    font-size: 12px;
+    min-width: 40px;
+    text-align: center;
+    opacity: 0.8;
+}
+
+/* playlist */
+.apple-music-modal {
+    max-width: 700px;
+}
+
+.apple-music-embed {
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.apple-music-link-container {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.link-to-apple-music {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #fa233b, #c70b2b);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.link-to-apple-music:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(250, 35, 59, 0.3);
+}
+
+.light-theme .link-to-apple-music {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsive */
@@ -620,127 +755,6 @@ body.light-theme {
     }
 }
 
-/* Ses Önizleme Stilleri */
-.audio-preview-container {
-    margin-bottom: 20px;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.light-theme .audio-preview-container {
-    background: rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.audio-player {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.audio-control {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #f5f5f5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.light-theme .audio-control {
-    background: rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    color: #333;
-}
-
-.audio-control:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: scale(1.05);
-}
-
-.light-theme .audio-control:hover {
-    background: rgba(0, 0, 0, 0.1);
-}
-
-.audio-progress,
-.audio-progress-bar2 {
-    flex-grow: 1;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
-    cursor: pointer;
-    position: relative;
-}
-
-.light-theme .audio-progress {
-    background: rgba(0, 0, 0, 0.1);
-}
-
-.audio-progress-bar,
-.audio-progress-bar2 {
-    position: absolute;
-    height: 100%;
-    background: linear-gradient(90deg, #ff1a1a, #800000);
-    border-radius: 2px;
-    width: 0%;
-    transition: width 0.1s ease;
-}
-
-.audio-time,
-.audio-time2 {
-    font-size: 12px;
-    min-width: 40px;
-    text-align: center;
-    opacity: 0.8;
-}
-
-/* Apple Music Modal Stilleri */
-.apple-music-modal {
-    max-width: 700px;
-}
-
-.apple-music-embed {
-    width: 100%;
-    margin-bottom: 20px;
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-.apple-music-link-container {
-    text-align: center;
-    margin-top: 15px;
-}
-
-.link-to-apple-music {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 24px;
-    background: linear-gradient(135deg, #fa233b, #c70b2b);
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-.link-to-apple-music:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(250, 35, 59, 0.3);
-}
-
-.light-theme .link-to-apple-music {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Responsive düzenlemeler */
 @media (max-width: 768px) {
     .apple-music-modal {
         width: 95%;
@@ -761,4 +775,21 @@ body.light-theme {
         padding: 10px 20px;
         font-size: 14px;
     }
+}
+
+/* Hata mesajı stilleri */
+.error-message {
+    background: rgba(255, 0, 0, 0.1);
+    border: 1px solid rgba(255, 0, 0, 0.3);
+    color: #ff6b6b;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.light-theme .error-message {
+    background: rgba(255, 0, 0, 0.05);
+    border: 1px solid rgba(255, 0, 0, 0.2);
+    color: #d32f2f;
 }
