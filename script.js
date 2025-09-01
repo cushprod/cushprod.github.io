@@ -56,7 +56,7 @@ async function loadBeatsData() {
         
     } catch (error) {
         console.error('Error loading beats data:', error);
-        showErrorMessage('Beat verileri yüklenirken bir hata oluştu. Lütfen sayfayı yenileyin.');
+        showErrorMessage('Beat data load error.');
     }
 }
 
@@ -621,3 +621,4 @@ window.addEventListener('load', function () {
         }, 1000);
     }, 100);
 });
+
