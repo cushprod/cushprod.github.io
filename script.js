@@ -1,4 +1,3 @@
-// DOM elementlerini önbelleğe alma
 const domElements = {
     profilePicture: document.getElementById('profile-picture'),
     themeToggle: document.getElementById('theme-toggle'),
@@ -544,3 +543,4 @@ window.addEventListener('load', function () {
         }, 1000);
     }, 100);
 });
+
