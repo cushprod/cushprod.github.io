@@ -427,6 +427,10 @@ function updateAudioProgress(audioElement, isSecond) {
 
 // Sayfa yüklendikten sonra çalışacak kod
 document.addEventListener('DOMContentLoaded', function () {
+    const iframe = domElements.appleMusicModal.querySelector('iframe');
+    if (iframe) {
+        iframe.src = "https://embed.music.apple.com/tr/playlist/bi-bira-bi-soju/pl.u-qxylEYDT3ByJYdV?l=tr";
+    }
     // Beat verilerini yükle
     loadBeatsData();
     
@@ -621,4 +625,5 @@ window.addEventListener('load', function () {
         }, 1000);
     }, 100);
 });
+
 
