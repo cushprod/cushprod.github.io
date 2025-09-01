@@ -8,4 +8,7 @@ Thanks to the GitHub Pages infrastructure, the project is delivered to users dir
 
 Through this, users can access the platforms I share and engage with me directly. Hosting the project on GitHub also allows updates to remain consistent and easily traceable.
 
-https://cushprod.github.io/
+> [cush - My Links](https://cushprod.github.io/)
+
+- [Instagram](https://instagram.com/beratt808)
+- [Email](mailto:cushprod@gmail.com)
