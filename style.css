@@ -417,14 +417,14 @@ body.light-theme {
     align-items: center;
     justify-content: center;
     backdrop-filter: blur(5px);
-    /*z-index: 2000;
-    padding: 20px;*/
+    z-index: 2000;
+    padding: 20px;
     overflow: auto;
 }
 
-/*.platform-modal.active {
+.platform-modal.active {
     display: flex;
-}*/
+}
 
 .platform-modal .modal-content {
     max-width: 500px;
@@ -801,4 +801,3 @@ body.light-theme {
         font-size: 14px;
     }
 }
-
