@@ -418,6 +418,7 @@ body.light-theme {
     align-items: center;
     justify-content: center;
     backdrop-filter: blur(5px);
+    overflow: auto;
 }
 
 .platform-modal.active {
@@ -433,6 +434,8 @@ body.light-theme {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     border: 1px solid var(--border-light);
     animation: modalFadeIn 0.3s ease;
+    max-height: 90vh;  /* ekran yüksekliğine göre sınırla */
+    overflow-y: auto;  /* içerik taşarsa kaydırılsın */
 }
 
 .light-theme .modal-content {
@@ -788,3 +791,4 @@ body.light-theme {
         font-size: 14px;
     }
 }
+
