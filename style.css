@@ -426,6 +426,7 @@ body.light-theme {
     display: flex;
 }
 
+
 .modal-content {
     background: var(--bg-dark);
     border-radius: var(--radius-lg);
@@ -439,7 +440,6 @@ body.light-theme {
     /* ekran yüksekliğine göre sınırla */
     overflow-y: auto;
     /* içerik taşarsa kaydırılsın */
-    position: relative;
 }
 
 .light-theme .modal-content {
@@ -795,4 +795,3 @@ body.light-theme {
         font-size: 14px;
     }
 }
-
