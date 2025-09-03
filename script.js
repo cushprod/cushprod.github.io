@@ -625,3 +625,30 @@ window.addEventListener('load', function () {
         }, 1000);
     }, 100);
 });
+
+// Yukarı Çık butonu fonksiyonelliği
+function initScrollToTop() {
+    const scrollButton = document.getElementById('scroll-to-top');
+
+    // Scroll olayını dinle
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            scrollButton.classList.add('show');
+        } else {
+            scrollButton.classList.remove('show');
+        }
+    });
+
+    // Tıklama olayını dinle
+    scrollButton.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+}
+
+// DOM yüklendikten sonra fonksiyonu çağır
+document.addEventListener('DOMContentLoaded', function () {
+    initScrollToTop();
+});
