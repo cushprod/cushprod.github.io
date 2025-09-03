@@ -434,8 +434,10 @@ body.light-theme {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     border: 1px solid var(--border-light);
     animation: modalFadeIn 0.3s ease;
-    max-height: 90vh;  /* ekran yüksekliğine göre sınırla */
-    overflow-y: auto;  /* içerik taşarsa kaydırılsın */
+    max-height: 90vh;
+    /* ekran yüksekliğine göre sınırla */
+    overflow-y: auto;
+    /* içerik taşarsa kaydırılsın */
 }
 
 .light-theme .modal-content {
@@ -792,4 +794,52 @@ body.light-theme {
     }
 }
 
+.scroll-to-top {
+    right: var(--spacing-lg);
+    width: 40px;
+    height: 40px;
+    position: fixed;
+    bottom: 30px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 4px 20px rgba(128, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
 
+.scroll-to-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scroll-to-top:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 25px rgba(128, 0, 0, 0.5);
+}
+
+.light-theme .scroll-to-top {
+    box-shadow: 0 4px 20px rgba(255, 0, 0, 0.3);
+}
+
+.light-theme .scroll-to-top:hover {
+    box-shadow: 0 6px 25px rgba(255, 0, 0, 0.4);
+}
+
+@media (max-width: 600px) {
+    .scroll-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+        font-size: 16px;
+    }
+}
