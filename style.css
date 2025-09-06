@@ -5,7 +5,7 @@
     --text-primary: #f5f5f5;
     --text-secondary: #bbb;
     --text-dark: #333;
-    --bg-dark: rgba(0, 0, 0, 0.1);
+    --bg-dark: rgba(0, 0, 0, 0.5);
     --bg-light: rgba(255, 255, 255, 0.9);
     --border-light: rgba(255, 255, 255, 0.1);
     --border-dark: rgba(0, 0, 0, 0.1);
@@ -900,3 +900,4 @@ body {
         padding-top: 36px;
     }
 }
+
