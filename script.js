@@ -11,7 +11,8 @@ const domElements = {
     welcomeScreen: document.getElementById('welcome-screen'),
     mainContent: document.getElementById('main-content'),
     newDropSection: document.querySelector('.link-group .group-title').parentElement,
-    beatListSection: document.getElementById('beat-list')
+    beatListSection: document.getElementById('beat-list'),
+    scrollPos: 0
 };
 
 // Ses kontrolü için global değişkenler
@@ -356,7 +357,10 @@ function updateMuteIcon(button, isMuted) {
 
 // Modal açma işlevi - Güncellendi: title ve audio path doğru şekilde kullanılıyor
 function openPlatformModal(beatName, beatData) {
-    document.body.classList.add('modal-open');
+    domElements.scrollPos = window.pageYOffset;
+    document.body.classList.add('body-no-scroll');
+    document.body.style.setProperty('--scroll-pos', `-${domElements.scrollPos}px`);
+    document.body.classList.add('body-no-scroll');
     // Modal başlığını ayarla (title kullanılıyor)
     domElements.modalTitle.textContent = beatName;
     audioPlayers.currentBeatName = beatName;
@@ -399,7 +403,9 @@ function openPlatformModal(beatName, beatData) {
 
 // Modal kapatma işlevi
 function closeModal(modalElement) {
-    document.body.classList.add('modal-open');
+    document.body.classList.remove('body-no-scroll');
+    document.body.style.removeProperty('--scroll-pos');
+    window.scrollTo(0, domElements.scrollPos);
     modalElement.classList.remove('active');
     modalElement.setAttribute('aria-hidden', 'true');
 
@@ -495,8 +501,10 @@ document.addEventListener('DOMContentLoaded', function () {
         // Apple Music linki için
         const appleMusicLink = e.target.closest('.apple-music-link');
         if (appleMusicLink) {
-            document.body.classList.add('modal-open');
             e.preventDefault();
+            domElements.scrollPos = window.pageYOffset;
+            document.body.classList.add('body-no-scroll');
+            document.body.style.setProperty('--scroll-pos', `-${domElements.scrollPos}px`);
             const musicUrl = appleMusicLink.getAttribute('data-apple-music-url');
             const iframe = domElements.appleMusicModal.querySelector('iframe');
             const directLink = domElements.appleMusicModal.querySelector('.link-to-apple-music');
@@ -513,6 +521,13 @@ document.addEventListener('DOMContentLoaded', function () {
         if (e.target.classList.contains('modal-close') || e.target.parentElement.classList.contains('modal-close')) {
             const modal = e.target.closest('.platform-modal');
             if (modal) {
+                // Sayfa kaydırmayı tekrar etkinleştir
+                document.body.classList.remove('body-no-scroll');
+                document.body.style.removeProperty('--scroll-pos');
+
+                // Scroll pozisyonunu geri yükle
+                window.scrollTo(0, domElements.scrollPos);
+
                 closeModal(modal);
             }
             return;
@@ -520,6 +535,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Modal dışına tıklama için
         if (e.target.classList.contains('platform-modal')) {
+            // Sayfa kaydırmayı tekrar etkinleştir
+            document.body.classList.remove('body-no-scroll');
+            document.body.style.removeProperty('--scroll-pos');
+
+            // Scroll pozisyonunu geri yükle
+            window.scrollTo(0, domElements.scrollPos);
+
             closeModal(e.target);
         }
     });
@@ -655,4 +677,3 @@ function initScrollToTop() {
 document.addEventListener('DOMContentLoaded', function () {
     initScrollToTop();
 });
-
