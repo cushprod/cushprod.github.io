@@ -356,6 +356,7 @@ function updateMuteIcon(button, isMuted) {
 
 // Modal açma işlevi - Güncellendi: title ve audio path doğru şekilde kullanılıyor
 function openPlatformModal(beatName, beatData) {
+    document.body.classList.add('modal-open');
     // Modal başlığını ayarla (title kullanılıyor)
     domElements.modalTitle.textContent = beatName;
     audioPlayers.currentBeatName = beatName;
@@ -398,6 +399,7 @@ function openPlatformModal(beatName, beatData) {
 
 // Modal kapatma işlevi
 function closeModal(modalElement) {
+    document.body.classList.add('modal-open');
     modalElement.classList.remove('active');
     modalElement.setAttribute('aria-hidden', 'true');
 
@@ -493,6 +495,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Apple Music linki için
         const appleMusicLink = e.target.closest('.apple-music-link');
         if (appleMusicLink) {
+            document.body.classList.add('modal-open');
             e.preventDefault();
             const musicUrl = appleMusicLink.getAttribute('data-apple-music-url');
             const iframe = domElements.appleMusicModal.querySelector('iframe');
@@ -652,3 +655,4 @@ function initScrollToTop() {
 document.addEventListener('DOMContentLoaded', function () {
     initScrollToTop();
 });
+
