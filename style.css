@@ -346,7 +346,7 @@ body.light-theme {
 .link-item {
     display: flex;
     align-items: center;
-    background: var(--bg-dark);
+    background: rgba(255, 255, 255, 0.1);
     border-radius: var(--radius-lg);
     padding: var(--spacing-md) var(--spacing-lg);
     text-decoration: none;
@@ -843,3 +843,4 @@ body.light-theme {
         font-size: 16px;
     }
 }
+
