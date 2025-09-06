@@ -1,6 +1,19 @@
 {
     "beats": [
         {
+            "title": "Astro Vamp",
+            "description": "Opium Type Rage Beat \"Astro Vamp\"",
+            "image": "img/Astro Vamp.webp",
+            "audio": "sounds/Astro Vamp.mp3",
+            "platforms": {
+                "youtube": "https://youtu.be/gJQwEKpr16E",
+                "beatstars": "https://bsta.rs/lxZrG",
+                "airbit": "https://air.bi/4BpF4",
+                "traktrain": "https://traktrain.com/t/1436813"
+            },
+            "isNew": true
+        },
+        {
             "title": "aurex",
             "description": "Future Type Beat \"aurex\"",
             "image": "img/aurex.webp",
@@ -11,7 +24,7 @@
                 "airbit": "https://air.bi/Jc67E",
                 "traktrain": "https://traktrain.com/t/1427828"
             },
-            "isNew": true
+            "isNew": false
         },
         {
             "title": "INSANITY",
