@@ -962,3 +962,23 @@ body {
         min-width: 35px;
     }
 }
+
+.promo-code {
+    font-weight: bold;
+    cursor: pointer;
+    color: #b10000;
+    padding: 0px 6px;
+    border-radius: 6px;
+    margin: 0 4px;
+    transition: background .2s, transform .1s;
+    display: inline-block;
+    position: relative;
+}
+
+.promo-code:hover {
+    background: rgba(128, 0, 0, 0.5);
+}
+
+.promo-code:active {
+    transform: scale(0.97);
+}
