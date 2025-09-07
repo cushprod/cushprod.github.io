@@ -913,3 +913,52 @@ body {
     max-height: 85vh;
     overflow-y: auto;
 }
+
+/* Modal boyutları için responsive düzenlemeler */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 85%;
+        max-width: 350px;
+        margin: 20px;
+    }
+    
+    .platform-options {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+    }
+    
+    .platform-option {
+        padding: var(--spacing-sm);
+    }
+    
+    .modal-body {
+        padding: var(--spacing-md);
+    }
+    
+    .modal-header {
+        padding: var(--spacing-md);
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        width: 90%;
+        max-width: 320px;
+        margin: 15px;
+    }
+    
+    .audio-player {
+        gap: 8px;
+    }
+    
+    .audio-control {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+    
+    .audio-time, .audio-time2 {
+        font-size: 11px;
+        min-width: 35px;
+    }
+}
