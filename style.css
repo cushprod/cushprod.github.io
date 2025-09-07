@@ -78,12 +78,12 @@ body.light-theme {
 }
 
 .light-theme .social-icon {
-    background: var(--bg-light);
+    background: rgba(255, 255, 255, 0.5);
     color: var(--text-dark);
 }
 
 .light-theme .link-item {
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.5);
     border: 1px solid rgba(0, 0, 0, 0.05);
     color: var(--text-dark);
     box-shadow: var(--shadow);
@@ -442,7 +442,7 @@ body.light-theme {
 }
 
 .light-theme .modal-content {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.1);
     border: 1px solid var(--border-dark);
 }
 
@@ -962,4 +962,3 @@ body {
         min-width: 35px;
     }
 }
-
