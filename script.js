@@ -1,753 +1,1162 @@
-// DOM elementlerini önbelleğe alma
-const domElements = {
-    profilePicture: document.getElementById('profile-picture'),
-    themeToggle: document.getElementById('theme-toggle'),
-    themeIcon: document.querySelector('#theme-toggle i'),
-    platformModal: document.getElementById('platform-modal'),
-    modalTitle: document.getElementById('modal-title'),
-    modalClose: document.querySelector('.modal-close'),
-    appleMusicModal: document.getElementById('apple-music-modal'),
-    appleMusicModalClose: document.querySelector('#apple-music-modal .modal-close'),
-    welcomeScreen: document.getElementById('welcome-screen'),
-    mainContent: document.getElementById('main-content'),
-    newDropSection: document.querySelector('.link-group .group-title')?.parentElement,
-    beatListSection: document.getElementById('beat-list'),
-    scrollToTop: document.getElementById('scroll-to-top'),
-    scrollPos: 0
-};
-
-// Ses kontrolü için global değişkenler
-const audioPlayers = {
-    currentAudio: new Audio(),
-    currentAudio2: new Audio(),
-    isPlaying: false,
-    isPlaying2: false,
-    currentBeatName: '',
-    currentBeatData: null
-};
-
-// Uygulama durumu
-const appState = {
-    preloadedProfilePictures: [],
-    currentProfileIndex: 1,
-    totalProfilePictures: 5
-};
-
-// Yardımcı fonksiyonlar
-const utils = {
-    // Hata mesajı gösterme
-    showError: (message) => {
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message';
-        errorDiv.textContent = message;
-
-        const container = document.querySelector('.container');
-        if (container) {
-            container.insertBefore(errorDiv, container.firstChild);
-        }
-    },
-
-    // Öğe yükleme kontrolü
-    elementExists: (element) => {
-        return element !== null && element !== undefined;
-    },
-
-    // LocalStorage'dan tema yükleme
-    loadTheme: () => {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light') {
-            document.body.classList.add('light-theme');
-            if (domElements.themeIcon) {
-                domElements.themeIcon.classList.replace('fa-moon', 'fa-sun');
-            }
-            updateSocialIcons('light');
-        }
-    }
-};
-
-async function copyText(text) {
-    if (navigator.clipboard?.writeText) {
-        return navigator.clipboard.writeText(text);
-    }
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    ta.style.position = 'fixed';
-    ta.style.left = '-9999px';
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
+:root {
+    --primary-gradient: linear-gradient(135deg, #0f0f0f 0%, #400000 100%);
+    --light-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    --accent-gradient: linear-gradient(90deg, #ff1a1a, #800000);
+    --text-primary: #f5f5f5;
+    --text-secondary: #bbb;
+    --text-dark: #333;
+    --bg-dark: rgba(0, 0, 0, 0.5);
+    --bg-light: rgba(255, 255, 255, 0.9);
+    --border-light: rgba(255, 255, 255, 0.1);
+    --border-dark: rgba(0, 0, 0, 0.1);
+    --shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    --transition: all 0.3s ease;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --spacing-xs: 5px;
+    --spacing-sm: 10px;
+    --spacing-md: 15px;
+    --spacing-lg: 20px;
+    --spacing-xl: 25px;
 }
 
-const promoCode = document.querySelector('.promo-code');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-// Mevcut kodunuz aynı kalacak, sadece event listener düzenlemesi
-promoCode.addEventListener('click', async () => {
-    const text = promoCode.dataset.copy;
-    await copyText(text);
-});
+html {
+    background: var(--primary-gradient);
+}
 
-promoCode.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        promoCode.click();
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--primary-gradient);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: var(--spacing-lg);
+    padding-top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-attachment: fixed;
+    transition: background 0.5s ease, color 0.5s ease;
+}
+
+#welcome-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity 1s ease;
+}
+
+body.light-theme {
+    background: var(--light-gradient);
+    color: var(--text-dark);
+}
+
+.light-theme .profile-name {
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-shadow: 0 0 10px rgba(80, 150, 255, 0.2);
+}
+
+.light-theme .profile-bio {
+    color: #555;
+}
+
+.light-theme .social-icon {
+    background: rgba(255, 255, 255, 0.5);
+    color: var(--text-dark);
+}
+
+.light-theme .link-item {
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    color: var(--text-dark);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(5px);
+}
+
+.light-theme .link-item:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(128, 0, 0, 0.5);
+}
+
+.light-theme .group-divider::before {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.light-theme .group-divider span {
+    background: #f5f7fa;
+}
+
+.light-theme .group-title {
+    color: #666;
+}
+
+.light-theme .footer {
+    color: #666;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.light-theme .social-icon.youtube:hover img {
+    content: url("icons/youtube.webp");
+}
+
+.light-theme .social-icon.soundcloud:hover img {
+    content: url("icons/soundcloud.webp");
+}
+
+.light-theme .social-icon.instagram:hover img {
+    content: url("icons/instagram.webp");
+}
+
+.light-theme .social-icon.tiktok:hover img {
+    content: url("icons/tiktok.webp");
+}
+
+.light-theme .social-icon.email:hover img {
+    content: url("icons/mail.webp");
+}
+
+.container {
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xl);
+    position: relative;
+}
+
+.theme-toggle {
+    position: absolute;
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-light);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+    z-index: 10;
+}
+
+.theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.light-theme .theme-toggle {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-dark);
+    color: var(--text-dark);
+}
+
+.light-theme .theme-toggle:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+    text-align: center;
+    width: 100%;
+}
+
+.profile-image {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 25px rgba(128, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    transition: var(--transition);
+}
+
+.profile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.5s ease;
+}
+
+.profile-image img.fade-out {
+    opacity: 0;
+}
+
+.profile-image img.fade-in {
+    opacity: 1;
+}
+
+.profile-name {
+    font-size: 28px;
+    font-weight: 700;
+    margin-top: var(--spacing-sm);
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 10px #800000;
+}
+
+.profile-bio {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    max-width: 80%;
+    line-height: 1.5;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-lg);
+    width: 100%;
+    margin-top: var(--spacing-sm);
+    backdrop-filter: blur(10px);
+}
+
+.social-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+}
+
+.social-icon img {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+}
+
+.social-icon:hover {
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.social-icon.youtube:hover {
+    background: linear-gradient(135deg, #ff0000, #ff5e5e);
+}
+
+.social-icon.soundcloud:hover {
+    background: linear-gradient(45deg, #ff6a22, #ff6a22);
+}
+
+.social-icon.instagram:hover {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+}
+
+.social-icon.tiktok:hover {
+    background: linear-gradient(135deg, #00f2ea, #ff0050);
+}
+
+.social-icon.email:hover {
+    background: linear-gradient(135deg, #a9deff, #1DA1F2);
+}
+
+.link-groups-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+    width: 100%;
+    margin-top: var(--spacing-sm);
+}
+
+.link-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.group-divider {
+    position: relative;
+    height: 1px;
+    margin: var(--spacing-xs) 0;
+    text-align: center;
+}
+
+.group-divider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--border-light);
+    transition: background 0.5s ease;
+}
+
+.group-divider span {
+    position: relative;
+    display: inline-block;
+    padding: 0 var(--spacing-sm);
+    background: #1a1a1a;
+    color: #888;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: var(--transition);
+}
+
+.group-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #888;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.link-item {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-md) var(--spacing-lg);
+    text-decoration: none;
+    color: white;
+    border: 1px solid var(--border-light);
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(5px);
+    cursor: pointer;
+}
+
+.link-item:hover {
+    transform: scale(1.03);
+    background: rgba(128, 0, 0, 0.3);
+    border: 1px solid rgba(128, 0, 0, 0.3);
+    box-shadow: 0 8px 25px rgba(128, 0, 0, 0.3);
+}
+
+.link-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-right: var(--spacing-md);
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.link-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.link-text {
+    flex-grow: 1;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.link-arrow {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.footer {
+    margin-top: 30px;
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+    padding: var(--spacing-lg);
+    border-top: 1px solid var(--border-light);
+    width: 100%;
+    transition: var(--transition);
+}
+
+.platform-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    overflow: auto;
+}
+
+.platform-modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--bg-dark);
+    border-radius: var(--radius-lg);
+    width: 90%;
+    max-width: 400px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-light);
+    animation: modalFadeIn 0.3s ease;
+    max-height: 90vh;
+    /* ekran yüksekliğine göre sınırla */
+    overflow-y: auto;
+    /* içerik taşarsa kaydırılsın */
+}
+
+.light-theme .modal-content {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-dark);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.light-theme .modal-header {
+    border-bottom: 1px solid var(--border-dark);
+}
+
+.modal-header h3 {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.modal-close {
+    font-size: 24px;
+    cursor: pointer;
+    transition: var(--transition);
+    background: none;
+    border: none;
+    color: inherit;
+}
+
+.modal-close:hover {
+    color: #ff1a1a;
+}
+
+.modal-body {
+    padding: var(--spacing-lg);
+}
+
+.platform-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+}
+
+.platform-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.02);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: var(--transition);
+    border: 1px solid var(--border-light);
+}
+
+.light-theme .platform-option {
+    color: var(--text-dark);
+    border: 1px solid var(--border-dark);
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.platform-option:hover {
+    background: rgba(255, 0, 0, 0.1);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+}
+
+.light-theme .platform-option:hover {
+    background: rgba(255, 0, 0, 0.1);
+}
+
+.platform-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.platform-icon img {
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+}
+
+.platform-option span {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
     }
-});
 
-// Beat verileri ile ilgili fonksiyonlar
-const beatManager = {
-    // JSON'dan beat verilerini çekme ve sayfayı doldurma
-    loadBeatsData: async () => {
-        try {
-            const response = await fetch('./beats.json');
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-            const data = await response.json();
-            if (!data.beats || !Array.isArray(data.beats)) {
-                throw new Error('Invalid JSON structure: beats array not found');
-            }
-
-            // Beat'leri isNew durumuna göre filtrele
-            const newBeats = data.beats.filter(beat => beat.isNew === true);
-            const otherBeats = data.beats.filter(beat => beat.isNew !== true);
-
-            // Bölümleri doldur
-            beatManager.populateNewDropSection(newBeats);
-            beatManager.populateBeatListSection(otherBeats);
-
-        } catch (error) {
-            console.error('Error loading beats data:', error);
-            utils.showError('Beat data load error.');
-        }
-    },
-
-    // NEW DROP bölümünü doldurma
-    populateNewDropSection: (beats) => {
-        if (!utils.elementExists(domElements.newDropSection)) return;
-
-        const groupTitle = domElements.newDropSection.querySelector('.group-title');
-        domElements.newDropSection.innerHTML = '';
-        if (groupTitle) domElements.newDropSection.appendChild(groupTitle);
-
-        beats.forEach(beat => {
-            const beatElement = beatManager.createBeatElement(beat);
-            domElements.newDropSection.appendChild(beatElement);
-        });
-    },
-
-    // BEAT LIST bölümünü doldurma
-    populateBeatListSection: (beats) => {
-        if (!utils.elementExists(domElements.beatListSection)) return;
-
-        domElements.beatListSection.innerHTML = '';
-        beats.forEach(beat => {
-            const beatElement = beatManager.createBeatElement(beat);
-            domElements.beatListSection.appendChild(beatElement);
-        });
-    },
-
-    // Tek bir beat elementi oluşturma
-    createBeatElement: (beat) => {
-        const linkItem = document.createElement('a');
-        linkItem.className = 'link-item';
-        linkItem.setAttribute('data-beat', beat.title);
-        linkItem.setAttribute('data-youtube', beat.platforms.youtube || '');
-        linkItem.setAttribute('data-beatstars', beat.platforms.beatstars || '');
-        linkItem.setAttribute('data-airbit', beat.platforms.airbit || '');
-        linkItem.setAttribute('data-traktrain', beat.platforms.traktrain || '');
-        linkItem.setAttribute('data-audio', beat.audio || '');
-
-        // İkon bölümü
-        const linkIcon = document.createElement('div');
-        linkIcon.className = 'link-icon';
-        const iconImg = document.createElement('img');
-        iconImg.src = beat.image;
-        iconImg.alt = beat.title;
-        iconImg.loading = 'lazy';
-        linkIcon.appendChild(iconImg);
-
-        // Metin bölümü
-        const linkText = document.createElement('div');
-        linkText.className = 'link-text';
-        linkText.textContent = beat.description;
-
-        // Ok bölümü
-        const linkArrow = document.createElement('div');
-        linkArrow.className = 'link-arrow';
-        const arrowIcon = document.createElement('i');
-        arrowIcon.className = 'fas fa-chevron-right';
-        linkArrow.appendChild(arrowIcon);
-
-        // Tüm elemanları birleştir
-        linkItem.appendChild(linkIcon);
-        linkItem.appendChild(linkText);
-        linkItem.appendChild(linkArrow);
-
-        return linkItem;
-    }
-};
-
-// Profil resmi yönetimi
-const profileManager = {
-    // Rastgele profil fotoğrafı ayarlama
-    setRandomProfilePicture: () => {
-        if (!appState.preloadedProfilePictures.length) {
-            // Tüm fotoğrafları önceden yükle
-            for (let i = 1; i <= appState.totalProfilePictures; i++) {
-                const img = new Image();
-                const imgSrc = i === 1 ? 'img/profile-picture.webp' : `img/profile-picture${i}.webp`;
-                img.src = imgSrc;
-                appState.preloadedProfilePictures.push(img);
-            }
-        }
-
-        // Rastgele bir indeks seç
-        const randomIndex = Math.floor(Math.random() * appState.totalProfilePictures) + 1;
-        const imgPath = randomIndex === 1 ? 'img/profile-picture.webp' : `img/profile-picture${randomIndex}.webp`;
-
-        // Fotoğrafı fade efekti ile değiştir
-        profileManager.fadeChangeProfilePicture(imgPath);
-        profileManager.preloadNextProfilePicture(randomIndex);
-        appState.currentProfileIndex = randomIndex;
-    },
-
-    // Bir sonraki fotoğrafı önceden yükle
-    preloadNextProfilePicture: (currentIndex) => {
-        const nextIndex = currentIndex % appState.totalProfilePictures + 1;
-        const nextImgPath = nextIndex === 1 ? 'img/profile-picture.webp' : `img/profile-picture${nextIndex}.webp`;
-
-        const img = new Image();
-        img.src = nextImgPath;
-    },
-
-    // Fade efekti ile profil fotoğrafı değiştirme
-    fadeChangeProfilePicture: (newImagePath) => {
-        if (!utils.elementExists(domElements.profilePicture)) return;
-
-        const profileImg = domElements.profilePicture;
-        const profileContainer = document.querySelector('.profile-image');
-        if (!profileContainer) return;
-
-        // Yeni bir resim elementi oluştur
-        const newImg = document.createElement('img');
-        newImg.src = newImagePath;
-        newImg.alt = "@cushprod Profil Fotoğrafı";
-        newImg.id = "profile-picture";
-        newImg.style.position = "absolute";
-        newImg.style.top = "0";
-        newImg.style.left = "0";
-        newImg.style.width = "100%";
-        newImg.style.height = "100%";
-        newImg.style.opacity = "0";
-        newImg.style.transition = "opacity 0.8s ease";
-        newImg.style.objectFit = "cover";
-
-        // Mevcut resmi container'a ekle
-        profileContainer.style.position = "relative";
-        profileContainer.appendChild(newImg);
-
-        // Yeni resmi fade-in yap
-        setTimeout(() => {
-            newImg.style.opacity = "1";
-        }, 50);
-
-        // Eski resmi fade-out yap ve kaldır
-        profileImg.style.transition = "opacity 0.8s ease";
-        profileImg.style.opacity = "0";
-
-        // Eski resmi temizle
-        setTimeout(() => {
-            if (profileImg.parentNode === profileContainer) {
-                profileContainer.removeChild(profileImg);
-            }
-            // Yeni resmin pozisyonunu düzelt
-            newImg.style.position = "";
-            // DOM referansını güncelle
-            domElements.profilePicture = newImg;
-        }, 800);
-    },
-
-    // Sıradaki profil fotoğrafına geç
-    nextProfilePicture: () => {
-        const nextIndex = appState.currentProfileIndex % appState.totalProfilePictures + 1;
-        const imgPath = nextIndex === 1 ? 'img/profile-picture.webp' : `img/profile-picture${nextIndex}.webp`;
-
-        profileManager.fadeChangeProfilePicture(imgPath);
-        profileManager.preloadNextProfilePicture(nextIndex);
-        appState.currentProfileIndex = nextIndex;
-    }
-};
-
-// Tema yönetimi
-const themeManager = {
-    // Tema değiştirme işlevi
-    toggleTheme: () => {
-        document.body.classList.toggle('light-theme');
-        const isLightTheme = document.body.classList.contains('light-theme');
-
-        // İkon ve tema bilgisini güncelle
-        if (isLightTheme) {
-            domElements.themeIcon.classList.replace('fa-moon', 'fa-sun');
-            localStorage.setItem('theme', 'light');
-            updateSocialIcons('light');
-        } else {
-            domElements.themeIcon.classList.replace('fa-sun', 'fa-moon');
-            localStorage.setItem('theme', 'dark');
-            updateSocialIcons('dark');
-        }
-    }
-};
-
-// Sosyal medya ikonlarını güncelle
-function updateSocialIcons(theme) {
-    const socialIcons = {
-        youtube: document.querySelector('.youtube img'),
-        soundcloud: document.querySelector('.soundcloud img'),
-        instagram: document.querySelector('.instagram img'),
-        tiktok: document.querySelector('.tiktok img'),
-        email: document.querySelector('.email img')
-    };
-
-    const iconPaths = {
-        dark: {
-            youtube: "icons/youtube.webp",
-            soundcloud: "icons/soundcloud.webp",
-            instagram: "icons/instagram.webp",
-            tiktok: "icons/tiktok.webp",
-            email: "icons/mail.webp"
-        },
-        light: {
-            youtube: "icons/youtube2.webp",
-            soundcloud: "icons/soundcloud2.webp",
-            instagram: "icons/instagram2.webp",
-            tiktok: "icons/tiktok2.webp",
-            email: "icons/mail2.webp"
-        }
-    };
-
-    for (const [platform, element] of Object.entries(socialIcons)) {
-        if (element) {
-            element.src = iconPaths[theme][platform];
-        }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-// Modal yönetimi
-const modalManager = {
-    // Modal açma işlevi
-    openPlatformModal: (beatName, beatData) => {
-        domElements.scrollPos = window.pageYOffset;
-        document.body.classList.add('body-no-scroll');
-        document.body.style.setProperty('--scroll-pos', `-${domElements.scrollPos}px`);
-
-        // Modal başlığını ayarla
-        domElements.modalTitle.textContent = beatName;
-        audioPlayers.currentBeatName = beatName;
-        audioPlayers.currentBeatData = beatData;
-
-        // Platform linklerini ayarla
-        const platforms = ['youtube', 'beatstars', 'airbit', 'traktrain'];
-        platforms.forEach(platform => {
-            const element = document.querySelector(`.platform-option[data-platform="${platform}"]`);
-            if (element && beatData[`data-${platform}`]) {
-                element.href = beatData[`data-${platform}`];
-            }
-        });
-
-        // Ses önizlemesini yükle
-        const audioPath = beatData['data-audio'];
-        if (audioPath) {
-            audioManager.loadAudioPreview(audioPath, audioPlayers.currentAudio);
-        } else {
-            console.error('Audio path not found for beat:', beatName);
-        }
-
-        // Eğer beat "YOU" ise ikinci ses oynatıcıyı göster
-        const secondAudioContainer = document.querySelector('.second-audio');
-        if (beatName === 'YOU') {
-            secondAudioContainer.style.display = 'block';
-            const secondAudioPath = audioPath.replace('.mp3', '_part2.mp3');
-            audioManager.loadAudioPreview(secondAudioPath, audioPlayers.currentAudio2, true);
-        } else {
-            secondAudioContainer.style.display = 'none';
-            audioPlayers.currentAudio2.pause();
-            audioManager.resetAudioUI(true);
-        }
-
-        // Modalı göster
-        domElements.platformModal.classList.add('active');
-        domElements.platformModal.setAttribute('aria-hidden', 'false');
-
-        // Swipe-down animasyonu için kısa bir gecikme ekle
-        setTimeout(() => {
-            const swipeMenu = domElements.platformModal.querySelector('.swipe-down-menu');
-            if (swipeMenu) {
-                swipeMenu.style.transform = 'translateY(0)';
-            }
-        }, 10);
-    },
-
-    // Modal kapatma işlevi
-    closeModal: (modalElement) => {
-        const swipeMenu = modalElement.querySelector('.swipe-down-menu');
-        if (swipeMenu) {
-            swipeMenu.style.transform = 'translateY(100%)';
-        }
-
-        // Animasyon tamamlandıktan sonra modalı tamamen kapat
-        setTimeout(() => {
-            document.body.classList.remove('body-no-scroll');
-            document.body.style.removeProperty('--scroll-pos');
-            window.scrollTo(0, domElements.scrollPos);
-            modalElement.classList.remove('active');
-            modalElement.setAttribute('aria-hidden', 'true');
-
-            // Sesleri durdur
-            audioPlayers.currentAudio.pause();
-            audioPlayers.currentAudio2.pause();
-            audioManager.resetAudioUI();
-            audioManager.resetAudioUI(true);
-        }, 400); // CSS transition süresiyle eşleşmeli
-    },
-
-    // Apple Music modalını aç
-    openAppleMusicModal: (musicUrl) => {
-        domElements.scrollPos = window.pageYOffset;
-        document.body.classList.add('body-no-scroll');
-        document.body.style.setProperty('--scroll-pos', `-${domElements.scrollPos}px`);
-
-        const iframe = domElements.appleMusicModal?.querySelector('iframe');
-        const directLink = domElements.appleMusicModal?.querySelector('.link-to-apple-music');
-
-        if (iframe) {
-            iframe.src = `https://embed.music.apple.com/tr/playlist/bi-bira-bi-soju/pl.u-qxylEYDT3ByJYdV?l=tr`;
-        }
-
-        if (directLink) {
-            directLink.href = musicUrl;
-        }
-
-        domElements.appleMusicModal.classList.add('active');
-        domElements.appleMusicModal.setAttribute('aria-hidden', 'false');
-
-        // Swipe-down animasyonu için kısa bir gecikme ekle
-        setTimeout(() => {
-            const swipeMenu = domElements.appleMusicModal.querySelector('.swipe-down-menu');
-            if (swipeMenu) {
-                swipeMenu.style.transform = 'translateY(0)';
-            }
-        }, 10);
-    },
-};
-
-// Ses yönetimi
-const audioManager = {
-    // Ses önizlemesi yükleme
-    loadAudioPreview: (audioPath, audioElement, isSecond = false) => {
-        // Önce mevcut sesi durdur ve sıfırla
-        audioElement.pause();
-        audioElement.currentTime = 0;
-
-        // Yeni ses yolunu ayarla
-        audioElement.src = audioPath;
-
-        // Ses yüklendikten sonra UI'yı sıfırla
-        audioElement.addEventListener('loadedmetadata', () => {
-            audioManager.resetAudioUI(isSecond);
-        });
-
-        // Hata durumunda konsola bilgi ver
-        audioElement.addEventListener('error', (e) => {
-            console.error('Audio loading error:', e);
-            console.error('Failed to load audio from:', audioPath);
-        });
-    },
-
-    // Ses arayüzünü sıfırla
-    resetAudioUI: (isSecond = false) => {
-        const suffix = isSecond ? '2' : '';
-        const playButton = document.querySelector(`.play-pause${suffix}`);
-
-        audioPlayers[isSecond ? 'isPlaying2' : 'isPlaying'] = false;
-        audioManager.updatePlayPauseIcon(playButton, false);
-
-        const progressBar = document.querySelector(`.audio-progress-bar${suffix}`);
-        const timeDisplay = document.querySelector(`.audio-time${suffix}`);
-
-        if (progressBar) progressBar.style.width = '0%';
-        if (timeDisplay) timeDisplay.textContent = '0:00';
-    },
-
-    // Oynat/Duraklat butonunu güncelle
-    updatePlayPauseIcon: (button, isPlaying) => {
-        if (!button) return;
-
-        const icon = button.querySelector('i');
-        if (icon) {
-            icon.classList.toggle('fa-play', !isPlaying);
-            icon.classList.toggle('fa-pause', isPlaying);
-        }
-    },
-
-    // Ses düzeyi butonunu güncelle
-    updateMuteIcon: (button, isMuted) => {
-        if (!button) return;
-
-        const icon = button.querySelector('i');
-        if (icon) {
-            icon.classList.toggle('fa-volume-up', !isMuted);
-            icon.classList.toggle('fa-volume-mute', isMuted);
-        }
-    },
-
-    // Ses ilerlemesini güncelle
-    updateAudioProgress: (audioElement, isSecond) => {
-        const suffix = isSecond ? '2' : '';
-        if (audioElement.duration) {
-            const percent = (audioElement.currentTime / audioElement.duration) * 100;
-            const progressBar = document.querySelector(`.audio-progress-bar${suffix}`);
-
-            if (progressBar) {
-                progressBar.style.width = `${percent}%`;
-            }
-
-            // Kalan süreyi hesapla
-            const remainingTime = audioElement.duration - audioElement.currentTime;
-            const minutes = Math.floor(remainingTime / 60);
-            const seconds = Math.floor(remainingTime % 60);
-
-            const timeDisplay = document.querySelector(`.audio-time${suffix}`);
-            if (timeDisplay) {
-                timeDisplay.textContent = `-${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-            }
-        }
-    },
-
-    // İlerleme çubuğunda tıklama işlemi
-    handleProgressBarClick: (e, isSecond) => {
-        const progressBar = e.target.closest('.audio-progress');
-        if (!progressBar) return;
-
-        const width = progressBar.clientWidth;
-        const clickX = e.offsetX;
-        const audio = isSecond ? audioPlayers.currentAudio2 : audioPlayers.currentAudio;
-
-        if (audio.duration) {
-            audio.currentTime = (clickX / width) * audio.duration;
-        }
-    }
-};
-
-// Scroll yönetimi
-const scrollManager = {
-    // Yukarı Çık butonu fonksiyonelliği
-    initScrollToTop: () => {
-        if (!utils.elementExists(domElements.scrollToTop)) return;
-
-        // Scroll olayını dinle
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                domElements.scrollToTop.classList.add('show');
-            } else {
-                domElements.scrollToTop.classList.remove('show');
-            }
-        });
-
-        // Tıklama olayını dinle
-        domElements.scrollToTop.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-    }
-};
-
-// Event delegation için ana işleyici
-const setupEventDelegation = () => {
-    document.addEventListener('click', (e) => {
-        // Beat linkleri için
-        const beatLink = e.target.closest('.link-item[data-beat]');
-        if (beatLink) {
-            e.preventDefault();
-            const beatData = {
-                'data-youtube': beatLink.getAttribute('data-youtube'),
-                'data-beatstars': beatLink.getAttribute('data-beatstars'),
-                'data-airbit': beatLink.getAttribute('data-airbit'),
-                'data-traktrain': beatLink.getAttribute('data-traktrain'),
-                'data-audio': beatLink.getAttribute('data-audio')
-            };
-            modalManager.openPlatformModal(beatLink.getAttribute('data-beat'), beatData);
-            return;
-        }
-
-        // Apple Music linki için
-        const appleMusicLink = e.target.closest('.apple-music-link');
-        if (appleMusicLink) {
-            e.preventDefault();
-            const musicUrl = appleMusicLink.getAttribute('data-apple-music-url');
-            modalManager.openAppleMusicModal(musicUrl);
-            return;
-        }
-
-        // Swipe kapatma butonları için
-        if (e.target.closest('.swipe-close')) {
-            const modal = e.target.closest('.platform-modal');
-            if (modal) {
-                modalManager.closeModal(modal);
-            }
-            return;
-        }
-
-        // Modal dışına tıklama için (yalnızca swipe-down menü dışına)
-        if (e.target.classList.contains('platform-modal')) {
-            modalManager.closeModal(e.target);
-            return;
-        }
-
-        // Ses kontrolü için
-        audioManager.handleAudioControls(e);
-    });
-};
-
-// Ses kontrol event handler'ı
-audioManager.handleAudioControls = (e) => {
-    // İlk ses kontrolü
-    if (e.target.closest('.play-pause')) {
-        const btn = e.target.closest('.play-pause');
-        if (audioPlayers.isPlaying) {
-            audioPlayers.currentAudio.pause();
-        } else if (audioPlayers.currentAudio.src) {
-            audioPlayers.currentAudio.play().catch(error => {
-                console.error('Audio play error:', error);
-            });
-        }
-        audioPlayers.isPlaying = !audioPlayers.isPlaying;
-        audioManager.updatePlayPauseIcon(btn, audioPlayers.isPlaying);
-        return;
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
     }
 
-    // İkinci ses kontrolü
-    if (e.target.closest('.play-pause2')) {
-        const btn = e.target.closest('.play-pause2');
-        if (audioPlayers.isPlaying2) {
-            audioPlayers.currentAudio2.pause();
-        } else if (audioPlayers.currentAudio2.src) {
-            audioPlayers.currentAudio2.play().catch(error => {
-                console.error('Audio play error:', error);
-            });
-        }
-        audioPlayers.isPlaying2 = !audioPlayers.isPlaying2;
-        audioManager.updatePlayPauseIcon(btn, audioPlayers.isPlaying2);
-        return;
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.profile-section,
+.social-icons,
+.link-groups-container {
+    animation: fadeIn 0.8s ease forwards;
+}
+
+.social-icons {
+    animation-delay: 0.2s;
+}
+
+.link-groups-container {
+    animation-delay: 0.4s;
+}
+
+.audio-preview-container {
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-light);
+}
+
+.light-theme .audio-preview-container {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-dark);
+}
+
+.audio-player {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.audio-control {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-light);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.light-theme .audio-control {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-dark);
+    color: var(--text-dark);
+}
+
+.audio-control:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.light-theme .audio-control:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.audio-progress,
+.audio-progress-bar2 {
+    flex-grow: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+}
+
+.light-theme .audio-progress {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.audio-progress-bar,
+.audio-progress-bar2 {
+    position: absolute;
+    height: 100%;
+    background: var(--accent-gradient);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.1s ease;
+}
+
+.audio-time,
+.audio-time2 {
+    font-size: 12px;
+    min-width: 40px;
+    text-align: center;
+    opacity: 0.8;
+}
+
+.apple-music-modal {
+    max-width: 700px;
+}
+
+.apple-music-embed {
+    width: 100%;
+    margin-bottom: var(--spacing-lg);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.apple-music-link-container {
+    text-align: center;
+    margin-top: var(--spacing-md);
+}
+
+.link-to-apple-music {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #fa233b, #c70b2b);
+    color: white;
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.link-to-apple-music:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(250, 35, 59, 0.3);
+}
+
+.light-theme .link-to-apple-music {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.error-message {
+    background: rgba(255, 0, 0, 0.1);
+    border: 1px solid rgba(255, 0, 0, 0.3);
+    color: #ff6b6b;
+    padding: var(--spacing-md);
+    border-radius: var(--radius-sm);
+    margin: var(--spacing-lg) 0;
+    text-align: center;
+}
+
+.light-theme .error-message {
+    background: rgba(255, 0, 0, 0.05);
+    border: 1px solid rgba(255, 0, 0, 0.2);
+    color: #d32f2f;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: var(--spacing-md);
     }
 
-    // Ses seviyesi kontrolü
-    if (e.target.closest('.mute')) {
-        const btn = e.target.closest('.mute');
-        audioPlayers.currentAudio.muted = !audioPlayers.currentAudio.muted;
-        audioManager.updateMuteIcon(btn, audioPlayers.currentAudio.muted);
-        return;
+    .profile-image {
+        width: 120px;
+        height: 120px;
     }
 
-    if (e.target.closest('.mute2')) {
-        const btn = e.target.closest('.mute2');
-        audioPlayers.currentAudio2.muted = !audioPlayers.currentAudio2.muted;
-        audioManager.updateMuteIcon(btn, audioPlayers.currentAudio2.muted);
-        return;
+    .profile-name {
+        font-size: 24px;
     }
 
-    // İlerleme çubuğu tıklama
-    const progressBar = e.target.closest('.audio-progress');
-    if (progressBar) {
-        const isSecond = progressBar.parentElement.parentElement.classList.contains('second-audio');
-        audioManager.handleProgressBarClick(e, isSecond);
-        return;
-    }
-};
-
-// Sayfa yüklendikten sonra çalışacak kod
-document.addEventListener('DOMContentLoaded', function () {
-    // Apple Music iframe'ini yükle
-    const iframe = domElements.appleMusicModal?.querySelector('iframe');
-    if (iframe) {
-        iframe.src = "https://embed.music.apple.com/tr/playlist/bi-bira-bi-soju/pl.u-qxylEYDT3ByJYdV?l=tr";
+    .profile-bio {
+        font-size: 14px;
+        max-width: 90%;
     }
 
-    // Beat verilerini yükle
-    beatManager.loadBeatsData();
-
-    // Profil resmini ayarla ve döngüyü başlat
-    profileManager.setRandomProfilePicture();
-    setInterval(profileManager.nextProfilePicture, 5000);
-
-    // Önceden yüklenecek görüntüler
-    const preloadImages = [
-        "icons/youtube.webp", "icons/youtube2.webp",
-        "icons/soundcloud.webp", "icons/soundcloud2.webp",
-        "icons/instagram.webp", "icons/instagram2.webp",
-        "icons/tiktok.webp", "icons/tiktok2.webp",
-        "icons/mail.webp", "icons/mail2.webp"
-    ];
-
-    preloadImages.forEach(src => {
-        new Image().src = src;
-    });
-
-    // Kayıtlı temayı yükle
-    utils.loadTheme();
-
-    // Tema değiştirme butonuna event listener ekle
-    if (domElements.themeToggle) {
-        domElements.themeToggle.addEventListener('click', themeManager.toggleTheme);
+    .social-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 22px;
     }
 
-    // Event delegation'ı ayarla
-    setupEventDelegation();
+    .link-item {
+        padding: 12px 15px;
+    }
 
-    // Ses ilerleme güncellemeleri
-    audioPlayers.currentAudio.addEventListener('timeupdate', function () {
-        audioManager.updateAudioProgress(this, false);
-    });
+    .link-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+    }
 
-    audioPlayers.currentAudio2.addEventListener('timeupdate', function () {
-        audioManager.updateAudioProgress(this, true);
-    });
+    .link-text {
+        font-size: 15px;
+    }
 
-    // Ses bitiş olayları
-    audioPlayers.currentAudio.addEventListener('ended', function () {
-        audioPlayers.isPlaying = false;
-        audioManager.updatePlayPauseIcon(document.querySelector('.play-pause'), false);
-        document.querySelector('.audio-progress-bar').style.width = '0%';
-        document.querySelector('.audio-time').textContent = '0:00';
-    });
+    .theme-toggle {
+        top: 15px;
+        right: 15px;
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
 
-    audioPlayers.currentAudio2.addEventListener('ended', function () {
-        audioPlayers.isPlaying2 = false;
-        audioManager.updatePlayPauseIcon(document.querySelector('.play-pause2'), false);
-        document.querySelector('.audio-progress-bar2').style.width = '0%';
-        document.querySelector('.audio-time2').textContent = '0:00';
-    });
+    .platform-options {
+        grid-template-columns: 1fr;
+    }
+}
 
-    // Scroll to top butonunu başlat
-    scrollManager.initScrollToTop();
-});
+@media (max-width: 400px) {
+    .social-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+    }
 
-// Sayfa yüklendiğinde hoşgeldin ekranını kaldır
-window.addEventListener('load', function () {
-    setTimeout(function () {
-        if (domElements.welcomeScreen) {
-            domElements.welcomeScreen.style.opacity = '0';
-        }
+    .theme-toggle {
+        width: 32px;
+        height: 32px;
+    }
+}
 
-        if (domElements.mainContent) {
-            domElements.mainContent.classList.add('show');
-        }
+@media (max-width: 768px) {
+    .apple-music-modal {
+        width: 95%;
+        margin: 10px;
+    }
 
-        setTimeout(function () {
-            if (domElements.welcomeScreen) {
-                domElements.welcomeScreen.style.display = 'none';
-            }
-        }, 1000);
-    }, 100);
-});
+    .apple-music-embed iframe {
+        height: 400px;
+    }
+}
+
+@media (max-width: 480px) {
+    .apple-music-embed iframe {
+        height: 350px;
+    }
+
+    .link-to-apple-music {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
+
+.scroll-to-top {
+    right: var(--spacing-lg);
+    width: 40px;
+    height: 40px;
+    position: fixed;
+    bottom: 30px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 4px 20px rgba(128, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.scroll-to-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scroll-to-top:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 25px rgba(128, 0, 0, 0.5);
+}
+
+.light-theme .scroll-to-top {
+    box-shadow: 0 4px 20px rgba(255, 0, 0, 0.3);
+}
+
+.light-theme .scroll-to-top:hover {
+    box-shadow: 0 6px 25px rgba(255, 0, 0, 0.4);
+}
+
+@media (max-width: 600px) {
+    .scroll-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+        font-size: 16px;
+    }
+}
+
+.promo-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99;
+    overflow: hidden;
+    font-family: inherit;
+    font-weight: 250;
+}
+
+.promo-content {
+    display: flex;
+    white-space: nowrap;
+}
+
+.promo-text {
+    padding: 0 20px;
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    .promo-banner {
+        height: 40px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .promo-banner {
+        height: 36px;
+        font-size: 12px;
+    }
+}
+
+body {
+    padding-top: 40px;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-top: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding-top: 36px;
+    }
+}
+
+.body-no-scroll {
+    position: fixed;
+    width: 100%;
+    top: var(--scroll-pos, 0);
+}
+
+.modal-content {
+    -webkit-overflow-scrolling: touch;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+/* Modal boyutları için responsive düzenlemeler */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 85%;
+        max-width: 350px;
+        margin: 20px;
+    }
+
+    .platform-options {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+    }
+
+    .platform-option {
+        padding: var(--spacing-sm);
+    }
+
+    .modal-body {
+        padding: var(--spacing-md);
+    }
+
+    .modal-header {
+        padding: var(--spacing-md);
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        width: 90%;
+        max-width: 320px;
+        margin: 15px;
+    }
+
+    .audio-player {
+        gap: 8px;
+    }
+
+    .audio-control {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+
+    .audio-time,
+    .audio-time2 {
+        font-size: 11px;
+        min-width: 35px;
+    }
+}
+
+.promo-code {
+    font-weight: bold;
+    cursor: pointer;
+    color: #b10000;
+    padding: 0px 6px;
+    border-radius: 6px;
+    margin: 0 4px;
+    transition: background .2s, transform .1s;
+    display: inline-block;
+    position: relative;
+}
+
+.promo-code:hover {
+    background: rgba(128, 0, 0, 0.5);
+}
+
+.promo-code:active {
+    transform: scale(0.97);
+}
+
+/**/
+
+/* Swipe-down menu styles */
+.platform-modal {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.platform-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.swipe-down-menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-dark);
+    border-top-left-radius: var(--radius-lg);
+    border-top-right-radius: var(--radius-lg);
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-light);
+    border-bottom: none;
+}
+
+.light-theme .swipe-down-menu {
+    background: var(--bg-light);
+    border: 1px solid var(--border-dark);
+    border-bottom: none;
+}
+
+.platform-modal.active .swipe-down-menu {
+    transform: translateY(0);
+}
+
+.swipe-handle {
+    position: sticky;
+    top: 0;
+    background: inherit;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-top-left-radius: var(--radius-lg);
+    border-top-right-radius: var(--radius-lg);
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.light-theme .swipe-handle {
+    border-bottom: 1px solid var(--border-dark);
+}
+
+.swipe-indicator {
+    width: 40px;
+    height: 4px;
+    background: var(--text-secondary);
+    border-radius: 2px;
+    position: absolute;
+    top: 12px;
+}
+
+.swipe-close {
+    position: absolute;
+    right: var(--spacing-md);
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 20px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+.light-theme .swipe-close {
+    color: var(--text-dark);
+}
+
+.swipe-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.light-theme .swipe-close:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.menu-content {
+    padding: 0 var(--spacing-lg) var(--spacing-lg);
+}
+
+.menu-content h3 {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* Modal içeriğini swipe-down menüye uyarlama */
+.menu-content .audio-preview-container {
+    margin-top: 0;
+}
+
+.menu-content .platform-options {
+    margin-top: var(--spacing-lg);
+}
+
+/* Apple Music modalı için özel stiller */
+#apple-music-modal .menu-content {
+    padding-bottom: var(--spacing-xl);
+}
+
+#apple-music-modal .apple-music-embed {
+    margin-bottom: var(--spacing-md);
+}
+
+#apple-music-modal .apple-music-link-container {
+    margin-top: var(--spacing-lg);
+}
+
+/* Mevcut modal stillerini geçersiz kılma */
+.platform-modal .modal-content {
+    display: none;
+}
+
+/* Mobil cihazlar için responsive düzenlemeler */
+@media (max-width: 768px) {
+    .swipe-down-menu {
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+    }
+
+    .swipe-handle {
+        padding: 12px 15px;
+    }
+
+    .menu-content {
+        padding: 0 15px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .swipe-handle {
+        padding: 10px 12px;
+    }
+
+    .menu-content {
+        padding: 0 12px 12px;
+    }
+
+    .swipe-close {
+        right: 8px;
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+}
