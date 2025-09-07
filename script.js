@@ -371,8 +371,8 @@ const modalManager = {
         document.body.classList.add('body-no-scroll');
         document.body.style.setProperty('--scroll-pos', `-${domElements.scrollPos}px`);
         
-        const iframe = domElements.appleMusicModal.querySelector('iframe');
-        const directLink = domElements.appleMusicModal.querySelector('.link-to-apple-music');
+        const iframe = domElements.appleMusicModal?.querySelector('iframe');
+        const directLink = domElements.appleMusicModal?.querySelector('.link-to-apple-music');
 
         if (iframe) {
             iframe.src = `https://embed.music.apple.com/tr/playlist/bi-bira-bi-soju/pl.u-qxylEYDT3ByJYdV?l=tr`;
