@@ -339,7 +339,7 @@ const modalManager = {
         domElements.scrollPos = window.pageYOffset;
         document.body.classList.add('body-no-scroll');
         document.body.style.setProperty('--scroll-pos', `-${domElements.scrollPos}px`);
-        
+
         // Modal başlığını ayarla
         domElements.modalTitle.textContent = beatName;
         audioPlayers.currentBeatName = beatName;
@@ -377,21 +377,37 @@ const modalManager = {
         // Modalı göster
         domElements.platformModal.classList.add('active');
         domElements.platformModal.setAttribute('aria-hidden', 'false');
+
+        // Swipe-down animasyonu için kısa bir gecikme ekle
+        setTimeout(() => {
+            const swipeMenu = domElements.platformModal.querySelector('.swipe-down-menu');
+            if (swipeMenu) {
+                swipeMenu.style.transform = 'translateY(0)';
+            }
+        }, 10);
     },
 
     // Modal kapatma işlevi
     closeModal: (modalElement) => {
-        document.body.classList.remove('body-no-scroll');
-        document.body.style.removeProperty('--scroll-pos');
-        window.scrollTo(0, domElements.scrollPos);
-        modalElement.classList.remove('active');
-        modalElement.setAttribute('aria-hidden', 'true');
+        const swipeMenu = modalElement.querySelector('.swipe-down-menu');
+        if (swipeMenu) {
+            swipeMenu.style.transform = 'translateY(100%)';
+        }
 
-        // Sesleri durdur
-        audioPlayers.currentAudio.pause();
-        audioPlayers.currentAudio2.pause();
-        audioManager.resetAudioUI();
-        audioManager.resetAudioUI(true);
+        // Animasyon tamamlandıktan sonra modalı tamamen kapat
+        setTimeout(() => {
+            document.body.classList.remove('body-no-scroll');
+            document.body.style.removeProperty('--scroll-pos');
+            window.scrollTo(0, domElements.scrollPos);
+            modalElement.classList.remove('active');
+            modalElement.setAttribute('aria-hidden', 'true');
+
+            // Sesleri durdur
+            audioPlayers.currentAudio.pause();
+            audioPlayers.currentAudio2.pause();
+            audioManager.resetAudioUI();
+            audioManager.resetAudioUI(true);
+        }, 400); // CSS transition süresiyle eşleşmeli
     },
 
     // Apple Music modalını aç
@@ -399,21 +415,29 @@ const modalManager = {
         domElements.scrollPos = window.pageYOffset;
         document.body.classList.add('body-no-scroll');
         document.body.style.setProperty('--scroll-pos', `-${domElements.scrollPos}px`);
-        
+
         const iframe = domElements.appleMusicModal?.querySelector('iframe');
         const directLink = domElements.appleMusicModal?.querySelector('.link-to-apple-music');
 
         if (iframe) {
             iframe.src = `https://embed.music.apple.com/tr/playlist/bi-bira-bi-soju/pl.u-qxylEYDT3ByJYdV?l=tr`;
         }
-        
+
         if (directLink) {
             directLink.href = musicUrl;
         }
 
         domElements.appleMusicModal.classList.add('active');
         domElements.appleMusicModal.setAttribute('aria-hidden', 'false');
-    }
+
+        // Swipe-down animasyonu için kısa bir gecikme ekle
+        setTimeout(() => {
+            const swipeMenu = domElements.appleMusicModal.querySelector('.swipe-down-menu');
+            if (swipeMenu) {
+                swipeMenu.style.transform = 'translateY(0)';
+            }
+        }, 10);
+    },
 };
 
 // Ses yönetimi
@@ -446,10 +470,10 @@ const audioManager = {
 
         audioPlayers[isSecond ? 'isPlaying2' : 'isPlaying'] = false;
         audioManager.updatePlayPauseIcon(playButton, false);
-        
+
         const progressBar = document.querySelector(`.audio-progress-bar${suffix}`);
         const timeDisplay = document.querySelector(`.audio-time${suffix}`);
-        
+
         if (progressBar) progressBar.style.width = '0%';
         if (timeDisplay) timeDisplay.textContent = '0:00';
     },
@@ -457,7 +481,7 @@ const audioManager = {
     // Oynat/Duraklat butonunu güncelle
     updatePlayPauseIcon: (button, isPlaying) => {
         if (!button) return;
-        
+
         const icon = button.querySelector('i');
         if (icon) {
             icon.classList.toggle('fa-play', !isPlaying);
@@ -468,7 +492,7 @@ const audioManager = {
     // Ses düzeyi butonunu güncelle
     updateMuteIcon: (button, isMuted) => {
         if (!button) return;
-        
+
         const icon = button.querySelector('i');
         if (icon) {
             icon.classList.toggle('fa-volume-up', !isMuted);
@@ -482,7 +506,7 @@ const audioManager = {
         if (audioElement.duration) {
             const percent = (audioElement.currentTime / audioElement.duration) * 100;
             const progressBar = document.querySelector(`.audio-progress-bar${suffix}`);
-            
+
             if (progressBar) {
                 progressBar.style.width = `${percent}%`;
             }
@@ -566,8 +590,8 @@ const setupEventDelegation = () => {
             return;
         }
 
-        // Modal kapatma butonları için
-        if (e.target.classList.contains('modal-close') || e.target.parentElement.classList.contains('modal-close')) {
+        // Swipe kapatma butonları için
+        if (e.target.closest('.swipe-close')) {
             const modal = e.target.closest('.platform-modal');
             if (modal) {
                 modalManager.closeModal(modal);
@@ -575,7 +599,7 @@ const setupEventDelegation = () => {
             return;
         }
 
-        // Modal dışına tıklama için
+        // Modal dışına tıklama için (yalnızca swipe-down menü dışına)
         if (e.target.classList.contains('platform-modal')) {
             modalManager.closeModal(e.target);
             return;
@@ -649,7 +673,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (iframe) {
         iframe.src = "https://embed.music.apple.com/tr/playlist/bi-bira-bi-soju/pl.u-qxylEYDT3ByJYdV?l=tr";
     }
-    
+
     // Beat verilerini yükle
     beatManager.loadBeatsData();
 
@@ -715,7 +739,7 @@ window.addEventListener('load', function () {
         if (domElements.welcomeScreen) {
             domElements.welcomeScreen.style.opacity = '0';
         }
-        
+
         if (domElements.mainContent) {
             domElements.mainContent.classList.add('show');
         }
@@ -727,4 +751,3 @@ window.addEventListener('load', function () {
         }, 1000);
     }, 100);
 });
-
