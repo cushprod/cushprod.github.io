@@ -133,18 +133,13 @@
             </footer>
         </main>
 
-        <!-- Platform modal yapısını değiştir (mevcut kodu bu yeni yapıyla değiştir) -->
         <div id="platform-modal" class="platform-modal" aria-hidden="true">
-            <div class="swipe-down-menu">
-                <div class="swipe-handle">
-                    <div class="swipe-indicator"></div>
-                    <button class="swipe-close" aria-label="Close menu">
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                </div>
-                <div class="menu-content">
+            <div class="modal-content">
+                <div class="modal-header">
                     <h3 id="modal-title">Platform</h3>
-
+                    <button class="modal-close" aria-label="Close modal">&times;</button>
+                </div>
+                <div class="modal-body">
                     <div class="audio-preview-container">
                         <div class="audio-player">
                             <button class="audio-control play-pause" aria-label="Play/pause">
@@ -206,16 +201,12 @@
         </div>
 
         <div id="apple-music-modal" class="platform-modal" aria-hidden="true">
-            <div class="swipe-down-menu">
-                <div class="swipe-handle">
-                    <div class="swipe-indicator"></div>
-                    <button class="swipe-close" aria-label="Close menu">
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                </div>
-                <div class="menu-content">
+            <div class="modal-content apple-music-modal">
+                <div class="modal-header">
                     <h3>Apple Music Playlist</h3>
-
+                    <button class="modal-close" aria-label="Close modal">&times;</button>
+                </div>
+                <div class="modal-body">
                     <div class="apple-music-embed">
                         <iframe allow="autoplay *; encrypted-media;" frameborder="0" height="450"
                             style="width:100%;max-width:660px;overflow:hidden;background:transparent;"
