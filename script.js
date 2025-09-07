@@ -65,6 +65,35 @@ const utils = {
     }
 };
 
+async function copyText(text) {
+    if (navigator.clipboard?.writeText) {
+        return navigator.clipboard.writeText(text);
+    }
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+}
+
+const promoCode = document.querySelector('.promo-code');
+
+// Mevcut kodunuz aynı kalacak, sadece event listener düzenlemesi
+promoCode.addEventListener('click', async () => {
+    const text = promoCode.dataset.copy;
+    await copyText(text);
+});
+
+promoCode.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        promoCode.click();
+    }
+});
+
 // Beat verileri ile ilgili fonksiyonlar
 const beatManager = {
     // JSON'dan beat verilerini çekme ve sayfayı doldurma
@@ -698,3 +727,4 @@ window.addEventListener('load', function () {
         }, 1000);
     }, 100);
 });
+
