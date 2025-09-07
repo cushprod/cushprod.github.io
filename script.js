@@ -377,14 +377,6 @@ const modalManager = {
         // Modalı göster
         domElements.platformModal.classList.add('active');
         domElements.platformModal.setAttribute('aria-hidden', 'false');
-
-        // Swipe-down animasyonu için kısa bir gecikme ekle
-        setTimeout(() => {
-            const swipeMenu = domElements.platformModal.querySelector('.swipe-down-menu');
-            if (swipeMenu) {
-                swipeMenu.style.transform = 'translateY(0)';
-            }
-        }, 10);
     },
 
     // Modal kapatma işlevi
