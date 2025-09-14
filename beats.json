@@ -1,17 +1,30 @@
 {
     "beats": [
         {
+            "title": "slid",
+            "description": "yeat type atmoshperic beat \"slid\"",
+            "image": "img/slid.webp",
+            "audio": "sounds/slid.mp3",
+            "platforms": {
+                "youtube": "https://youtu.be/fw08_eT6CiQ",
+                "beatstars": "https://bsta.rs/DtHYtp",
+                "airbit": "https://air.bi/D6icg",
+                "traktrain": "https://traktrain.com/t/1440875"
+            },
+            "isNew": true
+        },
+        {
             "title": "Astro Vamp",
             "description": "Opium Type Rage Beat \"Astro Vamp\"",
             "image": "img/Astro Vamp.webp",
             "audio": "sounds/Astro Vamp.mp3",
             "platforms": {
-                "youtube": "https://youtu.be/gJQwEKpr16E",
-                "beatstars": "https://bsta.rs/lxZrG",
-                "airbit": "https://air.bi/4BpF4",
-                "traktrain": "https://traktrain.com/t/1436813"
+                "youtube": "https://youtu.be/Lmi91j7ecD4?si=m52F57p3WRPqadtH",
+                "beatstars": "https://bsta.rs/8cFkE",
+                "airbit": "https://air.bi/Jc67E",
+                "traktrain": "https://traktrain.com/t/1427828"
             },
-            "isNew": true
+            "isNew": false
         },
         {
             "title": "aurex",
