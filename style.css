@@ -966,7 +966,7 @@ body {
     }
 }
 
-.promo-code {
+/*.promo-code {
     font-weight: bold;
     cursor: pointer;
     color: #b10000;
@@ -984,4 +984,4 @@ body {
 
 .promo-code:active {
     transform: scale(0.97);
-}
+}*/
