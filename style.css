@@ -847,7 +847,7 @@ body.light-theme {
     }
 }
 
-.promo-banner {
+/*.promo-banner {
     position: fixed;
     top: 0;
     left: 0;
@@ -886,7 +886,7 @@ body.light-theme {
         height: 36px;
         font-size: 12px;
     }
-}
+}*/
 
 body {
     padding-top: 40px;
@@ -985,3 +985,4 @@ body {
 .promo-code:active {
     transform: scale(0.97);
 }*/
+
