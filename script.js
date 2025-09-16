@@ -79,21 +79,6 @@ async function copyText(text) {
     document.body.removeChild(ta);
 }
 
-const promoCode = document.querySelector('.promo-code');
-
-// Mevcut kodunuz aynı kalacak, sadece event listener düzenlemesi
-promoCode.addEventListener('click', async () => {
-    const text = promoCode.dataset.copy;
-    await copyText(text);
-});
-
-promoCode.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        promoCode.click();
-    }
-});
-
 // Beat verileri ile ilgili fonksiyonlar
 const beatManager = {
     // JSON'dan beat verilerini çekme ve sayfayı doldurma
@@ -727,4 +712,3 @@ window.addEventListener('load', function () {
         }, 1000);
     }, 100);
 });
-
