@@ -65,7 +65,7 @@ const utils = {
     }
 };
 
-async function copyText(text) {
+/*async function copyText(text) {
     if (navigator.clipboard?.writeText) {
         return navigator.clipboard.writeText(text);
     }
@@ -92,7 +92,7 @@ promoCode.addEventListener('keydown', (e) => {
         e.preventDefault();
         promoCode.click();
     }
-});
+});*/
 
 // Beat verileri ile ilgili fonksiyonlar
 const beatManager = {
