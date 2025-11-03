@@ -1,6 +1,19 @@
 {
     "beats": [
         {
+            "title": "Chill Bae",
+            "description": "Lil Uzi Vert Type Beat \"Chill Bae\"",
+            "image": "img/Chill Bae.webp",
+            "audio": "sounds/Chill Bae.mp3",
+            "platforms": {
+                "youtube": "https://youtu.be/dLEmL1zR7ig",
+                "beatstars": "https://bsta.rs/pFDg9y",
+                "airbit": "https://air.bi/crXWU",
+                "traktrain": "https://traktrain.com/t/1472711"
+            },
+            "isNew": true
+        },
+        {
             "title": "slid",
             "description": "yeat type atmoshperic beat \"slid\"",
             "image": "img/slid.webp",
@@ -11,7 +24,7 @@
                 "airbit": "https://air.bi/D6icg",
                 "traktrain": "https://traktrain.com/t/1440875"
             },
-            "isNew": true
+            "isNew": false
         },
         {
             "title": "Astro Vamp",
