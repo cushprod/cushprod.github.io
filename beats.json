@@ -1,6 +1,19 @@
 {
     "beats": [
         {
+            "title": "Rattle Em",
+            "description": "[BEATSWITCH] Drake x Travis Scott Type Beat \"Rattle Em\"",
+            "image": "img/Rattle Em.webp",
+            "audio": "sounds/Rattle Em.mp3",
+            "platforms": {
+                "youtube": "https://youtu.be/fjGGLFGZPog",
+                "beatstars": "https://bsta.rs/QBsEDp",
+                "airbit": "https://air.bi/XR9z2",
+                "traktrain": "https://traktrain.com/t/1474386"
+            },
+            "isNew": true
+        },
+        {
             "title": "Chill Bae",
             "description": "Lil Uzi Vert Type Beat \"Chill Bae\"",
             "image": "img/Chill Bae.webp",
@@ -11,7 +24,7 @@
                 "airbit": "https://air.bi/FBGKX",
                 "traktrain": "https://traktrain.com/t/1472711"
             },
-            "isNew": true
+            "isNew": false
         },
         {
             "title": "slid",
