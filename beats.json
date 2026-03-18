@@ -3,8 +3,8 @@
         {
             "title": "LUV",
             "description": "LUV | Lithe x Don Toliver Type Beat",
-            "image": "img/Moonlight.webp",
-            "audio": "sounds/Moonlight.mp3",
+            "image": "img/LUV.webp",
+            "audio": "sounds/LUV.mp3",
             "platforms": {
                 "youtube": "https://youtu.be/a5K4R_XcKb4?si=NQtclf3P2ixABH5W",
                 "beatstars": "https://bsta.rs/sNhzbe",
@@ -21,7 +21,7 @@
             "platforms": {
                 "youtube": "https://youtu.be/ya8w4EVlM7c?si=2GdWDhtIzTJEyRI9",
                 "beatstars": "https://bsta.rs/sMYN3P",
-                "airbit": "https://air.bi/rXbuV",
+                "airbit": "https://air.bi/WrhBJ",
                 "traktrain": ""
             },
             "isNew": false
